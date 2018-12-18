@@ -1,0 +1,20 @@
+
+Emotion_Sad_Tear_R.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+EM_Cry_01_Tear_01_L
+  rotate: true
+  xy: 74, 45
+  size: 77, 48
+  orig: 77, 48
+  offset: 0, 0
+  index: -1
+EM_Cry_01_Tear_02_L
+  rotate: false
+  xy: 2, 42
+  size: 70, 80
+  orig: 70, 80
+  offset: 0, 0
+  index: -1

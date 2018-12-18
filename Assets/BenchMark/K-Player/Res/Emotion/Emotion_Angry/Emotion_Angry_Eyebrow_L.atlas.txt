@@ -1,0 +1,20 @@
+
+Emotion_Angry_Eyebrow_L.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Angry_Etc
+  rotate: false
+  xy: 2, 31
+  size: 52, 34
+  orig: 52, 34
+  offset: 0, 0
+  index: -1
+Angry_Eyebrow_L
+  rotate: false
+  xy: 2, 67
+  size: 115, 50
+  orig: 115, 50
+  offset: 0, 0
+  index: -1

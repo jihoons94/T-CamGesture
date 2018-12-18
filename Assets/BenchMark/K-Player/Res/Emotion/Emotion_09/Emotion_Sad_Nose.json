@@ -1,0 +1,51 @@
+{
+"skeleton": { "hash": "ZJop943GLdVJM7ClUqHOMW6arc4", "spine": "3.6.47", "width": 0, "height": 0, "images": "./images/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "EM_Cry_01_nose", "parent": "root", "length": 60.65, "rotation": 90, "x": -0.18, "y": 20.49 }
+],
+"slots": [
+	{ "name": "EM_Cry_01_nose", "bone": "EM_Cry_01_nose", "attachment": "EM_Cry_01_nose" }
+],
+"skins": {
+	"default": {
+		"EM_Cry_01_nose": {
+			"EM_Cry_01_nose": { "x": -7.42, "y": -0.61, "rotation": -90, "width": 268, "height": 178 }
+		}
+	}
+},
+"animations": {
+	"Idle_01": {
+		"bones": {
+			"root": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 3, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 3, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 3, "x": 1, "y": 1 }
+				]
+			},
+			"EM_Cry_01_nose": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 3, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 3, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 3, "x": 1, "y": 1 }
+				]
+			}
+		}
+	}
+}
+}
