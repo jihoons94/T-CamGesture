@@ -1,0 +1,13 @@
+
+Emotion_Smile_Eyebrow_L.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Laugh_Eyebrow_L
+  rotate: false
+  xy: 2, 117
+  size: 193, 78
+  orig: 193, 78
+  offset: 0, 0
+  index: -1

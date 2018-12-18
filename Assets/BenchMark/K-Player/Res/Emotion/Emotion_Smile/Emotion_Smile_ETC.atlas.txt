@@ -1,0 +1,20 @@
+
+Emotion_Smile_ETC.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Laugh_Etc_01
+  rotate: false
+  xy: 2, 194
+  size: 181, 254
+  orig: 181, 254
+  offset: 0, 0
+  index: -1
+Laugh_Etc_02
+  rotate: false
+  xy: 2, 2
+  size: 86, 190
+  orig: 86, 190
+  offset: 0, 0
+  index: -1

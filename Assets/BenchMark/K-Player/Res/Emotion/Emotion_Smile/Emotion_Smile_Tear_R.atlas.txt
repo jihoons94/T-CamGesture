@@ -1,0 +1,13 @@
+
+Emotion_Smile_Tear_R.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Laugh_Tear
+  rotate: false
+  xy: 2, 27
+  size: 75, 50
+  orig: 75, 50
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,13 @@
+
+Emotion_Sullen_Tear.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sullen_Tear_02
+  rotate: false
+  xy: 2, 25
+  size: 77, 54
+  orig: 77, 54
+  offset: 0, 0
+  index: -1
