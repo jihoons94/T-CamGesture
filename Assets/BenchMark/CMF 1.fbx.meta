@@ -1,0 +1,215 @@
+fileFormatVersion: 2
+guid: f6ec95ecaa2f4994e9f24676177a942a
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Active Camera
+    100002: Camera 1
+    100004: Camera 2
+    100006: Camera 3
+    100008: //RootNode
+    100010: Default
+    100012: Gen 2_v1_regular
+    100014: 'Gen 2_v1_regular #2'
+    100016: Gen 2_v1_regular 1
+    100018: Gen 2_v1_regular 10
+    100020: Gen 2_v1_regular 11
+    100022: Gen 2_v1_regular 12
+    100024: Gen 2_v1_regular 13
+    100026: Gen 2_v1_regular 14
+    100028: Gen 2_v1_regular 15
+    100030: Gen 2_v1_regular 16
+    100032: Gen 2_v1_regular 17
+    100034: Gen 2_v1_regular 18
+    100036: Gen 2_v1_regular 19
+    100038: Gen 2_v1_regular 2
+    100040: Gen 2_v1_regular 20
+    100042: Gen 2_v1_regular 21
+    100044: Gen 2_v1_regular 22
+    100046: Gen 2_v1_regular 23
+    100048: Gen 2_v1_regular 24
+    100050: Gen 2_v1_regular 25
+    100052: Gen 2_v1_regular 26
+    100054: Gen 2_v1_regular 27
+    100056: Gen 2_v1_regular 28
+    100058: Gen 2_v1_regular 29
+    100060: Gen 2_v1_regular 3
+    100062: Gen 2_v1_regular 4
+    100064: Gen 2_v1_regular 5
+    100066: Gen 2_v1_regular 6
+    100068: Gen 2_v1_regular 7
+    100070: Gen 2_v1_regular 8
+    100072: Gen 2_v1_regular 9
+    400000: Active Camera
+    400002: Camera 1
+    400004: Camera 2
+    400006: Camera 3
+    400008: //RootNode
+    400010: Default
+    400012: Gen 2_v1_regular
+    400014: 'Gen 2_v1_regular #2'
+    400016: Gen 2_v1_regular 1
+    400018: Gen 2_v1_regular 10
+    400020: Gen 2_v1_regular 11
+    400022: Gen 2_v1_regular 12
+    400024: Gen 2_v1_regular 13
+    400026: Gen 2_v1_regular 14
+    400028: Gen 2_v1_regular 15
+    400030: Gen 2_v1_regular 16
+    400032: Gen 2_v1_regular 17
+    400034: Gen 2_v1_regular 18
+    400036: Gen 2_v1_regular 19
+    400038: Gen 2_v1_regular 2
+    400040: Gen 2_v1_regular 20
+    400042: Gen 2_v1_regular 21
+    400044: Gen 2_v1_regular 22
+    400046: Gen 2_v1_regular 23
+    400048: Gen 2_v1_regular 24
+    400050: Gen 2_v1_regular 25
+    400052: Gen 2_v1_regular 26
+    400054: Gen 2_v1_regular 27
+    400056: Gen 2_v1_regular 28
+    400058: Gen 2_v1_regular 29
+    400060: Gen 2_v1_regular 3
+    400062: Gen 2_v1_regular 4
+    400064: Gen 2_v1_regular 5
+    400066: Gen 2_v1_regular 6
+    400068: Gen 2_v1_regular 7
+    400070: Gen 2_v1_regular 8
+    400072: Gen 2_v1_regular 9
+    2000000: Active Camera
+    2000002: Camera 1
+    2000004: Camera 2
+    2000006: Camera 3
+    2100000: 'Glass (Solid) Black #2'
+    2100002: 'Glass (Solid) White #2'
+    2100004: 'Tire #2'
+    2100006: Hard Shiny Plastic Grey
+    2100008: Hard Textured Plastic Grey
+    2100010: 'Hard Shiny Plastic White #4'
+    2100012: 'Hard Shiny Plastic Black #2'
+    2300000: Gen 2_v1_regular 15
+    2300002: Gen 2_v1_regular 16
+    2300004: Gen 2_v1_regular 17
+    2300006: Gen 2_v1_regular 18
+    2300008: Gen 2_v1_regular 19
+    2300010: Gen 2_v1_regular 20
+    2300012: Gen 2_v1_regular 21
+    2300014: Gen 2_v1_regular 22
+    2300016: Gen 2_v1_regular 23
+    2300018: Gen 2_v1_regular 24
+    2300020: Gen 2_v1_regular 25
+    2300022: Gen 2_v1_regular 26
+    2300024: Gen 2_v1_regular 27
+    2300026: Gen 2_v1_regular 28
+    2300028: Gen 2_v1_regular 29
+    3300000: Gen 2_v1_regular 15
+    3300002: Gen 2_v1_regular 16
+    3300004: Gen 2_v1_regular 17
+    3300006: Gen 2_v1_regular 18
+    3300008: Gen 2_v1_regular 19
+    3300010: Gen 2_v1_regular 20
+    3300012: Gen 2_v1_regular 21
+    3300014: Gen 2_v1_regular 22
+    3300016: Gen 2_v1_regular 23
+    3300018: Gen 2_v1_regular 24
+    3300020: Gen 2_v1_regular 25
+    3300022: Gen 2_v1_regular 26
+    3300024: Gen 2_v1_regular 27
+    3300026: Gen 2_v1_regular 28
+    3300028: Gen 2_v1_regular 29
+    4300000: Gen 2_v1_regular
+    4300002: Gen 2_v1_regular
+    4300004: Gen 2_v1_regular
+    4300006: Gen 2_v1_regular
+    4300008: Gen 2_v1_regular
+    4300010: Gen 2_v1_regular
+    4300012: Gen 2_v1_regular
+    4300014: Gen 2_v1_regular
+    4300016: Gen 2_v1_regular
+    4300018: Gen 2_v1_regular
+    4300020: Gen 2_v1_regular
+    4300022: Gen 2_v1_regular
+    4300024: Gen 2_v1_regular
+    4300026: Gen 2_v1_regular
+    4300028: Gen 2_v1_regular
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
