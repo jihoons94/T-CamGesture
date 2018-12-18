@@ -119,6 +119,7 @@ public class MotionEvent_Teeth : Motion_Event
     {
         isPlay = false;
         //StopCoroutine(WaitCreate());
+        UI_Score.SetActive(false);
         for (int i = UI_ButtonCount; i < CMTM.fixed_Buttons.Count; i++)
         {
             CMTM.fixed_Buttons[i].gameObject.SetActive(false);
@@ -133,7 +134,7 @@ public class MotionEvent_Teeth : Motion_Event
         }
         UI_Start.SetActive(true);
         UI_Exit.SetActive(true);
-        UI_Score.SetActive(false);
+        
     }
 
     void GameExit()

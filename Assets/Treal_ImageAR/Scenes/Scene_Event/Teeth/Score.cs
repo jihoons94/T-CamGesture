@@ -7,8 +7,9 @@ public class Score : MonoBehaviour {
 
     public GameObject OverEffect;
     public MotionEvent_Teeth Teeth;
-    public Text ScoreText;
+    public Image UI_Score;
     public static int ScoreCount;
+    int MaxScore = 300;
 
     IEnumerator GameOver()
     {
@@ -17,6 +18,7 @@ public class Score : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         OverEffect.SetActive(false);
         Teeth.GameInit();
+        
 
     }
 	// Use this for initialization
@@ -25,10 +27,11 @@ public class Score : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-        ScoreText.text = System.Convert.ToString(ScoreCount);
-        if(ScoreCount >= 200)
+
+        UI_Score.fillAmount = (float)((float)ScoreCount / (float)MaxScore);
+        if (ScoreCount >= MaxScore)
         {
-            ScoreCount = 0; 
+            ScoreCount = 0;
             StartCoroutine(GameOver());
         }
 	}
