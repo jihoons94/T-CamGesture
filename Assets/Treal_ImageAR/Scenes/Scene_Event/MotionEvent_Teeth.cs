@@ -6,6 +6,10 @@ using DG.Tweening;//jh
 
 public class MotionEvent_Teeth : Motion_Event
 {
+    public GameObject UI_Start;
+    public GameObject UI_Exit;
+    public GameObject UI_Score;
+
     bool[] Attack = new bool[3];
     public CMotionTrackingManager CMTM;
     public GameObject[] WaitImage_Event = new GameObject[3];
@@ -97,7 +101,7 @@ public class MotionEvent_Teeth : Motion_Event
     {
         find_set();
         isPlay = false;
-
+        UI_Score.SetActive(false);
 
     }
 
@@ -106,6 +110,9 @@ public class MotionEvent_Teeth : Motion_Event
         isPlay = true;
         StartCoroutine(WaitCreate());
         UI_ButtonOnOff(false);
+        UI_Start.SetActive(false);
+        UI_Exit.SetActive(false);
+        UI_Score.SetActive(true);
     }
 
     public void GameStop()
@@ -113,6 +120,9 @@ public class MotionEvent_Teeth : Motion_Event
         isPlay = false;
         StopCoroutine(WaitCreate());
         UI_ButtonOnOff(true);
+        UI_Start.SetActive(true);
+        UI_Exit.SetActive(true);
+        UI_Score.SetActive(false);
     }
 
     void GameExit()
@@ -219,6 +229,19 @@ public class MotionEvent_Teeth : Motion_Event
     {
         Amount_Click temp = CMTM.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount -= Time.deltaTime * 0.6f;
+        if (temp.Amount <= 0)
+        {
+            temp.Amount = 0;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool UI_NoClick_Amount(int num)
+    {
+        Amount_Click temp = CMTM.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount -= Time.deltaTime;
         if (temp.Amount <= 0)
         {
             temp.Amount = 0;
@@ -340,7 +363,15 @@ public class MotionEvent_Teeth : Motion_Event
 
     override public void FixedEvent_Off(int _num)
     {
-        NoClick_Amount(_num);
+        if (_num >= UI_ButtonCount)
+        {
+            NoClick_Amount(_num);
+        }
+        else
+        {
+            UI_NoClick_Amount(_num);
+        }
+           
         switch (_num)
         {
             case 0:
