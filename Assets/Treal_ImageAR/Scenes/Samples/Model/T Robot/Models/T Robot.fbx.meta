@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: 1a3956b4856cc418aaec90b0d27c8939
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: 2int_robot
+    100004: Body
+    100006: Cube
+    100008: Cube_1
+    100010: Cube_2
+    100012: Cube_3
+    100014: Head
+    100016: Joint
+    100018: Joint_1
+    100020: Joint_2
+    100022: Joint_2_2
+    100024: Joint_armL1
+    100026: Joint_armL2
+    100028: Joint_armR1
+    100030: Joint_armR2
+    100032: Joint_bodyRot
+    100034: Joint_hand
+    100036: Joint_handR
+    100038: Joint_head
+    100040: Joint_move
+    100042: Null
+    100044: Plane
+    100046: Robot_root
+    100048: Root_armL
+    100050: Root_armR
+    100052: Root_body
+    100054: Root_head
+    400000: //RootNode
+    400002: 2int_robot
+    400004: Body
+    400006: Cube
+    400008: Cube_1
+    400010: Cube_2
+    400012: Cube_3
+    400014: Head
+    400016: Joint
+    400018: Joint_1
+    400020: Joint_2
+    400022: Joint_2_2
+    400024: Joint_armL1
+    400026: Joint_armL2
+    400028: Joint_armR1
+    400030: Joint_armR2
+    400032: Joint_bodyRot
+    400034: Joint_hand
+    400036: Joint_handR
+    400038: Joint_head
+    400040: Joint_move
+    400042: Null
+    400044: Plane
+    400046: Robot_root
+    400048: Root_armL
+    400050: Root_armR
+    400052: Root_body
+    400054: Root_head
+    2300000: Cube_1
+    2300002: Cube_2
+    2300004: Cube_3
+    2300006: Plane
+    3300000: Cube_1
+    3300002: Cube_2
+    3300004: Cube_3
+    3300006: Plane
+    4300000: Cube_3
+    4300002: Cube_2
+    4300004: Cube_1
+    4300006: Plane
+    4300008: Body
+    4300010: Head
+    7400000: Main
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Body
+    13700002: Head
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 2int_robot1
+    second: {fileID: 2100000, guid: daea59c1b1dbf8a488bb476d100508ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 2int_robot2
+    second: {fileID: 2100000, guid: 6ad2a97714a5b7c4d84b9a2038941688, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 60273d12b3f2f8d4cbf8a45283836511, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
