@@ -23,7 +23,7 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject Remove_Effect;
     public Transform Background;
 
-    int UI_ButtonCount;
+    int UI_ButtonCount=2;
 
     bool isPlay;
 
@@ -118,8 +118,19 @@ public class MotionEvent_Teeth : Motion_Event
     public void GameStop()
     {
         isPlay = false;
-        StopCoroutine(WaitCreate());
-        UI_ButtonOnOff(true);
+        //StopCoroutine(WaitCreate());
+        for (int i = UI_ButtonCount; i < CMTM.fixed_Buttons.Count; i++)
+        {
+            CMTM.fixed_Buttons[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void GameInit()
+    {
+        for (int i = 0; i < UI_ButtonCount; i++)
+        {
+            CMTM.fixed_Buttons[i].gameObject.SetActive(true);
+        }
         UI_Start.SetActive(true);
         UI_Exit.SetActive(true);
         UI_Score.SetActive(false);
@@ -152,7 +163,7 @@ public class MotionEvent_Teeth : Motion_Event
 
     void Set_Point()
     {
-        for (int i = 0; i < CMTM.numOfixed; i++)
+        for (int i = UI_ButtonCount; i < CMTM.numOfixed; i++)
         {
             if (!CMTM.fixed_Buttons[i].gameObject.activeSelf)
             {
@@ -283,7 +294,7 @@ public class MotionEvent_Teeth : Motion_Event
     bool UI_Click_Amount(int num)
     {
         Amount_Click temp = CMTM.fixed_Buttons[num].GetComponent<Amount_Click>();
-        temp.Amount += Time.deltaTime * 8;
+        temp.Amount += Time.deltaTime * 5;
 
         if (temp.Amount >= temp.MAxAmount)
         {
