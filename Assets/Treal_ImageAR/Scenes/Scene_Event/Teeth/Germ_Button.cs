@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Germ_Button : MonoBehaviour {
-    public float Amount;
+public class Germ_Button : Amount_Click
+{
+    
     Vector3 MyScale;
     Vector3 DScale;
     Vector3 OScale;
@@ -14,6 +15,7 @@ public class Germ_Button : MonoBehaviour {
         MyScale = transform.localScale;
         Amount = 0;
         OScale = MyScale / 10;
+        MAxAmount = 8;
     }
 	
 	// Update is called once per frame

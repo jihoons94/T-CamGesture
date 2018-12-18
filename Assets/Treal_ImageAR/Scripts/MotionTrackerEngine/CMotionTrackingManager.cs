@@ -131,7 +131,7 @@ namespace Treal.BrowserCore
            
             FindandSet();
             _detector = MotionTracker.Instance;
-          _detector.CreateMotionTracker(1.0f, numOfObj);
+            _detector.CreateMotionTracker(1.0f, numOfObj);
 
             Destroy(CMotionTrackingManager.Instance);
             CMotionTrackingManager.Instance = this;
@@ -276,7 +276,7 @@ namespace Treal.BrowserCore
                         else if (n < numOfixed + numOfTarget)// 고정 대상
                         {
                             
-                            Event.FixedEvent_Off(n - numOfTarget);
+                            //Event.FixedEvent_Off(n - numOfTarget);
                             //fixed_Buttons[n - numOfTarget].gameObject.SetActive(true);
                         }
                         else  //랜덤 대상

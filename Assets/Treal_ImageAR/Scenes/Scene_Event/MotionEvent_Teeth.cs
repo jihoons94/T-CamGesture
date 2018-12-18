@@ -19,6 +19,10 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject Remove_Effect;
     public Transform Background;
 
+    int UI_ButtonCount;
+
+    bool isPlay;
+
     //윈도우 테스트용
     bool Click = false;
 
@@ -70,23 +74,57 @@ public class MotionEvent_Teeth : Motion_Event
     void find_set()
     {
         Transform CP = GameObject.FindGameObjectWithTag("CreatePoint").transform;
-        for(int i =0; i<CP.GetChildCount(); i++)
+        for (int i = 0; i < CP.GetChildCount(); i++)
         {
             CreatePoint.Add(CP.GetChild(i));
+        }
+    }
+
+    void UI_ButtonOnOff(bool _state)
+    {
+        for (int i = 0; i < UI_ButtonCount; i++)
+        {
+            CMTM.fixed_Buttons[i].gameObject.SetActive(_state);
+        }
+
+        for (int i = UI_ButtonCount; i < CMTM.fixed_Buttons.Count; i++)
+        {
+            CMTM.fixed_Buttons[i].gameObject.SetActive(!_state);
         }
     }
 
     private void Start()
     {
         find_set();
-        StartCoroutine(WaitCreate());
+        isPlay = false;
+
 
     }
+
+    void GameStart()
+    {
+        isPlay = true;
+        StartCoroutine(WaitCreate());
+        UI_ButtonOnOff(false);
+    }
+
+    public void GameStop()
+    {
+        isPlay = false;
+        StopCoroutine(WaitCreate());
+        UI_ButtonOnOff(true);
+    }
+
+    void GameExit()
+    {
+        Application.Quit();
+    }
+
 
 
     public Vector3 Rand_Point(GameObject _temp)
     {
-        int temp=0;
+        int temp = 0;
         while (true)
         {
             temp = Random.Range(0, CreatePoint.Count);
@@ -99,14 +137,14 @@ public class MotionEvent_Teeth : Motion_Event
 
 
         }
-        return CreatePoint[temp].localPosition/2;
+        return CreatePoint[temp].localPosition / 2;
     }
 
     void Set_Point()
     {
-        for(int i=0; i<CMTM.numOfixed; i++)
+        for (int i = 0; i < CMTM.numOfixed; i++)
         {
-            if(!CMTM.fixed_Buttons[i].gameObject.activeSelf)
+            if (!CMTM.fixed_Buttons[i].gameObject.activeSelf)
             {
                 Vector3 NewPoint = Rand_Point(CMTM.fixed_Buttons[i].gameObject);
                 CMTM.SetTrack_position_One(i, NewPoint);
@@ -117,7 +155,7 @@ public class MotionEvent_Teeth : Motion_Event
 
     IEnumerator WaitCreate()
     {
-        while (true)
+        while (isPlay)
         {
             Set_Point();
             yield return new WaitForSeconds(2f);
@@ -126,7 +164,7 @@ public class MotionEvent_Teeth : Motion_Event
 
     IEnumerator Target_Wait()
     {
-        while(true)
+        while (isPlay)
         {
             int temp = Random.Range(0, CMTM.numOfTarget);
             Debug.Log(CMTM.moving_Target[temp].gameObject.name);
@@ -161,23 +199,26 @@ public class MotionEvent_Teeth : Motion_Event
 
     void Wait_Event(int _num)
     {
+        
         Wait_Image.Add(_num);
 
         GameObject buble_ImageEffect = Instantiate(FiexdImage_Event, Background);
 
-        buble_ImageEffect.transform.position = 
+        Bubble_ImageEvent temp = buble_ImageEffect.GetComponent<Bubble_ImageEvent>();
+        buble_ImageEffect.transform.position =
             new Vector3(CMTM.fixed_Buttons[_num].localPosition.x, CMTM.fixed_Buttons[_num].localPosition.y, CMTM.fixed_Buttons[_num].localPosition.z);
-        buble_ImageEffect.GetComponent<Bubble_ImageEvent>().Target = CMTM.fixed_Buttons[_num].gameObject;
-        buble_ImageEffect.GetComponent<Bubble_ImageEvent>().Target_Button = CMTM.fixed_Buttons[_num].GetComponent<Germ_Button>();
-        buble_ImageEffect.GetComponent<Bubble_ImageEvent>().Teeth = GetComponent<MotionEvent_Teeth>();
-        buble_ImageEffect.GetComponent<Bubble_ImageEvent>().num = _num;
+
+        temp.Target = CMTM.fixed_Buttons[_num].gameObject;
+        temp.Target_Button = CMTM.fixed_Buttons[_num].GetComponent<Amount_Click>();
+        temp.Teeth = GetComponent<MotionEvent_Teeth>();
+        temp.num = _num;
         return;
     }
 
     bool NoClick_Amount(int num)
     {
-        Germ_Button temp = CMTM.fixed_Buttons[num].GetComponent<Germ_Button>();
-        temp.Amount -= Time.deltaTime*0.6f;
+        Amount_Click temp = CMTM.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount -= Time.deltaTime * 0.6f;
         if (temp.Amount <= 0)
         {
             temp.Amount = 0;
@@ -189,11 +230,11 @@ public class MotionEvent_Teeth : Motion_Event
 
     bool Click_Amount(int num)
     {
-        Germ_Button temp = CMTM.fixed_Buttons[num].GetComponent<Germ_Button>();
-        temp.Amount += Time.deltaTime*8;
-        if(temp.Amount >= 2)
+        Amount_Click temp = CMTM.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount += Time.deltaTime * 8;
+        if (temp.Amount >= 2)
         {
-            if(!Wait.Contains(num))
+            if (!Wait.Contains(num))
             {
                 StartCoroutine(Effect_(num));
             }
@@ -202,7 +243,26 @@ public class MotionEvent_Teeth : Motion_Event
                 Wait_Event(num);
             }
         }
-        if(temp.Amount >= 8)
+        if (temp.Amount >= temp.MAxAmount)
+        {
+            GameObject RemoveEffect = Instantiate(Remove_Effect, Background);
+
+            RemoveEffect.transform.position =
+                new Vector3(CMTM.fixed_Buttons[num].localPosition.x, CMTM.fixed_Buttons[num].localPosition.y, CMTM.fixed_Buttons[num].localPosition.z);
+
+            temp.Amount = 0;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool UI_Click_Amount(int num)
+    {
+        Amount_Click temp = CMTM.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount += Time.deltaTime * 8;
+
+        if (temp.Amount >= temp.MAxAmount)
         {
             GameObject RemoveEffect = Instantiate(Remove_Effect, Background);
 
@@ -218,7 +278,7 @@ public class MotionEvent_Teeth : Motion_Event
 
     public void ButtonOn()
     {
-       Click = true;
+        Click = true;
     }
 
     public void ButtonOff()
@@ -229,8 +289,6 @@ public class MotionEvent_Teeth : Motion_Event
     //private void Update()
     //{
     //    if (Click)
-
-
     //        FixedEvent_On(0);
     //    else
     //        NoClick_Amount(0);
@@ -239,21 +297,37 @@ public class MotionEvent_Teeth : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
-        if(CMTM.fixed_Buttons[_num].gameObject.activeSelf)
-        {
-            if (Click_Amount(_num))
-            {
-                CMTM.fixed_Buttons[_num].gameObject.SetActive(false);
-                int temp = System.Convert.ToInt32(CMTM.fixed_Buttons[_num].name);
-                Random_save.Remove(temp);
-            }
 
+        if (CMTM.fixed_Buttons[_num].gameObject.activeSelf)
+        {
+            if (_num >= UI_ButtonCount)
+            {
+                if (Click_Amount(_num))
+                {
+                    Score.ScoreCount += 10;
+                    CMTM.fixed_Buttons[_num].gameObject.SetActive(false);
+                    int temp = System.Convert.ToInt32(CMTM.fixed_Buttons[_num].name);
+                    Random_save.Remove(temp);
+                }
+
+            }
+            else //  UI 버튼일 경우
+            {
+                if (UI_Click_Amount(_num))
+                {
+                    if (_num == 0)
+                    {
+                        GameStart();
+                    }
+                    else
+                    {
+                        GameExit();
+                    }
+                }
+            }
         }
 
 
-
-        //GameObject buble_Effect = Instantiate(Effect);
-        //buble_Effect.transform.position = CMTM.fixed_Buttons[_num].localPosition;
         switch (_num)
         {
             case 0:
@@ -283,7 +357,7 @@ public class MotionEvent_Teeth : Motion_Event
     {
         if (!Attack[_num])
         {
-            StartCoroutine(MoveTarget_Attacks(_num)); 
+            StartCoroutine(MoveTarget_Attacks(_num));
             ImageEvent_On(_num);
         }
     }

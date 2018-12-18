@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bubble_ImageEvent : MonoBehaviour {
     public GameObject Target;
-    public Germ_Button Target_Button;
+    public Amount_Click Target_Button;
     public MotionEvent_Teeth Teeth;
     public int num;
     Vector3 MyScale;
@@ -47,7 +47,6 @@ public class Bubble_ImageEvent : MonoBehaviour {
             
             if (!Target.activeSelf)
             {
-                Debug.Log("cc");
                 MyScale = transform.localScale;
                 OScale = MyScale / 10;
                 StartEvent = true;
