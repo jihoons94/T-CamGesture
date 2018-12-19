@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Amount_Click : MonoBehaviour {
     public float Amount;
-    public float MAxAmount;
+    public float MaxAmount;
 }

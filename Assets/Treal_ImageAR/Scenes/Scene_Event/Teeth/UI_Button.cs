@@ -10,11 +10,11 @@ public class UI_Button : Amount_Click
     void Start () {
         Amount = 0;
         StateBar.fillAmount = 0;
-        MAxAmount = 10;
+        MaxAmount = 10;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        StateBar.fillAmount = Amount / MAxAmount;
+        StateBar.fillAmount = Amount / MaxAmount;
 	}
 }

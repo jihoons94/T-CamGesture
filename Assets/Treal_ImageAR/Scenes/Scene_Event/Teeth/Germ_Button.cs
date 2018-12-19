@@ -15,7 +15,7 @@ public class Germ_Button : Amount_Click
         MyScale = transform.localScale;
         Amount = 0;
         OScale = MyScale / 10;
-        MAxAmount = 8;
+        MaxAmount = 8;
     }
 	
 	// Update is called once per frame
@@ -23,8 +23,5 @@ public class Germ_Button : Amount_Click
         DScale = MyScale - OScale * Amount;
         if(Amount<10)
         transform.localScale = Vector3.Lerp(DScale, transform.localScale, time);
-
-
-
     }
 }

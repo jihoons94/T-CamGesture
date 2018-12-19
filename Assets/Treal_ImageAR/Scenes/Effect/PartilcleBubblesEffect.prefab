@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114957013428580950}
   - component: {fileID: 82763290523993874}
   m_Layer: 9
-  m_Name: B2CFX4 Bubbles Hit3
+  m_Name: PartilcleBubblesEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

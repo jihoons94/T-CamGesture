@@ -28,13 +28,10 @@ public class Bubble_ImageEvent : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
-
         if(StartEvent)
         {
             temp += Time.deltaTime*8;
             DScale = MyScale - OScale * temp;
-            Debug.Log(Vector3.Lerp(transform.localScale, DScale, time));
             transform.localScale = Vector3.Lerp(transform.localScale, DScale, time);
             if (temp>=10)
             {
