@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Treal.BrowserCore;
-using DG.Tweening;//jh
+using DG.Tweening;
 
 public class MotionEvent_Teeth : Motion_Event
 {
     public GameObject UI_Start;
     public GameObject UI_Exit;
     public GameObject UI_Score;
-    public GameObject UI_Title;
+    public GameObject UI_Main_Icon;
+
+    public Text Doq;
 
     bool[] Attack = new bool[3];
     public CMotionTrackingManager CMTM;
@@ -22,7 +25,9 @@ public class MotionEvent_Teeth : Motion_Event
     public List<int> Random_save;
     public GameObject Effect;
     public GameObject Remove_Effect;
+
     public Transform Background;
+    public Transform Background2;
 
     int UI_ButtonCount=2;
 
@@ -113,12 +118,14 @@ public class MotionEvent_Teeth : Motion_Event
         UI_ButtonOnOff(false);
         UI_Start.SetActive(false);
         UI_Exit.SetActive(false);
-        UI_Title.SetActive(false);
+        UI_Main_Icon.SetActive(false);
         UI_Score.SetActive(true);
+        Doq.text = "입안에 세균들로 부터 치아를 지켜줘!";
     }
 
     public void GameStop()
     {
+        Doq.text = "치아들을 지켜줘서 고마워!";
         isPlay = false;
         //StopCoroutine(WaitCreate());
         UI_Score.SetActive(false);
@@ -134,9 +141,11 @@ public class MotionEvent_Teeth : Motion_Event
         {
             CMTM.fixed_Buttons[i].gameObject.SetActive(true);
         }
+        Doq.text = "같이 양치질을 배워볼까?";
         UI_Start.SetActive(true);
         UI_Exit.SetActive(true);
-        UI_Title.SetActive(true);
+        UI_Main_Icon.SetActive(true);
+        //UI_Title.SetActive(true);
 
     }
 
@@ -283,7 +292,7 @@ public class MotionEvent_Teeth : Motion_Event
         }
         if (temp.Amount >= temp.MAxAmount)
         {
-            GameObject RemoveEffect = Instantiate(Remove_Effect, Background);
+            GameObject RemoveEffect = Instantiate(Remove_Effect, Background2);
 
             RemoveEffect.transform.position =
                 new Vector3(CMTM.fixed_Buttons[num].localPosition.x, CMTM.fixed_Buttons[num].localPosition.y, CMTM.fixed_Buttons[num].localPosition.z);
@@ -302,7 +311,7 @@ public class MotionEvent_Teeth : Motion_Event
 
         if (temp.Amount >= temp.MAxAmount)
         {
-            GameObject RemoveEffect = Instantiate(Remove_Effect, Background);
+            GameObject RemoveEffect = Instantiate(Remove_Effect, Background2);
 
             RemoveEffect.transform.position =
                 new Vector3(CMTM.fixed_Buttons[num].localPosition.x, CMTM.fixed_Buttons[num].localPosition.y, CMTM.fixed_Buttons[num].localPosition.z);
@@ -324,13 +333,18 @@ public class MotionEvent_Teeth : Motion_Event
         Click = false;
     }
 
-    //private void Update()
-    //{
-    //    if (Click)
-    //        FixedEvent_On(0);
-    //    else
-    //        NoClick_Amount(0);
-    //}
+    public void ButtonStart()
+    {
+        GameStart();
+    }
+
+    private void Update()
+    {
+        if (Click)
+            FixedEvent_On(2);
+        else
+            NoClick_Amount(2);
+    }
 
 
     override public void FixedEvent_On(int _num)

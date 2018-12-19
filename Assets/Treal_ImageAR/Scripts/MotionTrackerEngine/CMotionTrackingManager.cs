@@ -26,6 +26,7 @@ namespace Treal.BrowserCore
 {
     public class CMotionTrackingManager : MonoBehaviour
     {
+        public bool IsEditor;
         public static CMotionTrackingManager Instance = null;
         public MotionTracker _detector = null;
 
@@ -54,6 +55,7 @@ namespace Treal.BrowserCore
         public List<Transform> moving_Target;
         public List<Transform> Random_movingObj;
         public List<Transform> Background;
+        public List<Transform> Background2;
         public Camera mARCamera;
         private bool _working = false;
 
@@ -91,6 +93,7 @@ namespace Treal.BrowserCore
             GameObject buttons = MotionEvent.transform.GetChild(1).gameObject;
             GameObject Target = MotionEvent.transform.GetChild(2).gameObject;
             GameObject Back = MotionEvent.transform.GetChild(3).gameObject;
+            GameObject Back2 = MotionEvent.transform.GetChild(4).gameObject;
 
             for (int i = 0; i < Target.transform.childCount; i++)
             {
@@ -112,6 +115,11 @@ namespace Treal.BrowserCore
                 Background.Add(Back.transform.GetChild(i).transform);
             }
 
+            for (int i = 0; i < Back2.transform.childCount; i++)
+            {
+                Background2.Add(Back2.transform.GetChild(i).transform);
+            }
+
             numOfObj = moving_Target.Count + fixed_Buttons.Count + Random_movingObj.Count;
             numOfixed = fixed_Buttons.Count;
             numOfTarget = moving_Target.Count;
@@ -131,6 +139,7 @@ namespace Treal.BrowserCore
            
             FindandSet();
             _detector = MotionTracker.Instance;
+            if(!IsEditor)
             _detector.CreateMotionTracker(1.0f, numOfObj);
 
             Destroy(CMotionTrackingManager.Instance);
@@ -378,6 +387,7 @@ namespace Treal.BrowserCore
             relative_ratio = width / 1280.0f;
             Debug.Log("relative ratio : " + relative_ratio);
             setReleativePosition_Others(Background, width, height, true, relative_ratio);
+            setReleativePosition_Others(Background2, width, height, true, relative_ratio);
             setReleativePosition(moving_Target, width, height, true, relative_ratio);
             setReleativePosition(fixed_Buttons, width, height, true, relative_ratio);
             setReleativePosition(Random_movingObj, width, height, false, relative_ratio);
