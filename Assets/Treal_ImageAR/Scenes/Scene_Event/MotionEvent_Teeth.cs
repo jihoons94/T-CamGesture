@@ -206,7 +206,7 @@ public class MotionEvent_Teeth : Motion_Event
     {
         UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
         UI_Loding.GetComponent<DOTweenAnimation>().DOPlay();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         isPlay = true;
         StartCoroutine(WaitCreate());
@@ -222,7 +222,7 @@ public class MotionEvent_Teeth : Motion_Event
     {
         UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
         UI_Loding.GetComponent<DOTweenAnimation>().DOPlay();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         for (int i = 0; i < UI_ButtonCount; i++)
         {
