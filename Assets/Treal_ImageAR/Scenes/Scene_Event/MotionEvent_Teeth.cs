@@ -12,6 +12,8 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject UI_Score;
     public GameObject UI_Main_Icon;
 
+    public GameObject UI_Loding;
+
     public Text Doq;
 
     bool[] Attack = new bool[3];
@@ -28,6 +30,7 @@ public class MotionEvent_Teeth : Motion_Event
 
     public Transform Background;
     public Transform Background2;
+
 
     int UI_ButtonCount=2;
 
@@ -113,21 +116,18 @@ public class MotionEvent_Teeth : Motion_Event
 
     void GameStart()
     {
-        isPlay = true;
-        StartCoroutine(WaitCreate());
-        UI_ButtonOnOff(false);
-        UI_Start.SetActive(false);
-        UI_Exit.SetActive(false);
-        UI_Main_Icon.SetActive(false);
-        UI_Score.SetActive(true);
-        Doq.text = "입안에 세균들로 부터 치아를 지켜줘!";
+        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
+
+        StartCoroutine(Loading_Animation());
+
+
+
     }
 
     public void GameStop()
     {
         Doq.text = "치아들을 지켜줘서 고마워!";
         isPlay = false;
-        //StopCoroutine(WaitCreate());
         UI_Score.SetActive(false);
         for (int i = UI_ButtonCount; i < CMTM.fixed_Buttons.Count; i++)
         {
@@ -137,16 +137,9 @@ public class MotionEvent_Teeth : Motion_Event
 
     public void GameInit()
     {
-        for (int i = 0; i < UI_ButtonCount; i++)
-        {
-            CMTM.fixed_Buttons[i].gameObject.SetActive(true);
-        }
-        Doq.text = "같이 양치질을 배워볼까?";
-        UI_Start.SetActive(true);
-        UI_Exit.SetActive(true);
-        UI_Main_Icon.SetActive(true);
-        //UI_Title.SetActive(true);
+        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
 
+        StartCoroutine(MainLoading_Animation());
     }
 
     void GameExit()
@@ -204,9 +197,42 @@ public class MotionEvent_Teeth : Motion_Event
             Debug.Log(CMTM.moving_Target[temp].gameObject.name);
             CMTM.moving_Target[temp].GetComponent<DOTweenPath>().DOPause();
             yield return new WaitForSeconds(3f);
-            CMTM.moving_Target[temp].GetComponent<DOTweenPath>().DOPlay();
+            CMTM.moving_Target[temp].GetComponent<DOTweenPath>().DORewind();
             yield return new WaitForSeconds(6f);
         }
+    }
+
+    IEnumerator Loading_Animation()
+    {
+        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
+        UI_Loding.GetComponent<DOTweenAnimation>().DOPlay();
+        yield return new WaitForSeconds(2f);
+
+        isPlay = true;
+        StartCoroutine(WaitCreate());
+        UI_ButtonOnOff(false);
+        UI_Start.SetActive(false);
+        UI_Exit.SetActive(false);
+        UI_Main_Icon.SetActive(false);
+        UI_Score.SetActive(true);
+        Doq.text = "입안에 세균들로 부터 치아를 지켜줘!";
+    }
+
+    IEnumerator MainLoading_Animation()
+    {
+        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
+        UI_Loding.GetComponent<DOTweenAnimation>().DOPlay();
+        yield return new WaitForSeconds(2f);
+
+        for (int i = 0; i < UI_ButtonCount; i++)
+        {
+            CMTM.fixed_Buttons[i].gameObject.SetActive(true);
+        }
+        Doq.text = "같이 양치질을 배워볼까?";
+        UI_Start.SetActive(true);
+        UI_Exit.SetActive(true);
+        UI_Main_Icon.SetActive(true);
+
     }
 
 
@@ -338,13 +364,13 @@ public class MotionEvent_Teeth : Motion_Event
         GameStart();
     }
 
-    private void Update()
-    {
-        if (Click)
-            FixedEvent_On(2);
-        else
-            NoClick_Amount(2);
-    }
+    //private void Update()
+    //{
+    //    if (Click)
+    //        FixedEvent_On(2);
+    //    else
+    //        NoClick_Amount(2);
+    //}
 
 
     override public void FixedEvent_On(int _num)
