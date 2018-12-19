@@ -9,6 +9,7 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject UI_Start;
     public GameObject UI_Exit;
     public GameObject UI_Score;
+    public GameObject UI_Title;
 
     bool[] Attack = new bool[3];
     public CMotionTrackingManager CMTM;
@@ -112,6 +113,7 @@ public class MotionEvent_Teeth : Motion_Event
         UI_ButtonOnOff(false);
         UI_Start.SetActive(false);
         UI_Exit.SetActive(false);
+        UI_Title.SetActive(false);
         UI_Score.SetActive(true);
     }
 
@@ -134,7 +136,8 @@ public class MotionEvent_Teeth : Motion_Event
         }
         UI_Start.SetActive(true);
         UI_Exit.SetActive(true);
-        
+        UI_Title.SetActive(true);
+
     }
 
     void GameExit()
