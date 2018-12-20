@@ -335,6 +335,7 @@ public class MotionEvent_Teeth : Motion_Event
     {
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount -= Time.deltaTime * 0.6f;
+        temp.Activate = false;
         if (temp.Amount <= 0)
         {
             temp.Amount = 0;
@@ -364,6 +365,7 @@ public class MotionEvent_Teeth : Motion_Event
 
         if (temp.Amount >= RecognitionMin)
         {
+            temp.Activate = true;
             if (!Wait.Contains(num))
                 StartCoroutine(BubbleEffect(num));
 
@@ -396,7 +398,25 @@ public class MotionEvent_Teeth : Motion_Event
     }
 
 
-
+    void ChangeDoqInGame(int _num)
+    {
+        if(_num>=30 &&_num<100)
+        {
+            Doq.text = "치아들이 위험해 서둘러야겠어";
+        }
+        else if(_num >= 100 && _num <150)
+        {
+            Doq.text = "그래 그렇게 하는거야!";
+        }
+        else if(_num >=150 && _num <200)
+        {
+            Doq.text = "잘하는데? 세균들이 힘을 못쓰고 있어";
+        }
+        else if(_num >= 200)
+        {
+            Doq.text = "얼마 안남았어 힘을 내!";
+        }
+    }
 
     override public void FixedEvent_On(int _num)
     {
@@ -409,6 +429,7 @@ public class MotionEvent_Teeth : Motion_Event
                 if (Click_Amount(_num))
                 {
                     Score.ScoreCount += 10;
+                    ChangeDoqInGame(Score.ScoreCount);
                     MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);
                     int temp = System.Convert.ToInt32(MotionTrackingMgr.fixed_Buttons[_num].name);
                     Random_save.Remove(temp);
