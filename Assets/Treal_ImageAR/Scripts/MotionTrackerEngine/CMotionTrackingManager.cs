@@ -306,7 +306,6 @@ namespace Treal.BrowserCore
         /// <param name="MoveCount">동기화 시킬 인식영역들의 개수</param>
         public void SetTrack_position(int StartIndex, int MoveCount)
         {
-
             for (int i = StartIndex; i < MoveCount; i++)
             {
                 pts[i].x = moving_Target[i].localPosition.x + halfPreviewWidth;

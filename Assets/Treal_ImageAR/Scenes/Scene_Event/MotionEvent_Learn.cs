@@ -8,9 +8,13 @@ using DG.Tweening;
 // 그리는 애니메이션 작업 중 멈춤
 public class MotionEvent_Learn : Motion_Event
 {
+    public GameObject GuideLinePoint;
+    public Transform GuideLineP;
+
     public GameObject MoveTarget;
     Transform MoveTar_transform;
     public DOTweenAnimation dotAnim;
+    public DOTweenPath dotPath;
     Transform Alphabet;
 
     public List<Image> Bars;
@@ -20,6 +24,7 @@ public class MotionEvent_Learn : Motion_Event
     int StartIndex = 0;
     int EndIndex = 0;
     int BarIndex = 0;
+    int GuideLineCount = 10;
 
     int MaxIndex = 2;
     bool IsMoving;
@@ -64,13 +69,42 @@ public class MotionEvent_Learn : Motion_Event
 
     IEnumerator WaitFillEvent()
     {
-        while(Bars[BarIndex].fillAmount>=100)
+        for (int i = 0; i < GuideLineCount; i++)
         {
-            Bars[BarIndex].fillAmount += 1;
-            yield return new WaitForSeconds(0.1f);
+            Destroy(GuideLineP.GetChild(i).gameObject);
+        }
+            Debug.Log("애니메이션 시작");
+        while(Bars[BarIndex].fillAmount<1)
+        {
+            Bars[BarIndex].fillAmount += 0.01f;
+            yield return new WaitForSeconds(0.01f);
         }
         BarIndex++;
         BarAnimation = false;
+    }
+
+    void CreateGuideLine(Vector3 _StartPoint, Vector3 _EndPoint)
+    {
+        Debug.Log("Start: "+_StartPoint+", End: "+_EndPoint);
+        Vector3 Line = _EndPoint - _StartPoint;
+        Debug.Log("Line: " + Line);
+        Vector3 standard = Line / GuideLineCount;
+        for(int i=0; i<GuideLineCount; i++)
+        {
+            Vector3 temp = standard * i + _StartPoint;
+            GameObject NewPoint = Instantiate(GuideLinePoint, GuideLineP);
+            NewPoint.transform.localPosition = temp;
+        }
+
+    }
+
+    void CreatePath()
+    {
+        
+        dotPath.wps.Add(MoveTarget.transform.position);
+        dotPath.wps.Add(new Vector3(-149.8495f, 50.96947f, 0));
+        dotPath.wps.Add(new Vector3(143.394f, 105.6706f, 0));
+        dotPath.DORestart();
     }
 
 
@@ -81,12 +115,13 @@ public class MotionEvent_Learn : Motion_Event
         {
             if (IsMoving)
             {
-                bool temp = Check_P(startpoint[EndIndex]);
+                bool temp = Check_P(endpoint[EndIndex]);
                 if (temp) // 목표에 도착
                 {
                     EndIndex++;
                     IsPlaying = false;
                     Fill_Bar();
+                    temp = false;
                     return;
                 }
             }
@@ -105,6 +140,7 @@ public class MotionEvent_Learn : Motion_Event
                 bool temp = Check_P(startpoint[StartIndex]);
                 if (temp) // 목표에 도착
                 {
+                    CreateGuideLine(startpoint [StartIndex].transform.localPosition, endpoint[EndIndex].transform.localPosition);
                     StartIndex++;
                     IsPlaying = true;
                     return;
@@ -117,11 +153,18 @@ public class MotionEvent_Learn : Motion_Event
 
                 }
                 else
-                {
-                    //도착하지 못함
-                    NewPath_setup(startpoint[StartIndex]);
-                    Path_Start();
-                    IsMoving = true;
+                { // 새로운 지점 설정
+                    if(StartIndex<=MaxIndex)
+                    {
+                        NewPath_setup(startpoint[StartIndex]);
+                        Path_Start();
+                        IsMoving = true;
+                    }
+                    else
+                    {
+                        CreatePath();
+                        dotPath.DOPlay();
+                    }
                 }
             }
         }
@@ -131,6 +174,7 @@ public class MotionEvent_Learn : Motion_Event
     {
         if (_nTrans.position == MoveTar_transform.position)
         {
+            Debug.Log(" Check_P() 목표지점 도착");
             dotAnim.DOPause();
             IsMoving = false;
             return true;
@@ -154,13 +198,28 @@ public class MotionEvent_Learn : Motion_Event
     {
         Vector2 dir = _newpoint.position - MoveTarget.transform.position;
 
+        MoveTarget.GetComponent<Motion_Test>().Dest = _newpoint;
+        MoveTarget.GetComponent<Motion_Test>().LookDest();
         dotAnim.endValueTransform = _newpoint;
         dotAnim.CreateTween();
+        Debug.Log("새로운 경로 설정 완료");
     }
 
     override public void FixedEvent_On(int _num)
     {
-        if(IsPlaying)
+
+
+
+    }
+
+    override public void FixedEvent_Off(int _num)
+    {
+
+    }
+
+    override public void MoveEvent_On(int _num)
+    {
+        if (IsPlaying)
         {
             switch (_num)
             {
@@ -171,11 +230,15 @@ public class MotionEvent_Learn : Motion_Event
                     break;
             }
         }
+    }
 
+    override public void RandomEvent_On(int _num)
+    {
 
     }
 
-    override public void FixedEvent_Off(int _num)
+
+    override public void MoveEvent_Off(int _num)
     {
         if (IsPlaying)
         {
@@ -188,22 +251,6 @@ public class MotionEvent_Learn : Motion_Event
                     break;
             }
         }
-    }
-
-    override public void MoveEvent_On(int _num)
-    {
-
-    }
-
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
-
-
-    override public void MoveEvent_Off(int _num)
-    {
-
     }
 
     override public void RandomEvent_Off(int _num)
