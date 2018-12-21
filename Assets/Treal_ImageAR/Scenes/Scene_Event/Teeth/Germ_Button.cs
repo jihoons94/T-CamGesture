@@ -23,18 +23,19 @@ public class Germ_Button : Amount_Click
 	// Update is called once per frame
 	void Update () {
         DScale = MyScale - OScale * Amount;
-        if(Amount<10)
-        transform.localScale = Vector3.Lerp(DScale, transform.localScale, time);
-
-        if(Activate)
+        if (Amount == 0)
         {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(true);
-        }
-        else
-        {
+            transform.localScale = Vector3.Lerp(DScale, transform.localScale, time);
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(false);
         }
+
+        else if ( Amount <10 )
+        {
+            transform.localScale = Vector3.Lerp(DScale, transform.localScale, time);
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
+        }
+
     }
 }

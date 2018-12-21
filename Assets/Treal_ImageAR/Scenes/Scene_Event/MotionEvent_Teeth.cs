@@ -12,6 +12,10 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject UI_Score;
     public GameObject UI_Main_Icon;
     public GameObject UI_Loding;
+    public GameObject UI_ReadyImage;
+    public GameObject UI_StartImage;
+
+    //public DOTweenAnimation RSAnim;
 
     public Text Doq;
 
@@ -64,9 +68,22 @@ public class MotionEvent_Teeth : Motion_Event
     private void Update()
     {
         if (Click)
+        {
             FixedEvent_On(2);
+            FixedEvent_On(3);
+            FixedEvent_On(4);
+            FixedEvent_On(5);
+            FixedEvent_On(6);
+        }
+            
         else
+        {
             NoClick_Amount(2);
+            NoClick_Amount(3);
+            NoClick_Amount(4);
+            NoClick_Amount(5);
+            NoClick_Amount(6);
+        }
     }
     /*#########################################################################################################################*/
 
@@ -296,6 +313,12 @@ public class MotionEvent_Teeth : Motion_Event
         Wait.Remove(num);
     }
 
+    //IEnumerator ReadyStart()
+    //{
+    //    RSAnim.DOPlay();
+    //    yield return new WaitForSeconds(3f);
+    //}
+
     private void RemoveEffectCreate(int num)
     {
         GameObject RemoveEffect = Instantiate(Remove_Effect, Background2);
@@ -397,7 +420,6 @@ public class MotionEvent_Teeth : Motion_Event
             return false;
     }
 
-
     void ChangeDoqInGame(int _num)
     {
         if(_num>=30 &&_num<100)
@@ -465,15 +487,13 @@ public class MotionEvent_Teeth : Motion_Event
         }
     }
 
-
-
     override public void MoveEvent_On(int _num)
     {
-        if (!Attack[_num])
-        {
-            //StartCoroutine(MoveTarget_Attacks(_num));
-            //ImageEvent_On(_num);
-        }
+        //if (!Attack[_num])
+        //{
+        //    //StartCoroutine(MoveTarget_Attacks(_num));
+        //    //ImageEvent_On(_num);
+        //}
     }
     override public void MoveEvent_Off(int _num)
     {
