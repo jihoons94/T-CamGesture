@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Treal.BrowserCore;
+using DigitalRuby.AnimatedLineRenderer;
 
 // 그리는 애니메이션 작업 중 멈춤
 public class MotionEvent_Learn : Motion_Event
 {
+
+    public AnimatedLineRenderer AnimatedLine;
+
+
     //public GameObject GuideLinePoint;
     public Transform GuideLineP;
     public GameObject CompEffect;
@@ -165,6 +170,7 @@ public class MotionEvent_Learn : Motion_Event
                     Fill_Bar();
                     IsFirst = true;
                     CreateDoneEffect();
+                    AnimatedLine.ResetAfterSeconds(0.5f, null);
                     return;
                 }
             }
@@ -240,17 +246,18 @@ public class MotionEvent_Learn : Motion_Event
 
     public void Move_Pause()
     {
-        Debug.Log("정지");
         TarAnim.DOPause();
         MoveEffect(false);
     }
 
     public void Path_Start()
     {
-        Debug.Log("시작");
+        
         TarAnim.DOPlay();
         MoveEffect(true);  
     }
+
+
 
     public void NewPath_setup(Transform _newpoint)
     {
@@ -309,7 +316,7 @@ public class MotionEvent_Learn : Motion_Event
             {
                 case 0:
                     {
-                        Move_Pause();
+                        //Move_Pause();
                     }
                     break;
             }

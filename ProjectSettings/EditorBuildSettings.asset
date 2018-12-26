@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Treal_ImageAR/Scenes/MakeScene/TcamScene_Learn.unity
     guid: 7bd484d089313bf4593f73d08e730919
   - enabled: 0
     path: Assets/Treal_ImageAR/Scenes/MakeScene/TcamScene_Teeth.unity
     guid: 735d69cb83efc0042ac76e91f51947da
+  - enabled: 1
+    path: Assets/Treal_ImageAR/Scenes/MakeScene/TcamScene_Teeth_T.unity
+    guid: 2c5dca08a56225d4ea6d3d85153908ab

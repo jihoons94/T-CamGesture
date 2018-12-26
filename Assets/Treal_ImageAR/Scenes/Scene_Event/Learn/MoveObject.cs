@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using DigitalRuby.AnimatedLineRenderer;
 
 public class MoveObject : MonoBehaviour {
     DOTweenAnimation dotAnim;
-
+    public AnimatedLineRenderer AnimatedLine;
     public Transform Dest;
     public bool PathStart;
     public MotionEvent_Learn CMotionLearn;
@@ -20,7 +21,32 @@ public class MoveObject : MonoBehaviour {
         dotAnim.DORestart();
         temp = Vector3.Distance(transform.position, Dest.position);
     }
+    void LineRenderer(bool _state)
+    {
+        if (AnimatedLine == null)
+        {
+            return;
+        }
+        else if (_state)
+        {
+            Vector3 pos = transform.localPosition;
+            //pos = temp.ScreenToWorldPoint(new Vector3(pos.x, pos.y, AnimatedLine.transform.position.z));
 
+            AnimatedLine.Enqueue(pos);
+        }
+        else if (!_state)
+        {
+           
+        }
+    }
+
+    private void Update()
+    {
+        if(CMotionLearn.IsPlaying)
+        {
+            LineRenderer(true);
+        }
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {

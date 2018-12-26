@@ -19,7 +19,7 @@ public class MotionEvent_Teeth : Motion_Event
 
     public Text Doq;
 
-    bool[] Attack = new bool[3];
+    //bool[] Attack = new bool[3];
     public CMotionTrackingManager MotionTrackingMgr;
     public GameObject FiexdImage_Event;
     public GameObject[] WaitImage_Event = new GameObject[3];
@@ -35,10 +35,10 @@ public class MotionEvent_Teeth : Motion_Event
     public Transform Background;
     public Transform Background2;
 
-    private float UISubmitSpeed = 5;
-    private float OtherSubmitSpeed = 8;
+    private float UISubmitSpeed = 10;
+    private float OtherSubmitSpeed =8;
 
-    private float RecognitionMin = 2;
+    private float RecognitionMin = 1;
 
 
     int UI_ButtonCount=2;
@@ -357,7 +357,7 @@ public class MotionEvent_Teeth : Motion_Event
     bool NoClick_Amount(int num)
     {
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
-        temp.Amount -= Time.deltaTime * 0.6f;
+        temp.Amount -= Time.deltaTime * 0.3f;
         temp.Activate = false;
         if (temp.Amount <= 0)
         {

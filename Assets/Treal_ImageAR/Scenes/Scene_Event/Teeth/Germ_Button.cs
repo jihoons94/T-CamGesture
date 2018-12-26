@@ -14,7 +14,7 @@ public class Germ_Button : Amount_Click
     // Use this for initialization
     void Start () {
         Activate = false;
-        MyScale = transform.localScale;
+        MyScale = transform.GetChild(0).localScale;
         Amount = 0;
         OScale = MyScale / 10;
         MaxAmount = 8;
@@ -25,16 +25,16 @@ public class Germ_Button : Amount_Click
         DScale = MyScale - OScale * Amount;
         if (Amount == 0)
         {
-            transform.localScale = Vector3.Lerp(DScale, transform.localScale, time);
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(0).localScale = Vector3.Lerp(DScale, transform.GetChild(0).localScale, time);
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
         }
 
         else if ( Amount <10 )
         {
-            transform.localScale = Vector3.Lerp(DScale, transform.localScale, time);
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(0).localScale = Vector3.Lerp(DScale, transform.GetChild(0).localScale, time);
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
         }
 
     }
