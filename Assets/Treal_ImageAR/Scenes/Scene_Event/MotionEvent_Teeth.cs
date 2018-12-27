@@ -12,8 +12,6 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject UI_Score;
     public GameObject UI_Main_Icon;
     public GameObject UI_Loding;
-    public GameObject UI_ReadyImage;
-    public GameObject UI_StartImage;
 
     //public DOTweenAnimation RSAnim;
 
@@ -22,8 +20,6 @@ public class MotionEvent_Teeth : Motion_Event
     //bool[] Attack = new bool[3];
     public CMotionTrackingManager MotionTrackingMgr;
     public GameObject FiexdImage_Event;
-    public GameObject[] WaitImage_Event = new GameObject[3];
-    public GameObject[] Image_Event = new GameObject[3];
    
     public List<Transform> CreatePoint;
     public List<int> Wait;
@@ -36,7 +32,7 @@ public class MotionEvent_Teeth : Motion_Event
     public Transform Background2;
 
     private float UISubmitSpeed = 10;
-    private float OtherSubmitSpeed =8;
+    private float OtherSubmitSpeed =10;
 
     private float RecognitionMin = 1;
 
@@ -357,7 +353,7 @@ public class MotionEvent_Teeth : Motion_Event
     bool NoClick_Amount(int num)
     {
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
-        temp.Amount -= Time.deltaTime * 0.3f;
+        temp.Amount -= Time.deltaTime * 0.2f;
         temp.Activate = false;
         if (temp.Amount <= 0)
         {

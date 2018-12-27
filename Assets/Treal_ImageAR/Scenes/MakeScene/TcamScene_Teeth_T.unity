@@ -409,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &36563953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4399,7 +4399,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1008602700}
         m_MethodName: ButtonOn
         m_Mode: 1
         m_Arguments:
@@ -11893,7 +11893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df41454018f529c46aa2470113c36404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsEditor: 0
+  IsEditor: 1
   numOfixed: 0
   numOfTarget: 0
   fixed_Buttons: []
@@ -27585,7 +27585,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1008602700}
         m_MethodName: ButtonStart
         m_Mode: 1
         m_Arguments:
@@ -31354,7 +31354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &847478955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31443,7 +31443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OverEffect: {fileID: 3686111}
-  Teeth: {fileID: 0}
+  Teeth: {fileID: 1008602700}
   UI_Score: {fileID: 461082706}
 --- !u!1 &847639584
 GameObject:
@@ -42324,14 +42324,6 @@ MonoBehaviour:
   MotionTrackingMgr: {fileID: 393259282}
   FiexdImage_Event: {fileID: 1471032704388152, guid: aa7a76db511608346bacb51ab99737ed,
     type: 2}
-  WaitImage_Event:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  Image_Event:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   CreatePoint: []
   Wait: 
   Wait_Image: 
@@ -79942,7 +79934,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1008602700}
         m_MethodName: ButtonOff
         m_Mode: 1
         m_Arguments:

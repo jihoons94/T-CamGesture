@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class TCamScript : MonoBehaviour
 {
+    //public int rearWidth = 1280, rearHeight = 720, rearFps = 30;
+    //public int frontWidth = 1280, frontHeight = 720, frontFps = 30;
+    //public int captureWidth = 2560, captureHeight = 1440;
+
     public static TCamScript Instance;
 
     public int rearWidth = 1280, rearHeight = 720, rearFps = 30;
     public int frontWidth = 1280, frontHeight = 720, frontFps = 30;
     public int captureWidth = 2560, captureHeight = 1440;
+
 
     TCam tcam;
     bool front = true;
