@@ -399,33 +399,33 @@ namespace TCamera {
         {
             Debug.Log ("UNITY: TCam: _StartPreview()");
 
-            if (mPreviewDevice == null)
-            {
-                return;
-            }
+            //if (mPreviewDevice == null)
+            //{
+            //    return;
+            //}
 
-            mPreviewStartHandler = new _PreviewStartCallback(_HandlePreviewStart);
-            mPreviewUpdateHandler = new _PreviewUpdateCallback(_HandlePreviewUpdate);
-            mCaptureUpdateHandler = new _CaptureUpdateCallback(_HandleCaptureUpdate);
-            mRequestRenderHandler = new _RequestRenderCallback(_HandleRequestRender);
-            TCamPlugin.SetCallback(
-                Marshal.GetFunctionPointerForDelegate(mPreviewStartHandler),
-                Marshal.GetFunctionPointerForDelegate(mPreviewUpdateHandler),
-                Marshal.GetFunctionPointerForDelegate(mCaptureUpdateHandler),
-                Marshal.GetFunctionPointerForDelegate(mRequestRenderHandler));
+            //mPreviewStartHandler = new _PreviewStartCallback(_HandlePreviewStart);
+            //mPreviewUpdateHandler = new _PreviewUpdateCallback(_HandlePreviewUpdate);
+            //mCaptureUpdateHandler = new _CaptureUpdateCallback(_HandleCaptureUpdate);
+            //mRequestRenderHandler = new _RequestRenderCallback(_HandleRequestRender);
+            //TCamPlugin.SetCallback(
+            //    Marshal.GetFunctionPointerForDelegate(mPreviewStartHandler),
+            //    Marshal.GetFunctionPointerForDelegate(mPreviewUpdateHandler),
+            //    Marshal.GetFunctionPointerForDelegate(mCaptureUpdateHandler),
+            //    Marshal.GetFunctionPointerForDelegate(mRequestRenderHandler));
 
-            TCamPlugin.StartPreview(width, height, fps);
+            //TCamPlugin.StartPreview(width, height, fps);
 
-            mRenderer.StartPreview();
+            //mRenderer.StartPreview();
 
-            if (mPlayerPC)
-            {
-                int w, h;
-                TCamPlugin.GetPreviewResolution(out w, out h);
-                _HandlePreviewStart(w, h, mRequestPreviewFps);
-            }
+            //if (mPlayerPC)
+            //{
+            //    int w, h;
+            //    TCamPlugin.GetPreviewResolution(out w, out h);
+            //    _HandlePreviewStart(w, h, mRequestPreviewFps);
+            //}
 
-            mPreview = true;
+            //mPreview = true;
         }
 
         void _StopPreview()

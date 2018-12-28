@@ -955,12 +955,12 @@ namespace TCamera {
 			GLIssuePluginEvent (TCam.EventId.START);
 			#endif
             */
-		}
+        }
 
-		/**
+        /**
 		* @brief Camera Preview를 종료한다.
-		*/	
-		public static void StopPreview()
+		*/
+        public static void StopPreview()
 		{
             if (Application.isEditor || Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.WindowsPlayer)
             {
