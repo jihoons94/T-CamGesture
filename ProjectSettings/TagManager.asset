@@ -10,6 +10,10 @@ TagManager:
   - MotionEvent
   - Alphabet
   - CreatePoint
+  - Snack01
+  - Snack02
+  - Snack03
+  - Snack04
   layers:
   - Default
   - TransparentFX

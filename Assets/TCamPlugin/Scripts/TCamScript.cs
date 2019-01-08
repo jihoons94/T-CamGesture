@@ -7,10 +7,12 @@ public class TCamScript : MonoBehaviour
 {
     public static TCamScript Instance;
 
-    public int rearWidth = 1280, rearHeight = 720, rearFps = 30;
-    public int frontWidth = 1280, frontHeight = 720, frontFps = 30;
-    public int captureWidth = 2560, captureHeight = 1440;
-
+    //public int rearWidth = 1280, rearHeight = 720, rearFps = 30;
+    //public int frontWidth = 1280, frontHeight = 720, frontFps = 30;
+    //public int captureWidth = 2560, captureHeight = 1440;
+    public int rearWidth, rearHeight, rearFps;
+    public int frontWidth, frontHeight, frontFps;
+    public int captureWidth, captureHeight;
     TCam tcam;
     bool front = true;
     private int _framewidth, _frameheight, fps;

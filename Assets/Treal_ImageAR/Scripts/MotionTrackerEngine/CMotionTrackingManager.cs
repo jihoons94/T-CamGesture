@@ -250,6 +250,7 @@ namespace Treal.BrowserCore
                     {
                         if (n >= numOfixed + numOfTarget) //랜덤 이동 대상
                         {
+                            Debug.Log("랜덤 호출");
                             pts[n].x = UnityEngine.Random.Range(objWidth[n], previewWidth - objWidth[n]);
                             pts[n].y = UnityEngine.Random.Range(objHeight[n], previewHeight - objHeight[n]);
                             _detector.SetTrackRoI(pts[n].x, pts[n].y, objWidth[n], objHeight[n], objLabel[n]);
@@ -297,6 +298,20 @@ namespace Treal.BrowserCore
                     }
                 }
             }
+        }
+
+        public void Random_position(int num)
+        {
+            int n = num + numOfTarget;
+
+            Debug.Log("랜덤 호출");
+            Debug.Log(n);
+            pts[n].x = UnityEngine.Random.Range(objWidth[n], previewWidth - objWidth[n]);
+            pts[n].y = UnityEngine.Random.Range(objHeight[n]+50, previewHeight - objHeight[n]);
+            _detector.SetTrackRoI(pts[n].x, pts[n].y, objWidth[n], objHeight[n], objLabel[n]);
+
+            fixed_Buttons[n -  numOfTarget].localPosition = new Vector3(pts[n].x - halfPreviewWidth, pts[n].y - halfPreviewHeight, 0);
+            isUpdated = true;
         }
 
         /// <summary>
