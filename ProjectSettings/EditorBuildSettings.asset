@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
+    path: Assets/Treal_ImageAR/Scenes/MakeScene/GameTeeth/GameTeeth_Q.unity
+    guid: 3691146b031b58f49b21b767fa043ac4
+  - enabled: 0
     path: Assets/Treal_ImageAR/Scenes/MakeScene/GameTeeth/GameTeeth_Snack.unity
     guid: 457fc2718d8213c42ad8dfb6e1933b33
   - enabled: 1

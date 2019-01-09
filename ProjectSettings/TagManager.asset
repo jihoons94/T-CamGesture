@@ -14,6 +14,7 @@ TagManager:
   - Snack02
   - Snack03
   - Snack04
+  - Effects
   layers:
   - Default
   - TransparentFX
@@ -48,6 +49,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background2
+    uniqueID: 40676051
+    locked: 0
+  - name: Effect
+    uniqueID: 543688099
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Button
+    uniqueID: 3714941275
+    locked: 0
+  - name: Background
+    uniqueID: 1122260647
     locked: 0

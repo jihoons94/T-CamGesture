@@ -6,8 +6,12 @@ using DG.Tweening;
 using UnityEngine.UI;
 
 
+
 public class MotionEvent_Snack : Motion_Event
 {
+    public GameObject popup;
+    public GameObject Icon;
+    public GameObject GameDoneEffect;
     int SnackCount = 4;
 
     int Snack01Count = 0;
@@ -16,8 +20,9 @@ public class MotionEvent_Snack : Motion_Event
     int Snack04Count = 0;
 
     int Count = 0;
+    public Sprite[] MySnacks = new Sprite[4];
 
-
+    public Image Snack;
     public List<int> Wait;
     public GameObject Window_Canvas;
 
@@ -158,27 +163,53 @@ public class MotionEvent_Snack : Motion_Event
     IEnumerator BubbleEffect(int num)
     {
         Wait.Add(num);
-        GameObject buble_Effect = Instantiate(Effect, Background);
+        GameObject buble_Effect = Instantiate(Effect, Background2);
         buble_Effect.transform.position = MotionTrackingMgr.fixed_Buttons[num].localPosition;
         yield return new WaitForSeconds(1f);
         Wait.Remove(num);
     }
 
+    IEnumerator GameOver()
+    {
+        Icon.SetActive(false);
+        GameDoneEffect.SetActive(true);
+        Help_Text.SetActive(false);
+        for (int i=0; i<Button_Snack.Length; i++)
+        {
+            Button_Snack[i].SetActive(false);
+        }
+        OutBottom.text = "너무 배불러, 더는 못먹을거 같아";
+        yield return new WaitForSeconds(3f);
+        OutBottom.text = "우리 이제 나가서 놀지 않을래?";
+        yield return new WaitForSeconds(2f);
+        popup.SetActive(true);
+        yield return new WaitForSeconds(4f);
+        Application.Quit();
+    }
+
     void NewSnack(int num)
     {
-        GameObject CreateEffects = Instantiate(SnackCreateEffect);
+        if(Count>10)
+        {
+            StartCoroutine(GameOver());
+        }
+        else
+        {
+            GameObject CreateEffects = Instantiate(SnackCreateEffect);
 
-        CreateEffects.transform.position = Button_Snack[num].transform.position;
-        GameObject CreateEffect = Instantiate(EatEffect);
-        CreateEffect.transform.position = EffectPoint.position;
-        int NewNum = Random.Range(0, SnackCount);
-        GameObject temp = Button_Snack[num].transform.GetChild(0).gameObject;
-        Snackyamyam(temp.tag);
-        Destroy(temp);
-        Debug.Log(NewNum);
-        GameObject Newtemp = Instantiate(Snacks[NewNum], Button_Snack[num].transform);
+            CreateEffects.transform.position = Button_Snack[num].transform.position;
+            GameObject CreateEffect = Instantiate(EatEffect);
+            CreateEffect.transform.position = EffectPoint.position;
+            int NewNum = Random.Range(0, SnackCount);
+            GameObject temp = Button_Snack[num].transform.GetChild(0).gameObject;
+            Snackyamyam(temp.tag);
+            Destroy(temp);
+            Debug.Log(NewNum);
+            GameObject Newtemp = Instantiate(Snacks[NewNum], Button_Snack[num].transform);
 
-        Newtemp.transform.parent.GetComponent<Snack_Button>().MyScale = Newtemp.transform.localScale;
+            Newtemp.transform.parent.GetComponent<Snack_Button>().MyScale = Newtemp.transform.localScale;
+        }
+
     }
 
     void Snackyamyam(string SnackName)
@@ -188,6 +219,7 @@ public class MotionEvent_Snack : Motion_Event
         {
             case "Snack01":
                 {
+                    Snack.sprite = MySnacks[0];
                     Snack01Count++;
                     if (Snack01Count > 4)
                         OutBottom.text = scenario_After[5];
@@ -199,6 +231,7 @@ public class MotionEvent_Snack : Motion_Event
 
             case "Snack02":
                 {
+                    Snack.sprite = MySnacks[1];
                     Snack02Count++;
                     if (Snack02Count > 4)
                         OutBottom.text = scenario_After[4];
@@ -209,6 +242,7 @@ public class MotionEvent_Snack : Motion_Event
 
             case "Snack03":
                 {
+                    Snack.sprite = MySnacks[2];
                     Snack03Count++;
                     if (Snack03Count > 4)
                         OutBottom.text = scenario_After[6];
@@ -219,6 +253,7 @@ public class MotionEvent_Snack : Motion_Event
 
             case "Snack04":
                 {
+                    Snack.sprite = MySnacks[3];
                     Snack04Count++;
                     if (Snack04Count > 4)
                         OutBottom.text = scenario_After[7];
