@@ -7,23 +7,24 @@ using DG.Tweening;
 
 public class MotionEvent_Teeth : Motion_Event
 {
+    public GameObject Window_Canvas;
+    public GameObject ScoreEffect;
+    public GameObject help;
+    public GameObject Title;
+    public GameObject DQ;
+    public GameObject ICon;
+    public GameObject IConViewEffect;
     public GameObject UI_Start;
     public GameObject UI_Exit;
     public GameObject UI_Score;
     public GameObject UI_Main_Icon;
     public GameObject UI_Loding;
-    public GameObject UI_ReadyImage;
-    public GameObject UI_StartImage;
-
-    //public DOTweenAnimation RSAnim;
+    SoundManager SoundMgr;
 
     public Text Doq;
 
-    //bool[] Attack = new bool[3];
     public CMotionTrackingManager MotionTrackingMgr;
     public GameObject FiexdImage_Event;
-    public GameObject[] WaitImage_Event = new GameObject[3];
-    public GameObject[] Image_Event = new GameObject[3];
    
     public List<Transform> CreatePoint;
     public List<int> Wait;
@@ -42,12 +43,28 @@ public class MotionEvent_Teeth : Motion_Event
 
 
     int UI_ButtonCount=2;
+    bool UserActivate;
     bool isPlay;
 
     private delegate void TypeVoid();
 
     /*#########################################################################################################################*/
     //윈도우 테스트용
+    void CanvsOn()
+    {
+        if (Application.isEditor || Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            Window_Canvas.SetActive(true);
+        }
+        else
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                Window_Canvas.SetActive(false);
+            }
+        }
+    }
+
     private bool Click = false;
 
     public void ButtonOn()
@@ -70,19 +87,13 @@ public class MotionEvent_Teeth : Motion_Event
         if (Click)
         {
             FixedEvent_On(2);
-            FixedEvent_On(3);
-            FixedEvent_On(4);
-            FixedEvent_On(5);
-            FixedEvent_On(6);
+
         }
             
         else
         {
             NoClick_Amount(2);
-            NoClick_Amount(3);
-            NoClick_Amount(4);
-            NoClick_Amount(5);
-            NoClick_Amount(6);
+
         }
     }
     /*#########################################################################################################################*/
@@ -165,33 +176,80 @@ public class MotionEvent_Teeth : Motion_Event
 
     private void Start()
     {
+        //GermTalk_List.Add(0);
+        CanvsOn();
+        SoundMgr = GetComponent<SoundManager>();
+        UserActivate = true;
         CreatePointFindSet();
         isPlay = false;
         UI_Score.SetActive(false);
     }
 
+    /// <summary>
+    /// 게임 전 시나리오가 진행된다.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator GameStartEventS()
+    {
+        yield return new WaitForSeconds(3f);
+        SoundMgr.StartBGM();
+        Title.SetActive(false);
+        DQ.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        ICon.SetActive(true);
+        SoundMgr.AudioPlay(SoundManager.SoundName.Boomb);
+        IConViewEffect.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+        Doq.text = "세균들이 치아들을 괴롭히고 있어!";
+        yield return new WaitForSeconds(2.5f);
+        Doq.text = "우리들이 도와줘야 할것 같아";
+        yield return new WaitForSeconds(2.5f);
+        Doq.text = "양치질처럼 세균들을 모두 닦아내자!";
+        yield return new WaitForSeconds(2.5f);
+        Doq.text = "준비 됐지? 그럼 시작한다?";
+        yield return new WaitForSeconds(2.5f);
+        
+        Doq.text = "치아들을 구해줘!";
+
+        yield return new WaitForSeconds(1f);
+        UI_Score.SetActive(true);
+        ScoreEffect.SetActive(true);
+        UserActivate = true;
+        help.SetActive(true);
+    }
+
+
     public void GameStart()
     {
+        UserActivate = false;
+        SoundMgr.SetSoundVolume(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.Answer);
         TypeVoid DelTemp = new TypeVoid(GameStartEvent);
         UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
         StartCoroutine(Loading_Animation(DelTemp));
+        StartCoroutine(GameStartEventS());
     }
 
     public void GameStop()
     {
         Doq.text = "치아들을 지켜줘서 고마워!";
         isPlay = false;
+        UserActivate = false;
+        help.SetActive(false);
         UI_Score.SetActive(false);
         for (int i = UI_ButtonCount; i < MotionTrackingMgr.fixed_Buttons.Count; i++)
         {
             MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(false);
         }
+        Debug.Log("GameStop()");
     }
 
     public void GameInit()
     {
+        Debug.Log("Init실행");
         TypeVoid DelTemp = new TypeVoid(GameInitEvent);
         UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
+        SoundMgr.OutSound();
         StartCoroutine(Loading_Animation(DelTemp));
     }
 
@@ -256,8 +314,8 @@ public class MotionEvent_Teeth : Motion_Event
         UI_Start.SetActive(false);
         UI_Exit.SetActive(false);
         UI_Main_Icon.SetActive(false);
-        UI_Score.SetActive(true);
-        Doq.text = "입안에 세균들로 부터 치아를 지켜줘!";
+
+        Doq.text = "";
     }
 
     private void GameInitEvent()
@@ -266,7 +324,8 @@ public class MotionEvent_Teeth : Motion_Event
         {
             MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(true);
         }
-        Doq.text = "같이 양치질을 배워볼까?";
+        Title.SetActive(true);
+        DQ.SetActive(false);
         UI_Start.SetActive(true);
         UI_Exit.SetActive(true);
         UI_Main_Icon.SetActive(true);
@@ -442,6 +501,9 @@ public class MotionEvent_Teeth : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
+        if (!UserActivate)
+            return;
+
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
         if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
@@ -450,7 +512,7 @@ public class MotionEvent_Teeth : Motion_Event
             {
                 if (Click_Amount(_num))
                 {
-                    Score.ScoreCount += 10;
+                    Score.ScoreCount += 20;
                     ChangeDoqInGame(Score.ScoreCount);
                     MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);
                     int temp = System.Convert.ToInt32(MotionTrackingMgr.fixed_Buttons[_num].name);
@@ -464,6 +526,7 @@ public class MotionEvent_Teeth : Motion_Event
                 {
                     if (_num == 0)
                     {
+                        
                         GameStart();
                     }
                     else

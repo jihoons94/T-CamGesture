@@ -42,7 +42,7 @@ namespace Treal.BrowserCore
             
         public bool CreateMotionTracker(float ratio, int num)
         {
-            if (num < 1000)
+            if (num < 100)
                 maxObj = num;
             else
                 maxObj = 0;
@@ -142,8 +142,10 @@ namespace Treal.BrowserCore
 			return it_skt_motion_GetRoIMotion(m_detector, mv);
         }
 
-
-
+        public bool ResetTrackRoIs()
+        {
+            return it_skt_motion_ReSetTrackRoIs(m_detector);
+        }
 
         //[DllImport("MotionTracker", CallingConvention = CallingConvention.Cdecl)]
         //static extern void RegisterDebugCallback(debugCallback cb);
@@ -216,34 +218,38 @@ namespace Treal.BrowserCore
     [DllImport("__Internal")]
     private static extern bool it_skt_motion_SetTrackRoIs(IntPtr detector, Vector2[] pts, int[] width, int[] height, int[] label, int num);
     [DllImport("__Internal")]
+    private static extern bool it_skt_motion_ReSetTrackRoIs(IntPtr tracker);            
+    [DllImport("__Internal")]
     private static extern bool it_skt_motion_UpdateTrackRoIs(IntPtr detector);
     [DllImport("__Internal")]
 	private static extern bool it_skt_motion_GetRoIMotion(IntPtr detector, Vector2[] mv);
 #else
-    [DllImport("MotionTracker")]
-    private static extern IntPtr it_skt_motion_CreateMotionTracker(float ratio, int num);
-    [DllImport("MotionTracker")]
-    private static extern void it_skt_motion_ReleaseMotionTracker(IntPtr detector);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_Start(IntPtr detector);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_Stop(IntPtr detector);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_Pause(IntPtr detector);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_Resume(IntPtr detector);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_SetCameraParam(IntPtr detector, int width, int height, int format, int flip);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_SetCameraFrame(IntPtr detector, IntPtr pData, int length);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_SetTrackRoI(IntPtr detector, float px, float py, int width, int height, int label);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_SetTrackRoIs(IntPtr detector, Vector2[] pts, int[] width, int[] height, int[] label, int num);
-    [DllImport("MotionTracker")]
-    private static extern bool it_skt_motion_UpdateTrackRoIs(IntPtr detector);
-    [DllImport("MotionTracker")]
-	private static extern bool it_skt_motion_GetRoIMotion(IntPtr detector, Vector2[] mv);
+        [DllImport("MotionTracker")]
+        private static extern IntPtr it_skt_motion_CreateMotionTracker(float ratio, int num);
+        [DllImport("MotionTracker")]
+        private static extern void it_skt_motion_ReleaseMotionTracker(IntPtr detector);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_Start(IntPtr detector);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_Stop(IntPtr detector);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_Pause(IntPtr detector);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_Resume(IntPtr detector);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_SetCameraParam(IntPtr detector, int width, int height, int format, int flip);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_SetCameraFrame(IntPtr detector, IntPtr pData, int length);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_SetTrackRoI(IntPtr detector, float px, float py, int width, int height, int label);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_SetTrackRoIs(IntPtr detector, Vector2[] pts, int[] width, int[] height, int[] label, int num);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_ReSetTrackRoIs(IntPtr tracker);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_UpdateTrackRoIs(IntPtr detector);
+        [DllImport("MotionTracker")]
+        private static extern bool it_skt_motion_GetRoIMotion(IntPtr detector, Vector2[] mv);
 #endif
     }
 

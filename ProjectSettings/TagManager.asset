@@ -4,9 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - MoveMotion
-  - RandomMotion
-  - fixMotion
   - MotionEvent
   - Alphabet
   - CreatePoint
@@ -15,6 +12,8 @@ TagManager:
   - Snack03
   - Snack04
   - Effects
+  - Treal_MotionMgr
+  - mTrealPreviewObj
   layers:
   - Default
   - TransparentFX

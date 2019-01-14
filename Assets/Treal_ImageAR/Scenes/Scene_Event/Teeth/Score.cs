@@ -15,11 +15,12 @@ public class Score : MonoBehaviour {
     {
         OverEffect.SetActive(true);
         Teeth.GameStop();
+        Debug.Log("001");
         yield return new WaitForSeconds(5f);
+        Debug.Log("002");
         OverEffect.SetActive(false);
         Teeth.GameInit();
-        
-
+        //yield return null;
     }
 	// Use this for initialization
 	void Start () {
@@ -32,6 +33,7 @@ public class Score : MonoBehaviour {
         if (ScoreCount >= MaxScore)
         {
             ScoreCount = 0;
+            StopAllCoroutines();
             StartCoroutine(GameOver());
         }
 	}

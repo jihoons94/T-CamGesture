@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class MotionEvent_Snack : Motion_Event
 {
+    bool ButtonPushCheck;
+    SoundManager SoundMgr;
     public GameObject popup;
     public GameObject Icon;
     public GameObject GameDoneEffect;
@@ -142,18 +144,20 @@ public class MotionEvent_Snack : Motion_Event
             }
         }
 
-        else
-        {
-            NoClick_Amount(2);
-            NoClick_Amount(3);
-            NoClick_Amount(4);
-        }
+        //else
+        //{
+        //    NoClick_Amount(2);
+        //    NoClick_Amount(3);
+        //    NoClick_Amount(4);
+        //}
     }
     /*#########################################################################################################################*/
 
 
     private void Start()
     {
+        ButtonPushCheck = false;
+        SoundMgr = GetComponent<SoundManager>();
         InitObject();
         isPlay = false;
         StartCoroutine(StartEvent());
@@ -171,6 +175,7 @@ public class MotionEvent_Snack : Motion_Event
 
     IEnumerator GameOver()
     {
+        
         Icon.SetActive(false);
         GameDoneEffect.SetActive(true);
         Help_Text.SetActive(false);
@@ -178,8 +183,10 @@ public class MotionEvent_Snack : Motion_Event
         {
             Button_Snack[i].SetActive(false);
         }
+        SoundMgr.AudioPlay(SoundManager.SoundName.GameClear);
         OutBottom.text = "너무 배불러, 더는 못먹을거 같아";
         yield return new WaitForSeconds(3f);
+        SoundMgr.OutSound();
         OutBottom.text = "우리 이제 나가서 놀지 않을래?";
         yield return new WaitForSeconds(2f);
         popup.SetActive(true);
@@ -282,6 +289,7 @@ public class MotionEvent_Snack : Motion_Event
         for (int i = 0; i < Button_Snack.Length; i++)
         {
             yield return new WaitForSeconds(1f);
+            SoundMgr.AudioPlay(SoundManager.SoundName.Boomb);
             Button_Snack[i].SetActive(true);
             GameObject CreateEffect = Instantiate(SnackCreateEffect, Button_Snack[i].transform);
             //CreateEffect.transform.localPosition = Button_Snack[i].transform.localPosition;
@@ -289,6 +297,7 @@ public class MotionEvent_Snack : Motion_Event
         yield return new WaitForSeconds(1f);
         OutBottom.text = scenario_Before[2];
         yield return new WaitForSeconds(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.popup);
         Help_Text.SetActive(true);
         isPlay = true;
     }
@@ -297,6 +306,7 @@ public class MotionEvent_Snack : Motion_Event
 
     private void RemoveEffectCreate(int num)
     {
+        SoundMgr.AudioPlay(SoundManager.SoundName.Done);
         GameObject RemoveEffect = Instantiate(Remove_Effect, Background2);
 
         RemoveEffect.transform.position =
@@ -305,6 +315,14 @@ public class MotionEvent_Snack : Motion_Event
                 MotionTrackingMgr.fixed_Buttons[num].localPosition.y,
                 MotionTrackingMgr.fixed_Buttons[num].localPosition.z
                 );
+    }
+
+    IEnumerator ButtonPushDelay()
+    {
+        ButtonPushCheck = true;
+        SoundMgr.AudioPlay(SoundManager.SoundName.ButtonPush);
+        yield return new WaitForSeconds(0.2f);
+        ButtonPushCheck = false;
     }
 
     bool NoClick_Amount(int num)
@@ -323,6 +341,8 @@ public class MotionEvent_Snack : Motion_Event
 
     bool Click_Amount(int num)
     {
+        if (!ButtonPushCheck)
+            StartCoroutine(ButtonPushDelay());
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
         

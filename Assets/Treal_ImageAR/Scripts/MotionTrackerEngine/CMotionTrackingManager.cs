@@ -59,7 +59,7 @@ namespace Treal.BrowserCore
         public Camera mARCamera;
         private bool _working = false;
 
-        private bool _Moving = true;
+        private bool _Moving = false;
 
        // public float[] Amount;
         public Motion_Event Event;
@@ -80,13 +80,15 @@ namespace Treal.BrowserCore
             _detector.SetTrackRoIs(pts, width, height, label, num);
         }
 
-        void FindandSet()
+        void FindandSet(String _Tagname)
         {
             Random_movingObj.Clear();
             fixed_Buttons.Clear();
             moving_Target.Clear();
-
-            GameObject MotionEvent = GameObject.FindWithTag("MotionEvent");
+            Background.Clear();
+            Background2.Clear();
+          
+            GameObject MotionEvent = GameObject.FindWithTag(_Tagname);
             Event = MotionEvent.GetComponent<Motion_Event>();
 
             GameObject objs = MotionEvent.transform.GetChild(0).gameObject;
@@ -123,12 +125,6 @@ namespace Treal.BrowserCore
             numOfObj = moving_Target.Count + fixed_Buttons.Count + Random_movingObj.Count;
             numOfixed = fixed_Buttons.Count;
             numOfTarget = moving_Target.Count;
-            //Amount = new float[numOfixed];
-
-            //for(int i=0; i<Amount.Length; i++)
-            //{
-            //    Amount[i] = 0;
-            //}
         }
 
         void Awake()
@@ -137,12 +133,16 @@ namespace Treal.BrowserCore
             Debug.Log("CMotionTrackingManager: Awake()");
 
            
-            FindandSet();
+            FindandSet("MotionEvent");
+            
             _detector = MotionTracker.Instance;
-            if(!IsEditor)
+           
+
+            if (!IsEditor)
             _detector.CreateMotionTracker(1.0f, numOfObj);
 
-            Destroy(CMotionTrackingManager.Instance);
+ 
+
             CMotionTrackingManager.Instance = this;
             pts = new Vector2[numOfObj];
             result = new Vector2[numOfObj];
@@ -153,6 +153,32 @@ namespace Treal.BrowserCore
             DontDestroyOnLoad(gameObject);
         }
 
+
+        //public void SceneChange()
+        //{
+        //    _working = false;
+        //    _Moving = false;
+        //    statIndx = 0;
+        //    Debug.Log("CMotionTrackingManager: SceneChange()");
+
+        //    FindandSet("MotionEvent");
+
+        //    if (_detector == null)
+        //    {
+        //        _detector = MotionTracker.Instance;
+        //        CMotionTrackingManager.Instance = this;
+        //    }
+
+        //    if (!IsEditor)
+        //        _detector.CreateMotionTracker(1.0f, numOfObj);
+
+
+        //    pts = new Vector2[numOfObj];
+        //    result = new Vector2[numOfObj];
+        //    objLabel = new int[numOfObj];
+        //    objHeight = new int[numOfObj];
+        //    objWidth = new int[numOfObj];
+        //}
 
         void setReleativePosition_Others(List<Transform> items, int prevWidth, int prevHeight, bool isFixed, float ratio)
         {
@@ -332,9 +358,11 @@ namespace Treal.BrowserCore
 
        public void SetTrack_position_One(int _i, Vector3 _newPoint)
         {
+
             fixed_Buttons[_i].localPosition = _newPoint;
             pts[_i].x = fixed_Buttons[_i].localPosition.x + halfPreviewWidth;
             pts[_i].y = fixed_Buttons[_i].localPosition.y + halfPreviewHeight;
+
             _detector.SetTrackRoI(pts[_i].x, pts[_i].y, objWidth[_i+ numOfTarget], objHeight[_i + numOfTarget], objLabel[_i + numOfTarget]);
             isUpdated = true;
         }
@@ -382,6 +410,10 @@ namespace Treal.BrowserCore
             return _detector.SetCameraFrameNative(webCamPixels, size);
         }
 
+        public bool ReSetTrackRoIs()
+        {
+            return _detector.ResetTrackRoIs();
+        }
 
         public int SetCameraParam(int width, int height, IMAGE_FORMAT format, IMAGE_FLIP flip)
         {

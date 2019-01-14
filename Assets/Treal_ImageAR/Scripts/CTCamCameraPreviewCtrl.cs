@@ -77,6 +77,8 @@ public class CTCamCameraPreviewCtrl : CCameraPreviewCtrl
             _engine.resume();
     }
 
+
+
     void OnTCamPreviewStart(int width, int height, int fps)
     {
         Debug.Log ("UNITY: CTCamCameraPreviewCtrl: OnTCamPreviewStart()");

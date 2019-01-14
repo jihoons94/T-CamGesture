@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class MotionEvent_Q : Motion_Event
 {
+    public GameObject ClearEffect;
+    bool ButtonPushCheck;
+    SoundManager SoundMgr;
     public GameObject Popup;
     public DOTweenAnimation[] button = new DOTweenAnimation[2];
     public GameObject buttonBack1;
@@ -17,7 +20,7 @@ public class MotionEvent_Q : Motion_Event
     public GameObject Help_Text;
     int State;
     int QState;
-    int MaxState = 4;
+    int MaxState = 5;
     public Transform Background;
     public Transform Background2;
     public GameObject Window_Canvas;
@@ -33,33 +36,31 @@ public class MotionEvent_Q : Motion_Event
 
     public Text topText;
     public Text bottomText;
-    int[] answer = {1,0,1,1};
+    int[] answer = {1,0,1,1,0};
 
-    public string[] topSa = {
+    public string[] topS = {
         "열심히 공부했으니 우리 같이 퀴즈를 풀어볼까?",
         "내가 문제를 낼 테니 정답인 버튼을 누르는 거야.",
         "Q1. 양치질은 1분이면 충분하다?",
         "Q2. 양치질은 치아를 보호해준다?",
         "Q3. 하루에 한번만 양치를 해야한다?",
-        "Q4. 양치질은 무조건 식후에 바로 해야한다.",
-        ""
+        "Q4. 양치질은 무조건 식후에 바로 해야한다?",
+        "Q5. 사탕은 치아의 건강에 좋지않다?"
     };
 
-    public string[] bottomSa = {
+    public string[] bottomS = {
         "퀴즈?  재미있겠다!",
         "문제 없지! 어서 시작하자.",
         "음 뭐였더라?...",
         "이건 알거같아!",
         "양치질은 중요하지!",
         "바로 했야 하는건가?",
-        ""
+        "사탕은 맛있는데..."
     };
 
 
     /*#########################################################################################################################*/
     //윈도우 테스트용
-
-
     void CanvsOn()
     {
         if (Application.isEditor || Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.WindowsPlayer)
@@ -96,7 +97,6 @@ public class MotionEvent_Q : Motion_Event
 
     private void Update()
     {
-
         if (Click)
         {
             switch (num)
@@ -113,69 +113,70 @@ public class MotionEvent_Q : Motion_Event
                     break;
             }
         }
-
-        //else
-        //{
-        //    NoClick_Amount(2);
-        //    NoClick_Amount(3);
-        //}
     }
     /*#########################################################################################################################*/
 
     private void Start()
     {
+        CanvsOn();
         State = 0;
         isPlay = false;
         Help_Text.SetActive(false);
         StartCoroutine(StartEvent());
+        SoundMgr = GetComponent<SoundManager>();
+        ButtonPushCheck = false;
     }
 
     IEnumerator StartEvent()
     {
-        topText.text = topSa[State];
+        topText.text = topS[State];
         bottomText.text = "";
         yield return new WaitForSeconds(1f);
-        bottomText.text = bottomSa[State];
+        bottomText.text = bottomS[State];
         State++;
         yield return new WaitForSeconds(1f);
-        topText.text = topSa[State];
+        topText.text = topS[State];
         yield return new WaitForSeconds(1f);
-        bottomText.text = bottomSa[State];
+        bottomText.text = bottomS[State];
         yield return new WaitForSeconds(1f);
-
-        
-        NextQ();
-        isPlay = true;
+        topText.text = "그럼 시작한다?";
+        bottomText.text = "";
+       yield return new WaitForSeconds(2f);
+        NextQuizSet();
         yield return new WaitForSeconds(1f);
         Help_Text.SetActive(true);
-
     }
 
     IEnumerator Stage_N()
     {
         if (QState < MaxState)
         {
+            button[0].DORewind();
+            button[1].DORewind();
+            SoundMgr.AudioPlay(SoundManager.SoundName.Answer);
             topText.text = "잘했어 정답이야!!";
             bottomText.text = "";
             yield return new WaitForSeconds(1f);
             bottomText.text = "신난다! 다음 문제를 맞춰보자!";
-            yield return new WaitForSeconds(1f);
-            NextQ();
-            isPlay = true;
+            yield return new WaitForSeconds(2f);
+            topText.text = "그럼 다음 문제야.";
+            bottomText.text = "";
+            yield return new WaitForSeconds(2f);
+            NextQuizSet();
+            
         }
         else
         {
-            buttonBack1.SetActive(false);
-            buttonBack2.SetActive(false);
-            MotionTrackingMgr.fixed_Buttons[2].gameObject.SetActive(false);
-            MotionTrackingMgr.fixed_Buttons[3].gameObject.SetActive(false);
-            Help_Text.SetActive(false);
+            SoundMgr.OutSound();
+            SoundMgr.AudioPlay(SoundManager.SoundName.GameClear);
+            AllButtonOff();
+            ClearEffect.SetActive(true);
             topText.text = "굉장한데? 모두 정답이야!";
             bottomText.text = "";
             yield return new WaitForSeconds(1f);
             bottomText.text = "대단해!!";
             isPlay = false;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
             Popup.SetActive(true);
             yield return new WaitForSeconds(5f);
             Application.Quit();
@@ -183,28 +184,34 @@ public class MotionEvent_Q : Motion_Event
 
     }
 
-    void NextQ()
+    void AllButtonOff()
     {
+        buttonBack1.SetActive(false);
+        buttonBack2.SetActive(false);
+        MotionTrackingMgr.fixed_Buttons[2].gameObject.SetActive(false);
+        MotionTrackingMgr.fixed_Buttons[3].gameObject.SetActive(false);
+        Help_Text.SetActive(false);
+    }
+
+    void NextQuizSet()
+    {
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         State++;
         if(QState< MaxState)
         {
-            Debug.Log(State);
-            topText.text = topSa[State];
-            bottomText.text = bottomSa[State];
+            topText.text = topS[State];
+            bottomText.text = bottomS[State];
         }
-        else
-        {
-            
-        }
-
+        isPlay = true;
     }
-    void Try()
+    void OneMoreTry()
     {
+        SoundMgr.AudioPlay(SoundManager.SoundName.NoAnswer);
         bottomText.text = "정답이 아닌가봐 다시한번 생각해보자!";
         isPlay = true;
     }
 
-   bool AnswerF(int nAnswer)
+   bool AnswerCheck(int nAnswer)
     {
         return (answer[QState] == nAnswer? true : false);
     }
@@ -226,13 +233,22 @@ public class MotionEvent_Q : Motion_Event
             return false;
     }
 
+    IEnumerator ButtonPushDelay()
+    {
+        ButtonPushCheck = true;
+        SoundMgr.AudioPlay(SoundManager.SoundName.ButtonPush);
+        yield return new WaitForSeconds(0.2f);
+        ButtonPushCheck = false;
+    }
+
     bool Click_Amount(int num)
     {
-
+        if(!ButtonPushCheck)
+            StartCoroutine(ButtonPushDelay());
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
-        Debug.Log("함수실행");
-        //temp.Activate = true;
+
+
         if(!button[num-2].tween.IsPlaying())
         {
             button[num - 2].DORewind();
@@ -242,14 +258,17 @@ public class MotionEvent_Q : Motion_Event
             else
                 button[0].DORewind();
         }
+
         if (temp.Amount >= temp.MaxAmount)
         {
             isPlay = false;
+
             Amount_Click temp1 = MotionTrackingMgr.fixed_Buttons[2].GetComponent<Amount_Click>();
-            temp1.Amount = 0;
             Amount_Click temp2 = MotionTrackingMgr.fixed_Buttons[3].GetComponent<Amount_Click>();
+            temp1.Amount = 0;
             temp2.Amount = 0;
-            bool result = AnswerF(num - 2);
+
+            bool result = AnswerCheck(num - 2);
             if(result)
             {
                 QState++;
@@ -260,10 +279,9 @@ public class MotionEvent_Q : Motion_Event
             else
             {
                 Instantiate(NotEffect).transform.position = MotionTrackingMgr.fixed_Buttons[num].position;
-                Try();
+                OneMoreTry();
             }
             temp.Amount = 0;
-            
             return true;
         }
         else
@@ -272,9 +290,9 @@ public class MotionEvent_Q : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
-        
         if (!isPlay)
             return;
+
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
         if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
@@ -282,16 +300,11 @@ public class MotionEvent_Q : Motion_Event
             {
                 Click_Amount(_num);
             }
-            else
-            {
-
-            }
         }
     }
 
     override public void FixedEvent_Off(int _num)
     {
-        
         if (!isPlay)
             return;
 
