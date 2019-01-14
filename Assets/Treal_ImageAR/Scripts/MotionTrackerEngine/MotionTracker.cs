@@ -15,15 +15,16 @@ namespace Treal.BrowserCore
 
         // Use this for initialization
         private static MotionTracker instance;
-        public static IntPtr m_detector;
+
+        private static IntPtr m_detector;
         public int maxObj = 100;
         private MotionTracker() { }
 
         private int frameWidth = 0;
-		private int frameHeight = 0;
-		public bool isMotionDetectorWorking = false;
+        private int frameHeight = 0;
+        public bool isMotionDetectorWorking = false;
 
-        
+
         public static MotionTracker Instance
         {
             get
@@ -39,7 +40,7 @@ namespace Treal.BrowserCore
             }
         }
 
-            
+
         public bool CreateMotionTracker(float ratio, int num)
         {
             if (num < 100)
@@ -53,7 +54,7 @@ namespace Treal.BrowserCore
 
         ~MotionTracker()
         {
-            Debug.Log ("MotionTracker: ~MotionDetector() ");
+            Debug.Log("MotionTracker: ~MotionDetector() ");
             it_skt_motion_Pause(m_detector);
             it_skt_motion_Stop(m_detector);
             it_skt_motion_ReleaseMotionTracker(m_detector);
@@ -61,38 +62,39 @@ namespace Treal.BrowserCore
 
         public bool Start()
         {
-			Debug.Log ("MotionTracker: Start()");
+            Debug.Log("MotionTracker: Start()");
             return it_skt_motion_Start(m_detector);
 
         }
 
+
         public bool Stop()
         {
-			Debug.Log ("MotionTracker: Stop()");
+            Debug.Log("MotionTracker: Stop()");
             return it_skt_motion_Stop(m_detector);
         }
 
         public bool Pause()
         {
-			Debug.Log ("MotionTracker: Pause()");
+            Debug.Log("MotionTracker: Pause()");
             return it_skt_motion_Pause(m_detector);
         }
 
         public bool Resume()
         {
-			Debug.Log ("MotionTracker: Resume()");
+            Debug.Log("MotionTracker: Resume()");
             return it_skt_motion_Resume(m_detector);
         }
 
         public bool SetCameraParam(int width, int height, IMAGE_FORMAT format, IMAGE_FLIP flip)
         {
-			isMotionDetectorWorking = true;
-			frameWidth = width;
-			frameHeight = height;
+            isMotionDetectorWorking = true;
+            frameWidth = width;
+            frameHeight = height;
             return it_skt_motion_SetCameraParam(m_detector, width, height, (int)format, (int)flip);
         }
 
-		public bool SetCameraFrame(Color32[] webCamPixels)
+        public bool SetCameraFrame(Color32[] webCamPixels)
         {
             GCHandle pixelsPinnedArray = GCHandle.Alloc(webCamPixels, GCHandleType.Pinned);
             bool result = it_skt_motion_SetCameraFrame(m_detector, pixelsPinnedArray.AddrOfPinnedObject(), webCamPixels.Length * 4);
@@ -118,9 +120,9 @@ namespace Treal.BrowserCore
         {
             return it_skt_motion_SetCameraFrame(m_detector, webCamPixels, size);
         }
-        
-		public bool SetTrackRoI(float px, float py, int width, int height, int label)
-		{
+
+        public bool SetTrackRoI(float px, float py, int width, int height, int label)
+        {
             if (label < 0 || label > maxObj)
                 return false;
 
@@ -139,13 +141,14 @@ namespace Treal.BrowserCore
         }
         public bool GetRoIMotion(ref Vector2[] mv)
         {
-			return it_skt_motion_GetRoIMotion(m_detector, mv);
+            return it_skt_motion_GetRoIMotion(m_detector, mv);
         }
-
         public bool ResetTrackRoIs()
         {
             return it_skt_motion_ReSetTrackRoIs(m_detector);
         }
+
+
 
         //[DllImport("MotionTracker", CallingConvention = CallingConvention.Cdecl)]
         //static extern void RegisterDebugCallback(debugCallback cb);

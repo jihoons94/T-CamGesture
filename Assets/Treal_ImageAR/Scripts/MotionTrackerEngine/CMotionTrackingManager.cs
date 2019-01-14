@@ -44,7 +44,6 @@ namespace Treal.BrowserCore
 
         private int numOfObj = 0;
         public int numOfixed = 0;
-        public int numOfTarget = 0;
 
         private int statIndx = 0;
 
@@ -52,15 +51,12 @@ namespace Treal.BrowserCore
         private float thresh = 5;
 
         public List<Transform> fixed_Buttons;
-        public List<Transform> moving_Target;
         public List<Transform> Random_movingObj;
         public List<Transform> Background;
         public List<Transform> Background2;
         public Camera mARCamera;
         private bool _working = false;
-
-        private bool _Moving = false;
-
+        public static bool isNomal;
        // public float[] Amount;
         public Motion_Event Event;
 
@@ -80,68 +76,51 @@ namespace Treal.BrowserCore
             _detector.SetTrackRoIs(pts, width, height, label, num);
         }
 
-        void FindandSet(String _Tagname)
+        public void FindandSet(String _Tagname)
         {
+            statIndx = 0;
             Random_movingObj.Clear();
             fixed_Buttons.Clear();
-            moving_Target.Clear();
             Background.Clear();
             Background2.Clear();
           
-            GameObject MotionEvent = GameObject.FindWithTag(_Tagname);
+            Transform MotionEvent = GameObject.FindWithTag(_Tagname).transform;
             Event = MotionEvent.GetComponent<Motion_Event>();
 
-            GameObject objs = MotionEvent.transform.GetChild(0).gameObject;
-            GameObject buttons = MotionEvent.transform.GetChild(1).gameObject;
-            GameObject Target = MotionEvent.transform.GetChild(2).gameObject;
-            GameObject Back = MotionEvent.transform.GetChild(3).gameObject;
-            GameObject Back2 = MotionEvent.transform.GetChild(4).gameObject;
+            Transform objs = MotionEvent.GetChild(0);
+            Transform buttons = MotionEvent.GetChild(1);
+            Transform Back = MotionEvent.GetChild(2);
+            Transform Back2 = MotionEvent.GetChild(3);
 
-            for (int i = 0; i < Target.transform.childCount; i++)
+
+
+            for (int i = 0; i < buttons.childCount; i++)
             {
-                moving_Target.Add(Target.transform.GetChild(i).transform);
+                fixed_Buttons.Add(buttons.GetChild(i));
             }
 
-            for (int i = 0; i < buttons.transform.childCount; i++)
+            for (int i = 0; i < objs.childCount; i++)
             {
-                fixed_Buttons.Add(buttons.transform.GetChild(i).transform);
+                Random_movingObj.Add(objs.GetChild(i));
             }
 
-            for (int i = 0; i < objs.transform.childCount; i++)
+            for (int i = 0; i < Back.childCount; i++)
             {
-                Random_movingObj.Add(objs.transform.GetChild(i).transform);
+                Background.Add(Back.GetChild(i));
             }
 
-            for (int i = 0; i < Back.transform.childCount; i++)
+            for (int i = 0; i < Back2.childCount; i++)
             {
-                Background.Add(Back.transform.GetChild(i).transform);
+                Background2.Add(Back2.GetChild(i));
             }
 
-            for (int i = 0; i < Back2.transform.childCount; i++)
-            {
-                Background2.Add(Back2.transform.GetChild(i).transform);
-            }
-
-            numOfObj = moving_Target.Count + fixed_Buttons.Count + Random_movingObj.Count;
+            numOfObj = fixed_Buttons.Count + Random_movingObj.Count;
             numOfixed = fixed_Buttons.Count;
-            numOfTarget = moving_Target.Count;
-        }
 
-        void Awake()
-        {
-            statIndx = 0;
-            Debug.Log("CMotionTrackingManager: Awake()");
-
-           
-            FindandSet("MotionEvent");
-            
             _detector = MotionTracker.Instance;
-           
 
             if (!IsEditor)
-            _detector.CreateMotionTracker(1.0f, numOfObj);
-
- 
+                _detector.CreateMotionTracker(1.0f, numOfObj);
 
             CMotionTrackingManager.Instance = this;
             pts = new Vector2[numOfObj];
@@ -149,36 +128,17 @@ namespace Treal.BrowserCore
             objLabel = new int[numOfObj];
             objHeight = new int[numOfObj];
             objWidth = new int[numOfObj];
+        }
+
+        void Awake()
+        {
+            Debug.Log("CMotionTrackingManager: Awake()");
+            FindandSet("MotionEvent");
+
+           
             // This object remains until application exist.
             DontDestroyOnLoad(gameObject);
         }
-
-
-        //public void SceneChange()
-        //{
-        //    _working = false;
-        //    _Moving = false;
-        //    statIndx = 0;
-        //    Debug.Log("CMotionTrackingManager: SceneChange()");
-
-        //    FindandSet("MotionEvent");
-
-        //    if (_detector == null)
-        //    {
-        //        _detector = MotionTracker.Instance;
-        //        CMotionTrackingManager.Instance = this;
-        //    }
-
-        //    if (!IsEditor)
-        //        _detector.CreateMotionTracker(1.0f, numOfObj);
-
-
-        //    pts = new Vector2[numOfObj];
-        //    result = new Vector2[numOfObj];
-        //    objLabel = new int[numOfObj];
-        //    objHeight = new int[numOfObj];
-        //    objWidth = new int[numOfObj];
-        //}
 
         void setReleativePosition_Others(List<Transform> items, int prevWidth, int prevHeight, bool isFixed, float ratio)
         {
@@ -238,8 +198,6 @@ namespace Treal.BrowserCore
 
                 items[i].localPosition = new Vector3(px, py, 0);
                 items[i].localScale = new Vector3(scaleX, scaleY, 0);
-
-
                 isUpdated = true;
             }
         }
@@ -252,14 +210,8 @@ namespace Treal.BrowserCore
 
         void Update()
         {
-
             if (_working)
             {
-                if(_Moving)
-                {
-                    SetTrack_position(0, numOfTarget);
-                }
-
                 //float tt = Time.realtimeSinceStartup;
                 if (isUpdated)
                 {
@@ -274,53 +226,32 @@ namespace Treal.BrowserCore
                 {
                     if (result[n].sqrMagnitude > thresh) // 인식 되었을 경우에 이벤트
                     {
-                        if (n >= numOfixed + numOfTarget) //랜덤 이동 대상
+                        if (n >= numOfixed) //랜덤 이동 대상
                         {
                             Debug.Log("랜덤 호출");
                             pts[n].x = UnityEngine.Random.Range(objWidth[n], previewWidth - objWidth[n]);
                             pts[n].y = UnityEngine.Random.Range(objHeight[n], previewHeight - objHeight[n]);
                             _detector.SetTrackRoI(pts[n].x, pts[n].y, objWidth[n], objHeight[n], objLabel[n]);
 
-                            Random_movingObj[n - (numOfixed + numOfTarget)].localPosition = new Vector3(pts[n].x - halfPreviewWidth, pts[n].y - halfPreviewHeight, 0);
+                            Random_movingObj[n - numOfixed].localPosition = new Vector3(pts[n].x - halfPreviewWidth, pts[n].y - halfPreviewHeight, 0);
                             isUpdated = true;
-
-                            Event.RandomEvent_On(n - (numOfixed + numOfTarget));
                         }
-                        else if (numOfixed + numOfTarget > n && n >= numOfTarget) // 고정대상
+                        else
                         {
                             
-                            Event.FixedEvent_On(n - numOfTarget);
-                            //fixed_Buttons[n - numOfTarget].gameObject.SetActive(false);
-                        }
-                        else // 움직이는 대상
-                        {
-
-                            
-                            Event.MoveEvent_On(n);
-                            //moving_Target[n].gameObject.SetActive(false);
+                            Event.FixedEvent_On(n);
+                            //fixed_Buttons[n].gameObject.SetActive(false);
                         }
 
                     }
                     else // 인식이 되지 않았을 경우의 이벤트
                     {
-                        if (n < numOfTarget) // 움직이는 대상
-                        {
-                            Event.MoveEvent_Off(n);
-                            //moving_Target[n].gameObject.SetActive(true);
-
-                        }
-                        else if (n < numOfixed + numOfTarget)// 고정 대상
+                        if (n < numOfixed )// 고정 대상
                         {
                             
-                            Event.FixedEvent_Off(n - numOfTarget);
-                            //fixed_Buttons[n - numOfTarget].gameObject.SetActive(true);
+                            Event.FixedEvent_Off(n);
+                            //fixed_Buttons[n].gameObject.SetActive(true);
                         }
-                        else  //랜덤 대상
-                        {
-                            Event.RandomEvent_Off(n - (numOfixed + numOfTarget));
-                        }
-
-
                     }
                 }
             }
@@ -328,7 +259,7 @@ namespace Treal.BrowserCore
 
         public void Random_position(int num)
         {
-            int n = num + numOfTarget;
+            int n = num;
 
             Debug.Log("랜덤 호출");
             Debug.Log(n);
@@ -336,23 +267,7 @@ namespace Treal.BrowserCore
             pts[n].y = UnityEngine.Random.Range(objHeight[n]+50, previewHeight - objHeight[n]);
             _detector.SetTrackRoI(pts[n].x, pts[n].y, objWidth[n], objHeight[n], objLabel[n]);
 
-            fixed_Buttons[n -  numOfTarget].localPosition = new Vector3(pts[n].x - halfPreviewWidth, pts[n].y - halfPreviewHeight, 0);
-            isUpdated = true;
-        }
-
-        /// <summary>
-        /// [jihoon]-움직이는 인식영역의 인식 위치를 동기화 시켜준다. 움직이는 인식 영역들은 연속적으로 배치되어야 한다.
-        /// </summary>
-        /// <param name="StartIndex">동기화 시킬 인식영역들의 시작 인덱스 값</param>
-        /// <param name="MoveCount">동기화 시킬 인식영역들의 개수</param>
-        public void SetTrack_position(int StartIndex, int MoveCount)
-        {
-            for (int i = StartIndex; i < MoveCount; i++)
-            {
-                pts[i].x = moving_Target[i].localPosition.x + halfPreviewWidth;
-                pts[i].y = moving_Target[i].localPosition.y + halfPreviewHeight;
-            }
-            _detector.SetTrackRoIs(pts, objWidth, objHeight, objLabel, numOfTarget);
+            fixed_Buttons[n].localPosition = new Vector3(pts[n].x - halfPreviewWidth, pts[n].y - halfPreviewHeight, 0);
             isUpdated = true;
         }
 
@@ -363,7 +278,7 @@ namespace Treal.BrowserCore
             pts[_i].x = fixed_Buttons[_i].localPosition.x + halfPreviewWidth;
             pts[_i].y = fixed_Buttons[_i].localPosition.y + halfPreviewHeight;
 
-            _detector.SetTrackRoI(pts[_i].x, pts[_i].y, objWidth[_i+ numOfTarget], objHeight[_i + numOfTarget], objLabel[_i + numOfTarget]);
+            _detector.SetTrackRoI(pts[_i].x, pts[_i].y, objWidth[_i], objHeight[_i], objLabel[_i]);
             isUpdated = true;
         }
 
@@ -432,11 +347,13 @@ namespace Treal.BrowserCore
             _detector.SetCameraParam(width, height, format, flip);
             relative_ratio = width / 1280.0f;
             Debug.Log("relative ratio : " + relative_ratio);
-            setReleativePosition_Others(Background, width, height, true, relative_ratio);
-            setReleativePosition_Others(Background2, width, height, true, relative_ratio);
-            setReleativePosition(moving_Target, width, height, true, relative_ratio);
+
             setReleativePosition(fixed_Buttons, width, height, true, relative_ratio);
             setReleativePosition(Random_movingObj, width, height, false, relative_ratio);
+
+            setReleativePosition_Others(Background, width, height, true, relative_ratio);
+            setReleativePosition_Others(Background2, width, height, true, relative_ratio);
+
             _detector.SetTrackRoIs(pts, objWidth, objHeight, objLabel, statIndx);
 
             return 1;

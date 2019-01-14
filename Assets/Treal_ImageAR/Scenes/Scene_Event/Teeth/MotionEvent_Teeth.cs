@@ -10,20 +10,13 @@ public class MotionEvent_Teeth : Motion_Event
     public GameObject Window_Canvas;
     public GameObject ScoreEffect;
     public GameObject help;
-    public GameObject Title;
     public GameObject DQ;
     public GameObject ICon;
     public GameObject IConViewEffect;
-    public GameObject UI_Start;
-    public GameObject UI_Exit;
     public GameObject UI_Score;
-    public GameObject UI_Main_Icon;
-    public GameObject UI_Loding;
     SoundManager SoundMgr;
 
     public Text Doq;
-
-    public CMotionTrackingManager MotionTrackingMgr;
     public GameObject FiexdImage_Event;
    
     public List<Transform> CreatePoint;
@@ -89,7 +82,7 @@ public class MotionEvent_Teeth : Motion_Event
             FixedEvent_On(2);
 
         }
-            
+
         else
         {
             NoClick_Amount(2);
@@ -176,13 +169,14 @@ public class MotionEvent_Teeth : Motion_Event
 
     private void Start()
     {
-        //GermTalk_List.Add(0);
+        SceneChange();
         CanvsOn();
         SoundMgr = GetComponent<SoundManager>();
         UserActivate = true;
         CreatePointFindSet();
         isPlay = false;
         UI_Score.SetActive(false);
+        GameStart();
     }
 
     /// <summary>
@@ -191,9 +185,8 @@ public class MotionEvent_Teeth : Motion_Event
     /// <returns></returns>
     IEnumerator GameStartEventS()
     {
-        yield return new WaitForSeconds(3f);
+        Doq.text = "";
         SoundMgr.StartBGM();
-        Title.SetActive(false);
         DQ.SetActive(true);
         yield return new WaitForSeconds(3f);
         ICon.SetActive(true);
@@ -221,12 +214,13 @@ public class MotionEvent_Teeth : Motion_Event
 
     public void GameStart()
     {
+        isPlay = true;
+        SetNewButtonPosition();
+        StartCoroutine(WaitCreate());
         UserActivate = false;
         SoundMgr.SetSoundVolume(1f);
         SoundMgr.AudioPlay(SoundManager.SoundName.Answer);
-        TypeVoid DelTemp = new TypeVoid(GameStartEvent);
-        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
-        StartCoroutine(Loading_Animation(DelTemp));
+
         StartCoroutine(GameStartEventS());
     }
 
@@ -246,12 +240,26 @@ public class MotionEvent_Teeth : Motion_Event
 
     public void GameInit()
     {
-        Debug.Log("Init실행");
-        TypeVoid DelTemp = new TypeVoid(GameInitEvent);
-        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
-        SoundMgr.OutSound();
-        StartCoroutine(Loading_Animation(DelTemp));
+        StartCoroutine(GameOutEvent());
     }
+    IEnumerator GameOutEvent()
+    {
+        Debug.Log("Init실행");
+        SoundMgr.OutSound();
+        isPlay = false;
+        UserActivate = false;
+        yield return new WaitForSeconds(0.5f);
+        if(CMotionTrackingManager.isNomal)
+        {
+            Loading.LoadScene("GameTeeth_Q");
+        }
+        else
+        {
+            Loading.LoadScene("GameTeeth_MAIN");
+        }
+        
+    }
+
 
     public void GameExit()
     {
@@ -296,39 +304,13 @@ public class MotionEvent_Teeth : Motion_Event
         }
     }
 
-    private void GameStartEvent()
-    {
-        isPlay = true;
-        StartCoroutine(WaitCreate());
-
-        for (int i = 0; i < UI_ButtonCount; i++)
-        {
-            MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(false);
-        }
-
-        for (int i = UI_ButtonCount; i < MotionTrackingMgr.fixed_Buttons.Count; i++)
-        {
-            MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(true);
-        }
-
-        UI_Start.SetActive(false);
-        UI_Exit.SetActive(false);
-        UI_Main_Icon.SetActive(false);
-
-        Doq.text = "";
-    }
-
     private void GameInitEvent()
     {
         for (int i = 0; i < UI_ButtonCount; i++)
         {
             MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(true);
         }
-        Title.SetActive(true);
         DQ.SetActive(false);
-        UI_Start.SetActive(true);
-        UI_Exit.SetActive(true);
-        UI_Main_Icon.SetActive(true);
     }
 
     /// <summary>
@@ -345,20 +327,6 @@ public class MotionEvent_Teeth : Motion_Event
     }
 
     /// <summary>
-    /// 로딩 화면 이후 해당 함수 실행
-    /// </summary>
-    /// <param name="_fun"></param>
-    /// <returns></returns>
-    IEnumerator Loading_Animation(TypeVoid _fun)
-    {
-        UI_Loding.GetComponent<DOTweenAnimation>().DORewind();
-        UI_Loding.GetComponent<DOTweenAnimation>().DOPlay();
-        yield return new WaitForSeconds(4f);
-
-        _fun();
-    }
-
-    /// <summary>
     /// 파티클 거품 생성
     /// </summary>
     /// <param name="num"></param>
@@ -372,11 +340,6 @@ public class MotionEvent_Teeth : Motion_Event
         Wait.Remove(num);
     }
 
-    //IEnumerator ReadyStart()
-    //{
-    //    RSAnim.DOPlay();
-    //    yield return new WaitForSeconds(3f);
-    //}
 
     private void RemoveEffectCreate(int num)
     {
@@ -540,6 +503,8 @@ public class MotionEvent_Teeth : Motion_Event
 
     override public void FixedEvent_Off(int _num)
     {
+        if (!UserActivate)
+            return;
         if (_num >= UI_ButtonCount)
         {
             NoClick_Amount(_num);
@@ -550,24 +515,4 @@ public class MotionEvent_Teeth : Motion_Event
         }
     }
 
-    override public void MoveEvent_On(int _num)
-    {
-        //if (!Attack[_num])
-        //{
-        //    //StartCoroutine(MoveTarget_Attacks(_num));
-        //    //ImageEvent_On(_num);
-        //}
-    }
-    override public void MoveEvent_Off(int _num)
-    {
-        //ImageEvent_Off(_num);
-    }
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
-    override public void RandomEvent_Off(int _num)
-    {
-
-    }
 }

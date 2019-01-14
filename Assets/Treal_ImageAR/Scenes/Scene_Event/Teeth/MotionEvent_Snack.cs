@@ -68,7 +68,6 @@ public class MotionEvent_Snack : Motion_Event
 
     int UI_ButtonCount = 2;
     bool isPlay;
-    public CMotionTrackingManager MotionTrackingMgr;
 
     /*#########################################################################################################################*/
     //윈도우 테스트용
@@ -156,6 +155,7 @@ public class MotionEvent_Snack : Motion_Event
 
     private void Start()
     {
+        SceneChange();
         ButtonPushCheck = false;
         SoundMgr = GetComponent<SoundManager>();
         InitObject();
@@ -189,10 +189,25 @@ public class MotionEvent_Snack : Motion_Event
         SoundMgr.OutSound();
         OutBottom.text = "우리 이제 나가서 놀지 않을래?";
         yield return new WaitForSeconds(2f);
-        popup.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        Application.Quit();
+
+        if(CMotionTrackingManager.isNomal)
+        {
+            isPlay = false;
+            Loading.LoadScene("GameTeeth_MainGame");
+        }
+        else
+        {
+            popup.SetActive(true);
+            yield return new WaitForSeconds(4f);
+            isPlay = false;
+            Loading.LoadScene("GameTeeth_MAIN");
+        }
+
+
+
     }
+
+
 
     void NewSnack(int num)
     {
@@ -394,20 +409,4 @@ public class MotionEvent_Snack : Motion_Event
         }
     }
 
-    override public void MoveEvent_On(int _num)
-    {
-
-    }
-    override public void MoveEvent_Off(int _num)
-    {
-
-    }
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
-    override public void RandomEvent_Off(int _num)
-    {
-
-    }
 }

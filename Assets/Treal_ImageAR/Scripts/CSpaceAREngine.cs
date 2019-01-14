@@ -167,7 +167,7 @@ public class CSpaceAREngine
         Debug.Log("UNITY: CSpaceAREngine: SetMotionTracker() ");
 
         isMOTIONTRACKER_WORKING = true;
-        Debug.Log("MotionTracker.Instance.isMotionDetectorWorking: " + MotionTracker.Instance.isMotionDetectorWorking);
+
         if (MotionTracker.Instance.isMotionDetectorWorking == false)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE

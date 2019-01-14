@@ -7,32 +7,37 @@ public class TCamScript : MonoBehaviour
 {
     public static TCamScript Instance;
 
-    //public int rearWidth = 1280, rearHeight = 720, rearFps = 30;
-    //public int frontWidth = 1280, frontHeight = 720, frontFps = 30;
-    //public int captureWidth = 2560, captureHeight = 1440;
     public int rearWidth, rearHeight, rearFps;
     public int frontWidth, frontHeight, frontFps;
     public int captureWidth, captureHeight;
+
     TCam tcam;
-    bool front = true;
+    bool front = false;
     private int _framewidth, _frameheight, fps;
 
-	// jiyoun_choi@sk.com 181014: added for exposure control
-	public Slider mExposureSlider;
-	// _END jiyoun_choi@sk.com 181014: added for exposure control
+    // jiyoun_choi@sk.com 181014: added for exposure control
+    public Slider mExposureSlider;
+    // _END jiyoun_choi@sk.com 181014: added for exposure control
 
+    void FindTCam()
+    {
+        Transform temp = GameObject.FindWithTag("TCam").transform;
+        if(temp != null)
+        mExposureSlider = temp.GetChild(2).GetChild(2).GetComponent<Slider>();
+    }
 
     void Awake()
     {
         Debug.Log("UNITY: TCamScript: Awake()");
         TCamScript.Instance = this;
+        FindTCam();
     }
 
 
     void Start()
     {
         Debug.Log("UNITY: TCamScript: Start()");
-		mExposureSlider.gameObject.SetActive (false);
+        mExposureSlider.gameObject.SetActive(false);
 
         tcam = TCam.Instance;
         tcam.Init(TCam.NativeCameraHardware.AUTO, TCam.RenderMethod.NATIVE_GL_SHADER_POST_RENDER);
@@ -45,48 +50,51 @@ public class TCamScript : MonoBehaviour
 
         front = !front;
 
-		tcam.mExposureToggle.isOn = false;
+        tcam.mExposureToggle.isOn = false;
 
         StopPreview();
         StartPreview();
     }
 
 
-	// jiyoun_choi@sk.com 181014: added for exposure control
-	// init Exposure Control Value
-	public void setExposureValue( Boolean flag )
-	{
+    // jiyoun_choi@sk.com 181014: added for exposure control
+    // init Exposure Control Value
+    public void setExposureValue(Boolean flag)
+    {
 
-		if (flag == true) {
-			mExposureSlider.gameObject.SetActive (true);
+        if (flag == true)
+        {
+            mExposureSlider.gameObject.SetActive(true);
 
-			float max = tcam.GetMaxExposure ();
-			float min = tcam.GetMinExposure ();
+            float max = tcam.GetMaxExposure();
+            float min = tcam.GetMinExposure();
 
-			tcam.SetExposure ((max + min) / 2);
-			tcam.SetExposureMode (TCamParameters.ExposureMode.ON);
-			tcam.SetFlashMode(TCamera.TCamParameters.FlashMode.OFF);
+            tcam.SetExposure((max + min) / 2);
+            tcam.SetExposureMode(TCamParameters.ExposureMode.ON);
+            tcam.SetFlashMode(TCamera.TCamParameters.FlashMode.OFF);
 
-			mExposureSlider.maxValue = max;
-			mExposureSlider.minValue = min;
+            mExposureSlider.maxValue = max;
+            mExposureSlider.minValue = min;
 
-			mExposureSlider.value = (mExposureSlider.maxValue + mExposureSlider.minValue) / 2.0f;
-		} else {
-			mExposureSlider.value = 0.0f;
-			onExposureValueChanged ();
+            mExposureSlider.value = (mExposureSlider.maxValue + mExposureSlider.minValue) / 2.0f;
+        }
+        else
+        {
+            mExposureSlider.value = 0.0f;
+            onExposureValueChanged();
 
-			mExposureSlider.gameObject.SetActive (false);
-		}
-	}
+            mExposureSlider.gameObject.SetActive(false);
+        }
+    }
 
-	// Setting Exposure Value
-	public void onExposureValueChanged()
-	{
-		tcam.SetExposureMode (TCamParameters.ExposureMode.CUSTOM);
-		TCamPlugin.SetExposure (mExposureSlider.value);
-		Debug.Log ("UNITY: TCamScript: Setted Exposure value = " + mExposureSlider.value);		
-	}
-	// _END jiyoun_choi@sk.com 181014: added for exposure control
+    // Setting Exposure Value
+    public void onExposureValueChanged()
+    {
+        tcam.SetExposureMode(TCamParameters.ExposureMode.CUSTOM);
+        TCamPlugin.SetExposure(mExposureSlider.value);
+        Debug.Log("UNITY: TCamScript: Setted Exposure value = " + mExposureSlider.value);
+    }
+    // _END jiyoun_choi@sk.com 181014: added for exposure control
 
     void StartPreview()
     {
@@ -136,18 +144,21 @@ public class TCamScript : MonoBehaviour
         return _frameheight;
     }
 
-    public void OnApplicationPause(bool pauseStatus)
+    void OnApplicationPause(bool pauseStatus)
     {
         Debug.Log("UNITY: CTCamCameraPreviewCtrl: OnApplicationPause() flag = " + pauseStatus);
 
-		try {
-			if (tcam == null) {
-				return;
-			}
-		}       
-		catch (NullReferenceException ex) {
-			Debug.Log("UNITY: CTCamCameraPreviewCtrl: OnApplicationPause(): Null _enigne.");
-		}
+        try
+        {
+            if (tcam == null)
+            {
+                return;
+            }
+        }
+        catch (NullReferenceException ex)
+        {
+            Debug.Log("UNITY: CTCamCameraPreviewCtrl: OnApplicationPause(): Null _enigne.");
+        }
 
         if (pauseStatus)
         {

@@ -11,10 +11,6 @@ namespace TCamera {
 	/// </summary>
 	public class TCam : MonoBehaviour
 	{
-        static public int State = 0;
-/// <summary>
-/// ///////////////////////////////////////////////////////
-/// </summary>
 		public const string TAG = "TCam";
 
 		public const bool DEBUG = true;
@@ -43,6 +39,7 @@ namespace TCamera {
 				return mInstance;
 			}
 		}
+
 		static TCamDevice[] mDevices;  
 
 		/// <summary>
@@ -54,25 +51,22 @@ namespace TCamera {
                 Debug.Log ("UNITY: TCam: get - Devices");
 				if (mDevices == null) {
 					string devicesstr = TCamPlugin.GetDevices ();
-                    Debug.Log(devicesstr);
-                    if (String.IsNullOrEmpty (devicesstr)) {
+					if (String.IsNullOrEmpty (devicesstr)) {
 						return null;
 					}
 
 					String[] deviceArray = devicesstr.Split (';');
 					mDevices = new TCamDevice[deviceArray.Length];
 					for (int i = 0; i < deviceArray.Length; i++) {
-                        
 						String[] deviceinfo = deviceArray [i].Split (':');
-                            TCamDevice device = new TCamDevice();
-                            device.m_Name = deviceinfo[0];
-                            device.m_IsFrontFacing = deviceinfo[1].Equals("1") ? true : false;
-                            mDevices[i] = device;
-
+						TCamDevice device = new TCamDevice ();
+						device.m_Name = deviceinfo [0];
+						device.m_IsFrontFacing = deviceinfo [1].Equals ("1") ? true : false;
+						mDevices [i] = device;
 					}
 				}
 
-                return mDevices;
+				return mDevices;
 			}
 		}
 
@@ -123,9 +117,7 @@ namespace TCamera {
 		void Start()
 		{
             Debug.Log ("UNITY: TCam: Start()");
-
-
-        }
+		}
 
 		void Update()
 		{
@@ -225,7 +217,7 @@ namespace TCamera {
 				mRenderer.PostRender ();
 		}
 
-		public void OnApplicationPause(bool pauseStatus)
+		void OnApplicationPause(bool pauseStatus)
 		{
             Debug.Log ("UNITY: TCam: OnApplicationPause() state = " + pauseStatus);
 
@@ -233,7 +225,7 @@ namespace TCamera {
 			if (isApplicationPaused == true) {
 				TCamPlugin.OnPause ();
 			} else {
-				TCamPlugin.OnResume ();
+//				TCamPlugin.OnResume ();
 			}
 		}
 
@@ -378,7 +370,6 @@ namespace TCamera {
             {
                 if (Devices.Length == 1)
                 {
-                    Devices[0].m_IsFrontFacing = front;
                     mPreviewDevice = Devices[0];
                 }
                 else
@@ -978,9 +969,7 @@ namespace TCamera {
 		/// <returns>카메라 센서 orientation</returns>
 		public int GetSensorOrientation()
 		{
-          
-
-            if (mSensorOrientation == INVALID) {
+			if (mSensorOrientation == INVALID) {
 				mSensorOrientation = TCamPlugin.GetSensorOrientation ();
 			}
 			return mSensorOrientation;

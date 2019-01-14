@@ -40,49 +40,11 @@ public class MotionEvent_01 : Motion_Event
         }
     }
 
-    override public void MoveEvent_On(int _num)
-    {
-        switch (_num)
-        {
-            case 0:
-                {
-                    if (Score > 0)
-                    {
-                        Score -= 10;
-                    }
-
-                }
-                break;
-            case 1:
-                {
-                    if (Score > 0)
-                    {
-                        Score -= 10;
-                    }
-
-                }
-                break;
-        }
-    }
-
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
 
     override public void FixedEvent_Off(int _num)
     {
 
     }
 
-    override public void MoveEvent_Off(int _num)
-    {
-
-    }
-
-    override public void RandomEvent_Off(int _num)
-    {
-
-    }
 
 }

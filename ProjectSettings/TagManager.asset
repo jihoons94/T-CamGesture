@@ -14,6 +14,8 @@ TagManager:
   - Effects
   - Treal_MotionMgr
   - mTrealPreviewObj
+  - TCam
+  - MotionTrackingMgr
   layers:
   - Default
   - TransparentFX

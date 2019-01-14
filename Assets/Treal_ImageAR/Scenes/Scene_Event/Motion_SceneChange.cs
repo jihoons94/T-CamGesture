@@ -25,28 +25,9 @@ public class Motion_SceneChange : Motion_Event
         Button[_num].SetActive(false);
     }
 
-    override public void MoveEvent_On(int _num)
-    {
-
-    }
-
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
 
     override public void FixedEvent_Off(int _num)
     {
         Button[_num].SetActive(true);
-    }
-
-    override public void MoveEvent_Off(int _num)
-    {
-
-    }
-
-    override public void RandomEvent_Off(int _num)
-    {
-
     }
 }

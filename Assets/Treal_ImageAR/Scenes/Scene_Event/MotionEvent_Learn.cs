@@ -287,44 +287,5 @@ public class MotionEvent_Learn : Motion_Event
 
     }
 
-    override public void MoveEvent_On(int _num)
-    {
-        if (IsPlaying)
-        {
-            switch (_num)
-            {
-                case 0:
-                    {
-                        Path_Start();
-                    }
-                    break;
-            }
-        }
-    }
 
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
-
-
-    override public void MoveEvent_Off(int _num)
-    {
-        if (IsPlaying)
-        {
-            switch (_num)
-            {
-                case 0:
-                    {
-                        //Move_Pause();
-                    }
-                    break;
-            }
-        }
-    }
-
-    override public void RandomEvent_Off(int _num)
-    {
-
-    }
 }

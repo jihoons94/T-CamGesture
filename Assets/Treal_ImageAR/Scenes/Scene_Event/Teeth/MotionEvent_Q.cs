@@ -32,7 +32,6 @@ public class MotionEvent_Q : Motion_Event
     public GameObject[] Button_ = new GameObject[2];
     int UI_ButtonCount = 2;
     bool isPlay;
-    public CMotionTrackingManager MotionTrackingMgr;
 
     public Text topText;
     public Text bottomText;
@@ -118,6 +117,7 @@ public class MotionEvent_Q : Motion_Event
 
     private void Start()
     {
+        SceneChange();
         CanvsOn();
         State = 0;
         isPlay = false;
@@ -177,9 +177,21 @@ public class MotionEvent_Q : Motion_Event
             bottomText.text = "대단해!!";
             isPlay = false;
             yield return new WaitForSeconds(4f);
-            Popup.SetActive(true);
-            yield return new WaitForSeconds(5f);
-            Application.Quit();
+
+            if (CMotionTrackingManager.isNomal)
+            {
+                Popup.SetActive(true);
+                yield return new WaitForSeconds(4f);
+                isPlay = false;
+                Loading.LoadScene("GameTeeth_MAIN");
+            }
+            else
+            {
+                Popup.SetActive(true);
+                yield return new WaitForSeconds(4f);
+                isPlay = false;
+                Loading.LoadScene("GameTeeth_MAIN");
+            }
         }
 
     }
@@ -316,20 +328,4 @@ public class MotionEvent_Q : Motion_Event
         }
     }
 
-    override public void MoveEvent_On(int _num)
-    {
-
-    }
-    override public void MoveEvent_Off(int _num)
-    {
-
-    }
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
-    override public void RandomEvent_Off(int _num)
-    {
-
-    }
 }

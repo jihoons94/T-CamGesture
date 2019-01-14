@@ -197,9 +197,7 @@ namespace TCamera {
 
 			mTCam.GetPreviewResolution (out previewWidth, out previewHeight);
 
-            //previewWidth = -previewWidth;
-
-            bool portrait = ((mSensorOrientation == 0 || mSensorOrientation == 180) && (mDisplayRotation == 90 || mDisplayRotation == 270))
+			bool portrait = ((mSensorOrientation == 0 || mSensorOrientation == 180) && (mDisplayRotation == 90 || mDisplayRotation == 270))
 				|| ((mSensorOrientation == 90 || mSensorOrientation == 270) && (mDisplayRotation == 0 || mDisplayRotation == 180));
 			// [ fix previous orientation's screen width, height
 			if (portrait) {
@@ -236,7 +234,7 @@ namespace TCamera {
 				fullSize = baseSize * (heightScale / widthScale);
 			}
 
-            ScaleScreen(-previewWidth, previewHeight);
+            ScaleScreen(previewWidth, previewHeight);
             //mPreviewCamera.orthographicSize = scale == TCamera.TCamParameters.Scale.FIT ? fitSize : fullSize;
             mPreviewCamera.projectionMatrix = Matrix4x4.Ortho(-previewWidth / 2, previewWidth / 2, -previewHeight / 2, previewHeight / 2, 0, 1000);
         }
@@ -284,6 +282,7 @@ namespace TCamera {
 		{
 			int width = mPreviewWidth / 4;
 			int height = width * mPreviewHeight / mPreviewWidth;
+
 			mMiniPreviewScreen.localScale = new Vector3 (width, height, 1);
 			//Debug.Log ("TCamRenderer ScaleMiniPreviewScreen width=" + width + " height=" + height);
 		}

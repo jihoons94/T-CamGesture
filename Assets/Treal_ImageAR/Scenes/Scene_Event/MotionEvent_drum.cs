@@ -74,24 +74,5 @@ public class MotionEvent_drum : Motion_Event
         }
     }
 
-    override public void MoveEvent_On(int _num)
-    {
 
-    }
-
-    override public void RandomEvent_On(int _num)
-    {
-
-    }
-
-    
-    override public void MoveEvent_Off(int _num)
-    {
-
-    }
-
-    override public void RandomEvent_Off(int _num)
-    {
-
-    }
 }

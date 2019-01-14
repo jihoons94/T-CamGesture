@@ -231,7 +231,6 @@ namespace TCamera {
 		{
 			if (mTCamPluginJO == null) {
 				mTCamPluginJO = new AndroidJavaObject ("com.skt.tcam.TCamPlugin");
-
 			}
 		}
 
