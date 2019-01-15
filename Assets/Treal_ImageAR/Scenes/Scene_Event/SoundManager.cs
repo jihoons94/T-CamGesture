@@ -31,6 +31,8 @@ public class SoundManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         MySource = GetComponent<AudioSource>();
+        if (MySource == null)
+            Debug.Log("오디소소스 찾기실패");
 	}
 
     public void StartBGM()
@@ -59,6 +61,11 @@ public class SoundManager : MonoBehaviour {
     public void SetSoundVolume(float nValue)
     {
         BGM.volume = nValue;
+    }
+
+    public bool AudioSourceCheck()
+    {
+        return MySource.isPlaying;
     }
 
 

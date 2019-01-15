@@ -75,20 +75,20 @@ public class MotionEvent_Teeth : Motion_Event
         GameStart();
     }
 
-    private void Update()
-    {
-        if (Click)
-        {
-            FixedEvent_On(2);
+    //private void Update()
+    //{
+    //    if (Click)
+    //    {
+    //        FixedEvent_On(2);
 
-        }
+    //    }
 
-        else
-        {
-            NoClick_Amount(2);
+    //    else
+    //    {
+    //        NoClick_Amount(2);
 
-        }
-    }
+    //    }
+    //}
     /*#########################################################################################################################*/
 
 
@@ -166,10 +166,13 @@ public class MotionEvent_Teeth : Motion_Event
             CreatePoint.Add(CP.GetChild(i));
         }
     }
+    private void Awake()
+    {
+        SceneChange();
+    }
 
     private void Start()
     {
-        SceneChange();
         CanvsOn();
         SoundMgr = GetComponent<SoundManager>();
         UserActivate = true;
@@ -219,7 +222,6 @@ public class MotionEvent_Teeth : Motion_Event
         StartCoroutine(WaitCreate());
         UserActivate = false;
         SoundMgr.SetSoundVolume(1f);
-        SoundMgr.AudioPlay(SoundManager.SoundName.Answer);
 
         StartCoroutine(GameStartEventS());
     }
@@ -231,7 +233,7 @@ public class MotionEvent_Teeth : Motion_Event
         UserActivate = false;
         help.SetActive(false);
         UI_Score.SetActive(false);
-        for (int i = UI_ButtonCount; i < MotionTrackingMgr.fixed_Buttons.Count; i++)
+        for (int i = UI_ButtonCount; i < 7; i++)
         {
             MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(false);
         }
@@ -293,7 +295,7 @@ public class MotionEvent_Teeth : Motion_Event
     /// </summary>
     void SetNewButtonPosition()
     {
-        for (int i = UI_ButtonCount; i < MotionTrackingMgr.numOfixed; i++)
+        for (int i = UI_ButtonCount; i < 7; i++)
         {
             if (!MotionTrackingMgr.fixed_Buttons[i].gameObject.activeSelf)
             {

@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class MotionEvent_Main : Motion_Event
 {
+    public GameObject GameOut;
     public GameObject Window_Canvas;
     private float UISubmitSpeed = 10;
     private float OtherSubmitSpeed = 5;
+    public SoundManager SoundMgr;
 
     byte WindowSetUp=0;
 
@@ -56,7 +58,8 @@ public class MotionEvent_Main : Motion_Event
 
     private void Update()
     {
-        switch(WindowSetUp)
+        
+        switch (WindowSetUp)
         {
             case 0:
                 {
@@ -115,10 +118,14 @@ public class MotionEvent_Main : Motion_Event
         }
     }
     //-----------------------------------------------------------------------------------------------------------------
+    private void Awake()
+    {
+        SceneChange();
+    }
 
     private void Start()
     {
-        SceneChange();
+        
         MotionTrackingMgr = GameObject.FindWithTag("MotionTrackingMgr").GetComponent<CMotionTrackingManager>();
         CanvsOn();
         if(MotionTrackingMgr != null)
@@ -132,9 +139,10 @@ public class MotionEvent_Main : Motion_Event
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
 
-
+        
         if (temp.Amount >= temp.MaxAmount)
         {
+            
             temp.Amount = 0;
             return true;
         }
@@ -155,10 +163,20 @@ public class MotionEvent_Main : Motion_Event
         else
             return false;
     }
+    IEnumerator GameOutEvent(string Sname)
+    {
+        SoundMgr.AudioPlay(SoundManager.SoundName.Answer);
+        
+        GameOut.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        Loading.LoadScene(Sname);
+    }
 
 
     override public void FixedEvent_On(int _num)
     {
+
+        
         if (!isPlay)
             return;
 
@@ -170,12 +188,14 @@ public class MotionEvent_Main : Motion_Event
 
         if (Click_Amount(_num))
         {
-            switch(_num)
+            isPlay = false;
+            switch (_num)
             {
                 case 0:
                     {
                         CMotionTrackingManager.isNomal = true;
-                        Loading.LoadScene("GameTeeth_Snack");
+                        //SceneManager.LoadScene("GameTeeth_Snack");
+                        StartCoroutine(GameOutEvent("GameTeeth_Snack"));
                     }
                     break;
                 case 1:
@@ -186,19 +206,20 @@ public class MotionEvent_Main : Motion_Event
                 case 2:
                     {
                         CMotionTrackingManager.isNomal = false;
-                        Loading.LoadScene("GameTeeth_Snack");
+                        StartCoroutine(GameOutEvent("GameTeeth_Snack"));
                     }
                     break;
                 case 3:
                     {
                         CMotionTrackingManager.isNomal = false;
-                        Loading.LoadScene("GameTeeth_MainGame");
+                        StartCoroutine(GameOutEvent("GameTeeth_MainGame"));
+                        //SceneManager.LoadScene("GameTeeth_MainGame");
                     }
                     break;
                 case 4:
                     {
                         CMotionTrackingManager.isNomal = false;
-                        Loading.LoadScene("GameTeeth_Q");
+                        StartCoroutine(GameOutEvent("GameTeeth_Q"));
                     }
                     break;
             }

@@ -59,6 +59,7 @@ namespace Treal.BrowserCore
         public static bool isNomal;
        // public float[] Amount;
         public Motion_Event Event;
+        private bool _isfirst = false;
 
 
         public bool Working
@@ -78,7 +79,10 @@ namespace Treal.BrowserCore
 
         public void FindandSet(String _Tagname)
         {
+            Debug.Log("FindObject()");
+            _working = false;
             statIndx = 0;
+
             Random_movingObj.Clear();
             fixed_Buttons.Clear();
             Background.Clear();
@@ -117,12 +121,14 @@ namespace Treal.BrowserCore
             numOfObj = fixed_Buttons.Count + Random_movingObj.Count;
             numOfixed = fixed_Buttons.Count;
 
-            _detector = MotionTracker.Instance;
-
-            if (!IsEditor)
-                _detector.CreateMotionTracker(1.0f, numOfObj);
+            if (!_isfirst)
+            {
+                _detector = MotionTracker.Instance;
+                _detector.CreateMotionTracker(1.0f, 10);
+            }
 
             CMotionTrackingManager.Instance = this;
+
             pts = new Vector2[numOfObj];
             result = new Vector2[numOfObj];
             objLabel = new int[numOfObj];
@@ -134,8 +140,8 @@ namespace Treal.BrowserCore
         {
             Debug.Log("CMotionTrackingManager: Awake()");
             FindandSet("MotionEvent");
+            _isfirst = true;
 
-           
             // This object remains until application exist.
             DontDestroyOnLoad(gameObject);
         }
@@ -208,6 +214,12 @@ namespace Treal.BrowserCore
             _detector.Start();
         }
 
+        public void ResumeMotionDetector()
+        {
+            _working = true;
+            _detector.Resume();
+        }
+
         void Update()
         {
             if (_working)
@@ -260,9 +272,6 @@ namespace Treal.BrowserCore
         public void Random_position(int num)
         {
             int n = num;
-
-            Debug.Log("랜덤 호출");
-            Debug.Log(n);
             pts[n].x = UnityEngine.Random.Range(objWidth[n], previewWidth - objWidth[n]);
             pts[n].y = UnityEngine.Random.Range(objHeight[n]+50, previewHeight - objHeight[n]);
             _detector.SetTrackRoI(pts[n].x, pts[n].y, objWidth[n], objHeight[n], objLabel[n]);

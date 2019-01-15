@@ -114,10 +114,12 @@ public class MotionEvent_Q : Motion_Event
         }
     }
     /*#########################################################################################################################*/
-
-    private void Start()
+    private void Awake()
     {
         SceneChange();
+    }
+    private void Start()
+    {
         CanvsOn();
         State = 0;
         isPlay = false;

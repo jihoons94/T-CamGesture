@@ -112,50 +112,54 @@ public class MotionEvent_Snack : Motion_Event
         Click = false;
     }
 
-    private void Update()
-    {
+    //private void Update()
+    //{
 
-        if (Click)
-        {
-            switch (num)
-            {
-                case 0:
-                    {
-                        NoClick_Amount(3);
-                        NoClick_Amount(4);
-                        FixedEvent_On(2);
-                    }
-                    break;
-                case 1:
-                    {
-                        NoClick_Amount(2);
-                        NoClick_Amount(4);
-                        FixedEvent_On(3);
-                    }
-                    break;
-                case 2:
-                    {
-                        NoClick_Amount(2);
-                        NoClick_Amount(3);
-                        FixedEvent_On(4);
-                    }
-                    break;
-            }
-        }
+    //    if (Click)
+    //    {
+    //        switch (num)
+    //        {
+    //            case 0:
+    //                {
+    //                    NoClick_Amount(3);
+    //                    NoClick_Amount(4);
+    //                    FixedEvent_On(2);
+    //                }
+    //                break;
+    //            case 1:
+    //                {
+    //                    NoClick_Amount(2);
+    //                    NoClick_Amount(4);
+    //                    FixedEvent_On(3);
+    //                }
+    //                break;
+    //            case 2:
+    //                {
+    //                    NoClick_Amount(2);
+    //                    NoClick_Amount(3);
+    //                    FixedEvent_On(4);
+    //                }
+    //                break;
+    //        }
+    //    }
 
-        //else
-        //{
-        //    NoClick_Amount(2);
-        //    NoClick_Amount(3);
-        //    NoClick_Amount(4);
-        //}
-    }
+    //    //else
+    //    //{
+    //    //    NoClick_Amount(2);
+    //    //    NoClick_Amount(3);
+    //    //    NoClick_Amount(4);
+    //    //}
+    //}
     /*#########################################################################################################################*/
+    private void Awake()
+    {
+        SceneChange();
+    }
 
 
     private void Start()
     {
-        SceneChange();
+        
         ButtonPushCheck = false;
         SoundMgr = GetComponent<SoundManager>();
         InitObject();
@@ -236,7 +240,6 @@ public class MotionEvent_Snack : Motion_Event
 
     void Snackyamyam(string SnackName)
     {
-        Debug.Log(SnackName);
         switch (SnackName)
         {
             case "Snack01":

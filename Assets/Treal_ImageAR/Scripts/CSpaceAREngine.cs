@@ -162,6 +162,32 @@ public class CSpaceAREngine
 		}
 	}
 
+    private void SetMotionDetectorResume()
+    {
+        Debug.Log("UNITY: CSpaceAREngine: SetMotionTracker() ");
+
+        isMOTIONTRACKER_WORKING = true;
+
+        if (MotionTracker.Instance.isMotionDetectorWorking == false)
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            CMotionTrackingManager.Instance.SetCameraParam(_frameWidth, _frameHeight, IMAGE_FORMAT.RGBA, IMAGE_FLIP.NO_FLIP);
+#else
+            CMotionTrackingManager.Instance.SetCameraParam(_frameWidth, _frameHeight, IMAGE_FORMAT.GRAYSCALE, IMAGE_FLIP.BOTH_FLIP);
+#endif
+            CMotionTrackingManager.Instance.ResumeMotionDetector();
+        }
+        else
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            CMotionTrackingManager.Instance.SetCameraParam(_frameWidth, _frameHeight, IMAGE_FORMAT.RGBA, IMAGE_FLIP.NO_FLIP);
+#else
+            CMotionTrackingManager.Instance.SetCameraParam(_frameWidth, _frameHeight, IMAGE_FORMAT.GRAYSCALE, IMAGE_FLIP.BOTH_FLIP);
+#endif
+            CMotionTrackingManager.Instance.ResumeMotionDetector();
+        }
+    }
+
     private void SetMotionDetector()
     {
         Debug.Log("UNITY: CSpaceAREngine: SetMotionTracker() ");
@@ -274,7 +300,7 @@ public class CSpaceAREngine
         {
             if (!isMOTIONTRACKER_WORKING)
             {
-                SetMotionDetector();
+                SetMotionDetectorResume();
             }
         }
     }
