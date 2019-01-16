@@ -2324,6 +2324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MotionTrackingMgr: {fileID: 0}
+  GameIn: {fileID: 1269306362}
   GameOut: {fileID: 200278932}
   Window_Canvas: {fileID: 36563952}
   SoundMgr: {fileID: 699982134}
@@ -3754,7 +3755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1269306363
 RectTransform:
   m_ObjectHideFlags: 0

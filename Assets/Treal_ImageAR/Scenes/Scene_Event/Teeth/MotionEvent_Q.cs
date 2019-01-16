@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class MotionEvent_Q : Motion_Event
 {
+
+    public GameObject DimTip;
     public GameObject ClearEffect;
     bool ButtonPushCheck;
     SoundManager SoundMgr;
@@ -17,7 +19,6 @@ public class MotionEvent_Q : Motion_Event
 
     public GameObject DoneEffect;
     public GameObject NotEffect;
-    public GameObject Help_Text;
     int State;
     int QState;
     int MaxState = 5;
@@ -35,7 +36,7 @@ public class MotionEvent_Q : Motion_Event
 
     public Text topText;
     public Text bottomText;
-    int[] answer = {1,0,1,1,0};
+    int[] answer = { 1, 0, 1, 1, 0 };
 
     public string[] topS = {
         "열심히 공부했으니 우리 같이 퀴즈를 풀어볼까?",
@@ -123,30 +124,34 @@ public class MotionEvent_Q : Motion_Event
         CanvsOn();
         State = 0;
         isPlay = false;
-        Help_Text.SetActive(false);
         StartCoroutine(StartEvent());
         SoundMgr = GetComponent<SoundManager>();
         ButtonPushCheck = false;
+    }
+
+    void DimTipEvent(bool state)
+    {
+        DimTip.SetActive(state);
+        MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(state);
     }
 
     IEnumerator StartEvent()
     {
         topText.text = topS[State];
         bottomText.text = "";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         bottomText.text = bottomS[State];
         State++;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         topText.text = topS[State];
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         bottomText.text = bottomS[State];
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         topText.text = "그럼 시작한다?";
         bottomText.text = "";
-       yield return new WaitForSeconds(2f);
-        NextQuizSet();
-        yield return new WaitForSeconds(1f);
-        Help_Text.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        DimTipEvent(true);
+
     }
 
     IEnumerator Stage_N()
@@ -165,7 +170,7 @@ public class MotionEvent_Q : Motion_Event
             bottomText.text = "";
             yield return new WaitForSeconds(2f);
             NextQuizSet();
-            
+
         }
         else
         {
@@ -204,14 +209,13 @@ public class MotionEvent_Q : Motion_Event
         buttonBack2.SetActive(false);
         MotionTrackingMgr.fixed_Buttons[2].gameObject.SetActive(false);
         MotionTrackingMgr.fixed_Buttons[3].gameObject.SetActive(false);
-        Help_Text.SetActive(false);
     }
 
     void NextQuizSet()
     {
         SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         State++;
-        if(QState< MaxState)
+        if (QState < MaxState)
         {
             topText.text = topS[State];
             bottomText.text = bottomS[State];
@@ -225,9 +229,9 @@ public class MotionEvent_Q : Motion_Event
         isPlay = true;
     }
 
-   bool AnswerCheck(int nAnswer)
+    bool AnswerCheck(int nAnswer)
     {
-        return (answer[QState] == nAnswer? true : false);
+        return (answer[QState] == nAnswer ? true : false);
     }
 
     bool NoClick_Amount(int num)
@@ -255,15 +259,42 @@ public class MotionEvent_Q : Motion_Event
         ButtonPushCheck = false;
     }
 
+    bool UI_NoClick_Amount(int num)
+    {
+        Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount -= Time.deltaTime;
+        if (temp.Amount <= 0)
+        {
+            temp.Amount = 0;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool UI_Click_Amount(int num)
+    {
+        Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount += Time.deltaTime * UISubmitSpeed;
+
+        if (temp.Amount >= temp.MaxAmount)
+        {
+            temp.Amount = 0;
+            return true;
+        }
+        else
+            return false;
+    }
+
     bool Click_Amount(int num)
     {
-        if(!ButtonPushCheck)
+        if (!ButtonPushCheck)
             StartCoroutine(ButtonPushDelay());
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
 
 
-        if(!button[num-2].tween.IsPlaying())
+        if (!button[num - 2].tween.IsPlaying())
         {
             button[num - 2].DORewind();
             button[num - 2].DORestart();
@@ -283,12 +314,12 @@ public class MotionEvent_Q : Motion_Event
             temp2.Amount = 0;
 
             bool result = AnswerCheck(num - 2);
-            if(result)
+            if (result)
             {
                 QState++;
                 Instantiate(DoneEffect).transform.position = MotionTrackingMgr.fixed_Buttons[num].position;
                 StartCoroutine(Stage_N());
-                
+
             }
             else
             {
@@ -304,16 +335,35 @@ public class MotionEvent_Q : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
-        if (!isPlay)
-            return;
+
 
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
         if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
             if (_num >= UI_ButtonCount)
             {
+                if (!isPlay)
+                    return;
+
                 Click_Amount(_num);
             }
+            else
+            {
+                if (UI_Click_Amount(_num))
+                {
+                    if (_num == 0)
+                    {
+                        DimTipEvent(false);
+                        NextQuizSet();
+                    }
+                    else
+                    {
+                        isPlay = false;
+                        Loading.LoadScene("GameTeeth_MAIN");
+                    }
+                }
+            }
+
         }
     }
 
@@ -324,9 +374,9 @@ public class MotionEvent_Q : Motion_Event
 
         if (_num >= UI_ButtonCount)
         {
-            
+
             NoClick_Amount(_num);
-            
+
         }
     }
 

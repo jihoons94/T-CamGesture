@@ -159,7 +159,7 @@ public class MotionEvent_Snack : Motion_Event
 
     private void Start()
     {
-        
+
         ButtonPushCheck = false;
         SoundMgr = GetComponent<SoundManager>();
         InitObject();
@@ -179,11 +179,11 @@ public class MotionEvent_Snack : Motion_Event
 
     IEnumerator GameOver()
     {
-        
+
         Icon.SetActive(false);
         GameDoneEffect.SetActive(true);
         Help_Text.SetActive(false);
-        for (int i=0; i<Button_Snack.Length; i++)
+        for (int i = 0; i < Button_Snack.Length; i++)
         {
             Button_Snack[i].SetActive(false);
         }
@@ -194,7 +194,7 @@ public class MotionEvent_Snack : Motion_Event
         OutBottom.text = "우리 이제 나가서 놀지 않을래?";
         yield return new WaitForSeconds(2f);
 
-        if(CMotionTrackingManager.isNomal)
+        if (CMotionTrackingManager.isNomal)
         {
             isPlay = false;
             Loading.LoadScene("GameTeeth_MainGame");
@@ -215,7 +215,7 @@ public class MotionEvent_Snack : Motion_Event
 
     void NewSnack(int num)
     {
-        if(Count>10)
+        if (Count > 10)
         {
             StartCoroutine(GameOver());
         }
@@ -250,7 +250,7 @@ public class MotionEvent_Snack : Motion_Event
                         OutBottom.text = scenario_After[5];
                     else
                         OutBottom.text = scenario_After[1];
-                    
+
                 }
                 break;
 
@@ -363,19 +363,46 @@ public class MotionEvent_Snack : Motion_Event
             StartCoroutine(ButtonPushDelay());
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
-        
-            //temp.Activate = true;
-            if (!Wait.Contains(num))
-                StartCoroutine(BubbleEffect(num));
 
-        if (temp.Amount >= temp.MaxAmount-2)
+        //temp.Activate = true;
+        if (!Wait.Contains(num))
+            StartCoroutine(BubbleEffect(num));
+
+        if (temp.Amount >= temp.MaxAmount - 2)
         {
             temp.Amount = 0;
             RemoveEffectCreate(num);
             MotionTrackingMgr.Random_position(num);
             NewSnack(num - UI_ButtonCount);
-            
+
             Count++;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool UI_NoClick_Amount(int num)
+    {
+        Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount -= Time.deltaTime;
+        if (temp.Amount <= 0)
+        {
+            temp.Amount = 0;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool UI_Click_Amount(int num)
+    {
+        Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
+        temp.Amount += Time.deltaTime * UISubmitSpeed;
+
+        if (temp.Amount >= temp.MaxAmount)
+        {
+            temp.Amount = 0;
             return true;
         }
         else
@@ -384,18 +411,31 @@ public class MotionEvent_Snack : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
-        if (!isPlay)
-            return;
+
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
         if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
             if (_num >= UI_ButtonCount)
             {
+                if (!isPlay)
+                    return;
+
                 Click_Amount(_num);
             }
             else
             {
+                if (UI_Click_Amount(_num))
+                {
+                    if (_num == 0)
+                    {
 
+                    }
+                    else
+                    {
+                        isPlay = false;
+                        Loading.LoadScene("GameTeeth_MAIN");
+                    }
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MotionEvent_Main : Motion_Event
 {
+    public GameObject GameIn;
     public GameObject GameOut;
     public GameObject Window_Canvas;
     private float UISubmitSpeed = 10;
@@ -121,6 +122,7 @@ public class MotionEvent_Main : Motion_Event
     private void Awake()
     {
         SceneChange();
+        GameIn.SetActive(true);
     }
 
     private void Start()

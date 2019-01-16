@@ -120,10 +120,10 @@ namespace Treal.BrowserCore
 
             numOfObj = fixed_Buttons.Count + Random_movingObj.Count;
             numOfixed = fixed_Buttons.Count;
-
-            if (!_isfirst)
+            _detector = MotionTracker.Instance;
+            if (!_isfirst&&!IsEditor)
             {
-                _detector = MotionTracker.Instance;
+                
                 _detector.CreateMotionTracker(1.0f, 10);
             }
 
