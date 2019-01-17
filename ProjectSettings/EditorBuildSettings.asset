@@ -23,3 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Treal_ImageAR/Morph/Scenes/GameTeeth/GameTeeth_Snack.unity
     guid: 457fc2718d8213c42ad8dfb6e1933b33
+  - enabled: 1
+    path: Assets/Treal_ImageAR/Morph/Scenes/GameTeeth/GameTeeth_TeethLearn.unity
+    guid: 95b0cbc961c43f4428dab39b86b742e5

@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class MotionEvent_Q : Motion_Event
 {
+    public GameObject GameIn;
+    public GameObject GameOut;
+    public GameObject[] Dimobject;
     public GameObject[] Pens = new GameObject[2];
     public GameObject DimTip;
     public GameObject ClearEffect;
@@ -111,6 +114,7 @@ public class MotionEvent_Q : Motion_Event
     /*#########################################################################################################################*/
     private void Awake()
     {
+        GameIn.SetActive(true);
         SceneChange();
     }
     private void Start()
@@ -129,8 +133,30 @@ public class MotionEvent_Q : Motion_Event
         MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(state);
     }
 
+    IEnumerator DimTipEvent()
+    {
+        DimTip.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            Dimobject[i].SetActive(true);
+        }
+
+        yield return new WaitForSeconds(1f);
+        for (int z = 3; z < 6; z++)
+        {
+            Dimobject[z].SetActive(true);
+        }
+        yield return new WaitForSeconds(3f);
+        Dimobject[6].SetActive(true);
+        MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(true);
+
+    }
+
     IEnumerator StartEvent()
     {
+        yield return new WaitForSeconds(2f);
         topText.text = topS[State];
         bottomText.text = "";
         yield return new WaitForSeconds(1.5f);
@@ -144,7 +170,7 @@ public class MotionEvent_Q : Motion_Event
         topText.text = "그럼 시작한다?";
         bottomText.text = "";
         yield return new WaitForSeconds(2f);
-        DimTipEvent(true);
+        StartCoroutine(DimTipEvent());
 
     }
 
@@ -178,7 +204,7 @@ public class MotionEvent_Q : Motion_Event
             bottomText.text = "대단해!!";
             isPlay = false;
             yield return new WaitForSeconds(4f);
-
+            GameOut.SetActive(true);
             if (CMotionTrackingManager.isNomal)
             {
                 Popup.SetActive(true);

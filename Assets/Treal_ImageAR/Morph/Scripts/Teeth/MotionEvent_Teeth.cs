@@ -252,7 +252,7 @@ public class MotionEvent_Teeth : Motion_Event
         yield return new WaitForSeconds(2.0f);
         if (CMotionTrackingManager.isNomal)
         {
-            Loading.LoadScene("GameTeeth_Q");
+            Loading.LoadScene("GameTeeth_TeethLearn");
         }
         else
         {

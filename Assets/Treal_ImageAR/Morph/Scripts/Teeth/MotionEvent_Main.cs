@@ -197,7 +197,7 @@ public class MotionEvent_Main : Motion_Event
                     {
                         CMotionTrackingManager.isNomal = true;
                         //SceneManager.LoadScene("GameTeeth_Snack");
-                        StartCoroutine(GameOutEvent("GameTeeth_Snack"));
+                        StartCoroutine(GameOutEvent("GameTeeth_MainGame"));
                     }
                     break;
                 case 1:
@@ -208,7 +208,7 @@ public class MotionEvent_Main : Motion_Event
                 case 2:
                     {
                         CMotionTrackingManager.isNomal = false;
-                        StartCoroutine(GameOutEvent("GameTeeth_Snack"));
+                        StartCoroutine(GameOutEvent("GameTeeth_TeethLearn"));
                     }
                     break;
                 case 3:

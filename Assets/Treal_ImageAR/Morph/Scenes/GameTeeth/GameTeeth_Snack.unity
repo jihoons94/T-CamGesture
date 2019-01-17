@@ -8215,10 +8215,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rearWidth: 640
-  rearHeight: 360
+  rearHeight: 380
   rearFps: 30
   frontWidth: 640
-  frontHeight: 360
+  frontHeight: 380
   frontFps: 30
   captureWidth: 2560
   captureHeight: 1440
@@ -8570,7 +8570,6 @@ MonoBehaviour:
   Snack: {fileID: 1308301692}
   Wait: 
   Window_Canvas: {fileID: 111645956}
-  Help_Text: {fileID: 0}
   Effect: {fileID: 1696535569983134, guid: afdf52b71947b9042bae6f9c5b6cb476, type: 2}
   EffectPoint: {fileID: 1308301691}
   EatEffect: {fileID: 1078426441902866, guid: e385e5c250688c343bf26fbcd2ae57e1, type: 2}
@@ -8688,8 +8687,6 @@ MonoBehaviour:
   NextQ: {fileID: 0}
   Button: {fileID: 8300000, guid: d69331039902058409093f09ab2b9cbd, type: 3}
   Boomb: {fileID: 8300000, guid: 0e086c624e061604a9565e6e40beae86, type: 3}
-  popup: {fileID: 8300000, guid: cce86e8b3b142444a8f4303fd8174b44, type: 3}
-  Done: {fileID: 8300000, guid: 479094f88085aea4eb598671f6bc1be8, type: 3}
   BGM: {fileID: 1631305623}
 --- !u!1 &1025955185
 GameObject:

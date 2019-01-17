@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df41454018f529c46aa2470113c36404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsEditor: 1
+  IsEditor: 0
   numOfixed: 10
   fixed_Buttons:
   - {fileID: 0}
@@ -1008,10 +1008,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rearWidth: 640
-  rearHeight: 380
+  rearHeight: 360
   rearFps: 30
   frontWidth: 640
-  frontHeight: 380
+  frontHeight: 360
   frontFps: 30
   captureWidth: 2560
   captureHeight: 1440
