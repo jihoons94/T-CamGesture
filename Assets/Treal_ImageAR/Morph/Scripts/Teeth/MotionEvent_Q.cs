@@ -15,7 +15,6 @@ public class MotionEvent_Q : Motion_Event
     public GameObject ClearEffect;
     bool ButtonPushCheck;
     SoundManager SoundMgr;
-    public GameObject Popup;
     public DOTweenAnimation[] button = new DOTweenAnimation[2];
     public GameObject buttonBack1;
     public GameObject buttonBack2;
@@ -36,6 +35,8 @@ public class MotionEvent_Q : Motion_Event
     public GameObject[] Button_ = new GameObject[2];
     int UI_ButtonCount = 2;
     bool isPlay;
+
+    public float[] PenTime = { 0f,0f};
 
     public Text topText;
     public Text bottomText;
@@ -106,6 +107,29 @@ public class MotionEvent_Q : Motion_Event
 
     private void Update()
     {
+        for(int i=0; i<PenTime.Length; i++)
+        {
+            if(PenTime[i] > 0f)
+            {
+                Debug.Log("확인");
+                if (i == 0)
+                    Pens[0].GetComponent<SpriteRenderer>().enabled = true;
+                else if (i == 1)
+                    Pens[1].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+
+                PenTime[i] -= Time.deltaTime;
+
+            }
+            else
+            {
+                if (i == 0)
+                    Pens[0].GetComponent<SpriteRenderer>().enabled = false;
+                else if (i == 1)
+                    Pens[1].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+                PenTime[i] = 0f;
+            }
+        }
+        
         if (Click)
         {
             FixedEvent_On(num);
@@ -139,7 +163,7 @@ public class MotionEvent_Q : Motion_Event
         yield return new WaitForSeconds(1f);
         for (int i = 0; i < 3; i++)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.7f);
             Dimobject[i].SetActive(true);
         }
 
@@ -148,7 +172,7 @@ public class MotionEvent_Q : Motion_Event
         {
             Dimobject[z].SetActive(true);
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         Dimobject[6].SetActive(true);
         MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(true);
 
@@ -169,7 +193,7 @@ public class MotionEvent_Q : Motion_Event
         yield return new WaitForSeconds(1.5f);
         topText.text = "그럼 시작한다?";
         bottomText.text = "";
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         StartCoroutine(DimTipEvent());
 
     }
@@ -203,19 +227,17 @@ public class MotionEvent_Q : Motion_Event
             yield return new WaitForSeconds(1f);
             bottomText.text = "대단해!!";
             isPlay = false;
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(2f);
             GameOut.SetActive(true);
             if (CMotionTrackingManager.isNomal)
             {
-                Popup.SetActive(true);
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(3f);
                 isPlay = false;
                 Loading.LoadScene("GameTeeth_MAIN");
             }
             else
             {
-                Popup.SetActive(true);
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(3f);
                 isPlay = false;
                 Loading.LoadScene("GameTeeth_MAIN");
             }
@@ -314,14 +336,26 @@ public class MotionEvent_Q : Motion_Event
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
 
         if(!Pens[num-2].activeSelf)
-        Pens[num - 2].SetActive(true);
+        {
+            Pens[num - 2].SetActive(true);
+            
+        }
+
+        PenTime[num - 2] = 0.5f;
+
+        if (num == 2)
+            MotionTrackingMgr.fixed_Buttons[3].GetComponent<Amount_Click>().Amount = 0;
+        else if (num == 3)
+            MotionTrackingMgr.fixed_Buttons[2].GetComponent<Amount_Click>().Amount=0;
+
+
 
         if (!button[num - 2].tween.IsPlaying())
         {
             button[num - 2].DORewind();
             button[num - 2].DORestart();
             if (num == 2)
-                button[1].DORewind();
+                button[1].DORewind();     
             else
                 button[0].DORewind();
         }
@@ -359,8 +393,6 @@ public class MotionEvent_Q : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
-
-
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
         if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
@@ -396,9 +428,15 @@ public class MotionEvent_Q : Motion_Event
         if (!isPlay)
             return;
 
+        if (MotionTrackingMgr.fixed_Buttons[_num].tag == "NotUsing")
+            return;
+
         if (_num >= UI_ButtonCount)
         {
-
+            //if(_num==2)
+            //    Pens[0].GetComponent<SpriteRenderer>().enabled =false;
+            //else if(_num == 3)
+            //    Pens[1].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
             NoClick_Amount(_num);
 
         }

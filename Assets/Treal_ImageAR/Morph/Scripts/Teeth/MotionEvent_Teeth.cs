@@ -236,6 +236,8 @@ public class MotionEvent_Teeth : Motion_Event
             MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(false);
         }
         Debug.Log("GameStop()");
+        SoundMgr.OutSound();
+        GameOut.SetActive(true);
     }
 
     public void GameInit()
@@ -245,9 +247,10 @@ public class MotionEvent_Teeth : Motion_Event
     IEnumerator GameOutEvent()
     {
         Debug.Log("Init실행");
-        SoundMgr.OutSound();
+        
         isPlay = false;
         UserActivate = false;
+
         GameOut.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         if (CMotionTrackingManager.isNomal)
@@ -333,16 +336,16 @@ public class MotionEvent_Teeth : Motion_Event
         yield return new WaitForSeconds(1f);
         for (int i=0; i<3; i++)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.7f);
             Dimobject[i].SetActive(true);
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         for (int z=3; z<5; z++)
         {
             Dimobject[z].SetActive(true);
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         Dimobject[5].SetActive(true);
         MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(true);
 
@@ -536,6 +539,10 @@ public class MotionEvent_Teeth : Motion_Event
     {
         if (!UserActivate ||_num >= 7)
             return;
+
+        if (MotionTrackingMgr.fixed_Buttons[_num].tag == "NotUsing")
+            return;
+
         if (_num >= UI_ButtonCount)
         {
             NoClick_Amount(_num);

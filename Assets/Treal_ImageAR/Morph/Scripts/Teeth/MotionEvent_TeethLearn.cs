@@ -9,32 +9,16 @@ public class MotionEvent_TeethLearn : Motion_Event
     public GameObject GameOut;
     public GameObject Effect;
     public GameObject[] Content;
+    SoundManager SoundMgr;
 
     byte State = 0;
 
     public Text Dq01;
     public Text Dq02;
-    //private string[] SDq01 = {
-    //    " ",
-    //    "양치질을 하지 않으면 다시 세균들이 나타날거야.",
-    //    " ",
-    //    " 양치질을 하는 것도 중요하지만 올바르게 해야해",
-    //    " 같이 올바른 양치질에 대해 알아볼까?",
-    //    " ",
-    //    "첫번째 양치질은 왜 해야 될까?"
-    //};
-    //private string[] SDq02 = {
-    //    "정말 고마워 덕분에 입안이 아프지가 않아 ",
-    //    "  ",
-    //    "이제부터는 정말 열심히 양치질을 할거야",
-    //    " ",
-    //    " ",
-    //    "어서 시작하자!",
-    //    " "
-    //};
 
     private void Awake()
     {
+        SoundMgr = GetComponent<SoundManager>();
         GameIn.SetActive(true);
         SceneChange();
         //GameIn.SetActive(true);
@@ -43,9 +27,11 @@ public class MotionEvent_TeethLearn : Motion_Event
     IEnumerator StartEvent()
     {
         yield return new WaitForSeconds(2f);
+        Dq02.text = "양치질을 했더니 세균들이 모두 사라졌어!";
+        yield return new WaitForSeconds(2f);
         Dq02.text = "정말 고마워 덕분에 입안이 아프지가 않아 ";
         yield return new WaitForSeconds(2f);
-        Dq01.text = "양치질을 하지 않으면 다시 세균들이 나타날거야.";
+        Dq01.text = "양치질을 하지 않으면 세균들은 다시 나타날거야.";
         Dq02.text = "";
         yield return new WaitForSeconds(2f);
         Dq02.text = "이제부터는 정말 열심히 양치질을 할거야";
@@ -60,7 +46,11 @@ public class MotionEvent_TeethLearn : Motion_Event
         Dq02.text = " ";
         Dq01.text = "";
         yield return new WaitForSeconds(1f);
+
         Content[0].SetActive(true);
+        yield return new WaitForSeconds(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
+
         yield return new WaitForSeconds(2f);
         Dq01.text = "그럼 첫번째, 양치질은 왜 해야될까?";
         yield return new WaitForSeconds(2f);
@@ -85,7 +75,11 @@ public class MotionEvent_TeethLearn : Motion_Event
         yield return new WaitForSeconds(2f);
         Dq02.text = "";
         Dq01.text = "";
+        yield return new WaitForSeconds(1f);
         Content[1].SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         yield return new WaitForSeconds(2f);
         Dq01.text = "그러면 양치질은 언제해야 될까?";
         yield return new WaitForSeconds(2f);
@@ -109,7 +103,10 @@ public class MotionEvent_TeethLearn : Motion_Event
         yield return new WaitForSeconds(1f);
         Dq01.text = "";
         yield return new WaitForSeconds(1f);
+
         Content[2].SetActive(true);
+        yield return new WaitForSeconds(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         yield return new WaitForSeconds(2f);
         Dq01.text = "양치질은 하루에 몇번이나 해야될까?";
         yield return new WaitForSeconds(2f);
@@ -126,7 +123,10 @@ public class MotionEvent_TeethLearn : Motion_Event
         Dq02.text = "";
         Dq01.text = "";
         yield return new WaitForSeconds(1f);
+
         Content[3].SetActive(true);
+        yield return new WaitForSeconds(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         yield return new WaitForSeconds(2f);
         Dq01.text = "양치질은 몇분 동안 해야될까?";
         yield return new WaitForSeconds(2f);
@@ -142,7 +142,10 @@ public class MotionEvent_TeethLearn : Motion_Event
         Dq02.text = "";
         Dq01.text = "";
         yield return new WaitForSeconds(1f);
+
         Content[4].SetActive(true);
+        yield return new WaitForSeconds(1f);
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         yield return new WaitForSeconds(2f);
         Dq01.text = "마지막으로 사탕과 초콜릿은 치아에 좋을까?";
         yield return new WaitForSeconds(2f);
@@ -163,6 +166,7 @@ public class MotionEvent_TeethLearn : Motion_Event
         Effect.SetActive(true);
         yield return new WaitForSeconds(2f);
         GameOut.SetActive(true);
+        SoundMgr.OutSound();
         yield return new WaitForSeconds(3f);
         Loading.LoadScene("GameTeeth_Q");
     }

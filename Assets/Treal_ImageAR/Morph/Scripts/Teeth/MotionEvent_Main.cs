@@ -238,9 +238,11 @@ public class MotionEvent_Main : Motion_Event
     {
         if (!isPlay)
             return;
+       if( MotionTrackingMgr.fixed_Buttons[_num].tag == "NotUsing")
+            return;
 
 
-            NoClick_Amount(_num);
+        NoClick_Amount(_num);
 
     }
 

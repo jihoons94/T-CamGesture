@@ -16,6 +16,7 @@ TagManager:
   - mTrealPreviewObj
   - TCam
   - MotionTrackingMgr
+  - NotUsing
   layers:
   - Default
   - TransparentFX
