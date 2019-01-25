@@ -13,6 +13,9 @@ public class MotionEvent_Main : Motion_Event
     private float OtherSubmitSpeed = 5;
     public SoundManager SoundMgr;
 
+    public float[] PenTime = { 0f, 0f, 0f, 0f, 0f};
+    private byte? Button_Number = null;
+
     byte WindowSetUp=0;
 
     bool isPlay = false;
@@ -59,7 +62,24 @@ public class MotionEvent_Main : Motion_Event
 
     private void Update()
     {
-        
+        bool Check = false;
+        for (int i = 0; i < PenTime.Length; i++)
+        {
+
+            if (PenTime[i] > 0f)
+            {
+                PenTime[i] -= Time.deltaTime;
+                Check = true;
+            }
+            else
+            {
+                PenTime[i] = 0f;
+            }
+        }
+
+        if (!Check)
+            Button_Number = null;
+
         switch (WindowSetUp)
         {
             case 0:
@@ -141,7 +161,8 @@ public class MotionEvent_Main : Motion_Event
         Amount_Click temp = MotionTrackingMgr.fixed_Buttons[num].GetComponent<Amount_Click>();
         temp.Amount += Time.deltaTime * OtherSubmitSpeed;
 
-        
+        PenTime[num] = 0.5f;
+
         if (temp.Amount >= temp.MaxAmount)
         {
             
@@ -177,8 +198,6 @@ public class MotionEvent_Main : Motion_Event
 
     override public void FixedEvent_On(int _num)
     {
-
-        
         if (!isPlay)
             return;
 
@@ -188,44 +207,48 @@ public class MotionEvent_Main : Motion_Event
             return;
         }
 
-        if (Click_Amount(_num))
+        if (Button_Number == null || _num == Button_Number)
         {
-            isPlay = false;
-            switch (_num)
+            Button_Number = (byte)_num;
+            if (Click_Amount(_num))
             {
-                case 0:
-                    {
-                        CMotionTrackingManager.isNomal = true;
-                        //SceneManager.LoadScene("GameTeeth_Snack");
-                        StartCoroutine(GameOutEvent("GameTeeth_MainGame"));
-                    }
-                    break;
-                case 1:
-                    {
-                        Application.Quit();
-                    }
-                    break;
-                case 2:
-                    {
-                        CMotionTrackingManager.isNomal = false;
-                        StartCoroutine(GameOutEvent("GameTeeth_TeethLearn"));
-                    }
-                    break;
-                case 3:
-                    {
-                        CMotionTrackingManager.isNomal = false;
-                        StartCoroutine(GameOutEvent("GameTeeth_MainGame"));
-                        //SceneManager.LoadScene("GameTeeth_MainGame");
-                    }
-                    break;
-                case 4:
-                    {
-                        CMotionTrackingManager.isNomal = false;
-                        StartCoroutine(GameOutEvent("GameTeeth_Q"));
-                    }
-                    break;
+                isPlay = false;
+                switch (_num)
+                {
+                    case 0:
+                        {
+                            CMotionTrackingManager.isNomal = true;
+                            //SceneManager.LoadScene("GameTeeth_Snack");
+                            StartCoroutine(GameOutEvent("IntroVer02"));
+                        }
+                        break;
+                    case 1:
+                        {
+                            Application.Quit();
+                        }
+                        break;
+                    case 2:
+                        {
+                            CMotionTrackingManager.isNomal = false;
+                            StartCoroutine(GameOutEvent("IntroVer02"));
+                        }
+                        break;
+                    case 3:
+                        {
+                            CMotionTrackingManager.isNomal = false;
+                            StartCoroutine(GameOutEvent("GameTeeth_MainGame"));
+                            //SceneManager.LoadScene("GameTeeth_MainGame");
+                        }
+                        break;
+                    case 4:
+                        {
+                            CMotionTrackingManager.isNomal = false;
+                            StartCoroutine(GameOutEvent("GameTeeth_Q"));
+                        }
+                        break;
+                }
+                isPlay = false;
             }
-            isPlay = false;
         }
     }
 

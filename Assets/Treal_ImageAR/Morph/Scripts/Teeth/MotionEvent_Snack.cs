@@ -9,10 +9,17 @@ using UnityEngine.UI;
 
 public class MotionEvent_Snack : Motion_Event
 {
+    int State;
+    public GameObject Hand;
+    public GameObject TeethCharacter;
+    public GameObject TeethDoqObj;
+    public GameObject DinosaurDoqObj;
+    public GameObject DimTip;
+    Animator MyAnim;
+
     bool ButtonPushCheck;
     SoundManager SoundMgr;
-    public GameObject popup;
-    public GameObject Icon;
+
     public GameObject GameDoneEffect;
     int SnackCount = 4;
 
@@ -21,10 +28,10 @@ public class MotionEvent_Snack : Motion_Event
     int Snack03Count = 0;
     int Snack04Count = 0;
 
-    int Count = 0;
-    public Sprite[] MySnacks = new Sprite[4];
+    public int Count = 0;
+    public GameObject[] MySnacks = new GameObject[4];
 
-    public Image Snack;
+    public SpriteRenderer Snack;
     public List<int> Wait;
     public GameObject Window_Canvas;
 
@@ -44,11 +51,12 @@ public class MotionEvent_Snack : Motion_Event
     private float OtherSubmitSpeed = 8;
     private float RecognitionMin = 0.1f;
 
-    private string[] scenario_Before = {
-        "즐거운 간식 시간이야! ",
-        " 어떤 간식들이 있는지 볼까?",
-        "우와 어떤 것 부터 먹어볼까?"
-    };
+    public GameObject MainCharacter;
+
+    public GameObject GameIn;
+    public GameObject GameOut;
+
+    public int SnackCounts = 0;
 
     private string[] scenario_After = {
         "사탕을 선택했구나 잘했어!",
@@ -60,9 +68,11 @@ public class MotionEvent_Snack : Motion_Event
         "역시 너도 초콜릿이 좋은거지?",
         "이런 우유를 다 마셔서 찍어먹을 수가 없어"
     };
+    public float[] PenTime = { 0f, 0f };
+    private byte? Button_Number = null;
 
-
-    public Text OutBottom;
+    public Text Doq01;
+    public Text Doq02;
 
     int UI_ButtonCount = 2;
     bool isPlay;
@@ -110,59 +120,107 @@ public class MotionEvent_Snack : Motion_Event
         Click = false;
     }
 
-    //private void Update()
-    //{
+    private void Update()
+    {
+        if (State == 1)
+        {
+            if (Click_Amount(4))
+                State = 3;
+        }
+        else
+        {
 
-    //    if (Click)
-    //    {
-    //        switch (num)
-    //        {
-    //            case 0:
-    //                {
-    //                    NoClick_Amount(3);
-    //                    NoClick_Amount(4);
-    //                    FixedEvent_On(2);
-    //                }
-    //                break;
-    //            case 1:
-    //                {
-    //                    NoClick_Amount(2);
-    //                    NoClick_Amount(4);
-    //                    FixedEvent_On(3);
-    //                }
-    //                break;
-    //            case 2:
-    //                {
-    //                    NoClick_Amount(2);
-    //                    NoClick_Amount(3);
-    //                    FixedEvent_On(4);
-    //                }
-    //                break;
-    //        }
-    //    }
+        }
 
-    //    //else
-    //    //{
-    //    //    NoClick_Amount(2);
-    //    //    NoClick_Amount(3);
-    //    //    NoClick_Amount(4);
-    //    //}
-    //}
+
+        bool Check = false;
+        for (int i = 0; i < PenTime.Length; i++)
+        {
+
+            if (PenTime[i] > 0f)
+            {
+                PenTime[i] -= Time.deltaTime;
+                Check = true;
+            }
+            else
+            {
+                PenTime[i] = 0f;
+            }
+
+        }
+
+        if (!Check)
+            Button_Number = null;
+
+
+        if (Click)
+        {
+            switch (num)
+            {
+                case 0:
+                    {
+                        NoClick_Amount(3);
+                        NoClick_Amount(4);
+                        FixedEvent_On(2);
+                    }
+                    break;
+                case 1:
+                    {
+                        NoClick_Amount(2);
+                        NoClick_Amount(4);
+                        FixedEvent_On(3);
+                    }
+                    break;
+                case 2:
+                    {
+                        NoClick_Amount(2);
+                        NoClick_Amount(3);
+                        FixedEvent_On(0);
+                    }
+                    break;
+            }
+        }
+
+        else
+        {
+            NoClick_Amount(2);
+            NoClick_Amount(3);
+            NoClick_Amount(4);
+        }
+    }
     /*#########################################################################################################################*/
+
     private void Awake()
     {
         SceneChange();
+        MyAnim = MainCharacter.GetComponent<Animator>();
     }
 
 
     private void Start()
     {
+        State = 0;
+        SnackCount = 4;
+
+        Snack01Count = 0;
+        Snack02Count = 0;
+        Snack03Count = 0;
+        Snack04Count = 0;
+
+        Count = 0;
+        SnackCounts = 0;
+        // MainCharacter.transform.position = new Vector3(1000f, -120.5f, 0f);
+        MainCharacter.GetComponent<DOTweenAnimation>().CreateTween();
+        MainCharacter.GetComponent<DOTweenAnimation>().DOPlay();
+        GameIn.SetActive(true);
+        StartCoroutine(StartIntro());
+
 
         ButtonPushCheck = false;
         SoundMgr = GetComponent<SoundManager>();
         InitObject();
         isPlay = false;
-        StartCoroutine(StartEvent());
+        //StartCoroutine(StartEvent());
         CanvsOn();
     }
 
@@ -175,22 +233,63 @@ public class MotionEvent_Snack : Motion_Event
         Wait.Remove(num);
     }
 
-    IEnumerator GameOver()
+    public IEnumerator GameOver()
     {
+        Doq02.text = "";
 
-        Icon.SetActive(false);
+        Destroy(Snack.gameObject);
+        MyAnim.SetInteger("State", 0);
+
         GameDoneEffect.SetActive(true);
         for (int i = 0; i < Button_Snack.Length; i++)
         {
             Button_Snack[i].SetActive(false);
         }
         SoundMgr.AudioPlay(SoundManager.SoundName.GameClear);
-        OutBottom.text = "너무 배불러, 더는 못먹을거 같아";
         yield return new WaitForSeconds(3f);
-        SoundMgr.OutSound();
-        OutBottom.text = "우리 이제 나가서 놀지 않을래?";
+        // SoundMgr.OutSound();
         yield return new WaitForSeconds(2f);
 
+        GameDoneEffect.SetActive(false);
+        MyAnim.SetInteger("State", 12);
+        StartCoroutine(TempEvent(false, "너무 배불러! 더이상은 못먹겠어"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent(false, "배도 부른데 나가서 놀지 않을래?"));
+        
+        yield return new WaitForSeconds(2.5f);
+
+        StartCoroutine(TempEvent(false, "다른 친구들도 불러서 같이 놀자!"));
+        yield return new WaitForSeconds(1.8f);
+        MyAnim.SetInteger("State", 5);
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(TempEvent(false, "아야!,  왜그러지 입안이 아파!"));
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(TempEvent(false, "입안을 누가 바늘로 찌르는 것 같아!"));
+        yield return new WaitForSeconds(2.5f);
+        TeethDoqObj.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        TeethCharacter.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(TempEvent(true, "공룡이에 치아에 무슨일이 생긴거야!"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent(false, "내 치아에!?"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent(true, "응! 분명 충치균의 짓일거야!"));
+        yield return new WaitForSeconds(2.5f);
+        MyAnim.SetInteger("State", 6);
+        StartCoroutine(TempEvent(false, "입안이 너무 아파, 친구들아 도와줘!"));
+        yield return new WaitForSeconds(2.5f);
+        SoundMgr.OutSound();
+        StartCoroutine(TempEvent(true, "치아 요정인 내가 도와줄게 "));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent(true, "같이 공룡이에 입속으로 들어가 보자!"));
+        yield return new WaitForSeconds(3f);
+        TeethCharacter.GetComponent<Animator>().SetInteger("State", 4);
+        yield return new WaitForSeconds(0.5f);
+        TeethCharacter.GetComponent<Animator>().SetInteger("State", 0);
+        yield return new WaitForSeconds(0.5f);
+        GameOut.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
         if (CMotionTrackingManager.isNomal)
         {
             isPlay = false;
@@ -198,28 +297,18 @@ public class MotionEvent_Snack : Motion_Event
         }
         else
         {
-            popup.SetActive(true);
+
             yield return new WaitForSeconds(4f);
             isPlay = false;
             Loading.LoadScene("GameTeeth_MAIN");
         }
-
-
-
     }
 
 
 
     void NewSnack(int num)
     {
-        if (Count > 10)
-        {
-            StartCoroutine(GameOver());
-        }
-        else
-        {
             GameObject CreateEffects = Instantiate(SnackCreateEffect);
-
             CreateEffects.transform.position = Button_Snack[num].transform.position;
             GameObject CreateEffect = Instantiate(EatEffect);
             CreateEffect.transform.position = EffectPoint.position;
@@ -227,60 +316,74 @@ public class MotionEvent_Snack : Motion_Event
             GameObject temp = Button_Snack[num].transform.GetChild(0).gameObject;
             Snackyamyam(temp.tag);
             Destroy(temp);
-            Debug.Log(NewNum);
             GameObject Newtemp = Instantiate(Snacks[NewNum], Button_Snack[num].transform);
 
             Newtemp.transform.parent.GetComponent<Snack_Button>().MyScale = Newtemp.transform.localScale;
-        }
-
     }
 
     void Snackyamyam(string SnackName)
     {
+
+        SnackCounts++;
         switch (SnackName)
         {
             case "Snack01":
                 {
-                    Snack.sprite = MySnacks[0];
+                    Instantiate(MySnacks[0], Snack.transform);
+
+                    if (!isPlay)
+                    {
+                        return;
+                    }
+                    Debug.Log("?01");
                     Snack01Count++;
-                    if (Snack01Count > 4)
-                        OutBottom.text = scenario_After[5];
+                    if (Snack01Count > 3)
+                        Doq02.text = scenario_After[5];
                     else
-                        OutBottom.text = scenario_After[1];
+                        Doq02.text = scenario_After[1];
 
                 }
                 break;
 
             case "Snack02":
                 {
-                    Snack.sprite = MySnacks[1];
+                    Instantiate(MySnacks[1], Snack.transform);
+                    if (!isPlay)
+                        return;
+                    Debug.Log("?02");
                     Snack02Count++;
-                    if (Snack02Count > 4)
-                        OutBottom.text = scenario_After[4];
+                    if (Snack02Count > 3)
+                        Doq02.text = scenario_After[6];
                     else
-                        OutBottom.text = scenario_After[0];
+                        Doq02.text = scenario_After[2];
                 }
                 break;
 
             case "Snack03":
                 {
-                    Snack.sprite = MySnacks[2];
+                    Instantiate(MySnacks[2], Snack.transform);
+                    if (!isPlay)
+                        return;
+                    Debug.Log("?03");
                     Snack03Count++;
-                    if (Snack03Count > 4)
-                        OutBottom.text = scenario_After[6];
+                    if (Snack03Count > 3)
+                        Doq02.text = scenario_After[4];
                     else
-                        OutBottom.text = scenario_After[2];
+                        Doq02.text = scenario_After[0];
                 }
                 break;
 
             case "Snack04":
                 {
-                    Snack.sprite = MySnacks[3];
+                    Instantiate(MySnacks[3], Snack.transform);
+                    if (!isPlay)
+                        return;
+                    Debug.Log("?04");
                     Snack04Count++;
-                    if (Snack04Count > 4)
-                        OutBottom.text = scenario_After[7];
+                    if (Snack04Count > 3)
+                        Doq02.text = scenario_After[7];
                     else
-                        OutBottom.text = scenario_After[3];
+                        Doq02.text = scenario_After[3];
                 }
                 break;
         }
@@ -294,24 +397,91 @@ public class MotionEvent_Snack : Motion_Event
         }
     }
 
-    IEnumerator StartEvent()
+    void GetTextAnimation(GameObject Target)
     {
-        OutBottom.text = scenario_Before[0];
-        yield return new WaitForSeconds(2f);
-        OutBottom.text = scenario_Before[1];
-        yield return new WaitForSeconds(0.5f);
+
+    }
+
+    void TextAnimPlay(DOTweenAnimation target)
+    {
+        target.CreateTween();
+        target.DORestart();
+    }
+
+
+    void TextOut(Text target, string _temp)
+    {
+
+        target.text = _temp;
+
+    }
+
+    IEnumerator TempEvent(bool isTop, string _Temp)
+    {
+        if (isTop)
+        {
+            yield return new WaitForSeconds(0.5f);
+            Doq01.text = _Temp;
+        }
+        else
+        {
+
+            yield return new WaitForSeconds(0.5f);
+            Doq02.text = _Temp;
+        }
+    }
+
+
+    IEnumerator StartIntro()
+    {
+        MyAnim.SetInteger("State", 1);
+        yield return new WaitForSeconds(5f);
+        MyAnim.SetInteger("State", 0);
+        yield return new WaitForSeconds(1f);
+        MyAnim.SetInteger("State", 4);
+        StartCoroutine(TempEvent(false, "안녕? 난 공룡이라고해! 만나서 반가워!"));
+        yield return new WaitForSeconds(2.5f);
+        MyAnim.SetInteger("State", 0);
+        StartCoroutine(TempEvent(false, "놀러 와줘서 고마워, 우리 뭐하고 놀까?"));
+        yield return new WaitForSeconds(2.5f);
+        MyAnim.SetInteger("State", 2);
+        StartCoroutine(TempEvent(false, "그래! 우선 간식부터 먹자! "));
+        yield return new WaitForSeconds(2.5f);
+        MyAnim.SetInteger("State", 0);
+        StartCoroutine(TempEvent(false, " 어떤 간식들이 있는지 볼까?"));
+        yield return new WaitForSeconds(2.5f);
+
+
         for (int i = 0; i < Button_Snack.Length; i++)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.6f);
             SoundMgr.AudioPlay(SoundManager.SoundName.Boomb);
             Button_Snack[i].SetActive(true);
             GameObject CreateEffect = Instantiate(SnackCreateEffect, Button_Snack[i].transform);
             //CreateEffect.transform.localPosition = Button_Snack[i].transform.localPosition;
         }
+        DimTip.SetActive(true);
         yield return new WaitForSeconds(1f);
-        OutBottom.text = scenario_Before[2];
+        Hand.SetActive(true);
+        StartCoroutine(TempEvent(false, " 내 위에 떠있는 간식들을 손으로 문질러서"));
+        Hand.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent(false, " 먹을 간식을 선택할 수 있어!"));
+        
+        State = 1;
         yield return new WaitForSeconds(1f);
-        SoundMgr.AudioPlay(SoundManager.SoundName.popup);
+        Hand.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
+        
+        StartCoroutine(TempEvent(false, " 정말 간단하지?"));
+        yield return new WaitForSeconds(2.5f);
+        MyAnim.SetInteger("State", 2);
+        StartCoroutine(TempEvent(false, " 잘보고 맛있는 간식을 골라줘!"));
+        yield return new WaitForSeconds(2.5f);
+        MyAnim.SetInteger("State", 0);
+        Destroy(DimTip);
+        State = 3;
+        
         isPlay = true;
     }
 
@@ -367,10 +537,8 @@ public class MotionEvent_Snack : Motion_Event
         {
             temp.Amount = 0;
             RemoveEffectCreate(num);
-            MotionTrackingMgr.Random_position(num);
+            //MotionTrackingMgr.Random_position(num);
             NewSnack(num - UI_ButtonCount);
-
-            Count++;
             return true;
         }
         else
@@ -408,39 +576,48 @@ public class MotionEvent_Snack : Motion_Event
     {
 
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
-        if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
+        if (!MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
-            if (_num >= UI_ButtonCount)
+            return;
+        }
+        if (_num >= UI_ButtonCount)
+        {
+            if (!isPlay)
+                return;
+            if (Button_Number == null || _num == Button_Number)
             {
-                if (!isPlay)
-                    return;
-
+                Button_Number = (byte)_num;
                 Click_Amount(_num);
             }
-            else
+        }
+        else
+        {
+            if (UI_Click_Amount(_num))
             {
-                if (UI_Click_Amount(_num))
+                if (_num == 0)
                 {
-                    if (_num == 0)
-                    {
-
-                    }
-                    else
-                    {
-                        isPlay = false;
-                        Loading.LoadScene("GameTeeth_MAIN");
-                    }
+                    isPlay = true;
+                    DimTip.SetActive(false);
+                    MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(false);
+                }
+                else
+                {
+                    isPlay = false;
+                    Loading.LoadScene("GameTeeth_MAIN");
                 }
             }
+
         }
     }
 
     override public void FixedEvent_Off(int _num)
     {
-
-
         if (!isPlay)
             return;
+
+        if (MotionTrackingMgr.fixed_Buttons[_num].tag == "NotUsing")
+            return;
+
         if (_num >= UI_ButtonCount)
         {
             NoClick_Amount(_num);

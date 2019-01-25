@@ -7,15 +7,16 @@ using DG.Tweening;
 
 public class MotionEvent_Teeth : Motion_Event
 {
+    public GameObject[] objectDT;
+    int State = 0;
+    Animator Teeth;
     public GameObject GameIn;
     public GameObject GameOut;
-    public GameObject[] Dimobject;
     public GameObject TempTip;
     public GameObject Window_Canvas;
     public GameObject ScoreEffect;
     public GameObject DQ;
     public GameObject ICon;
-    public GameObject IConViewEffect;
     public GameObject UI_Score;
     SoundManager SoundMgr;
 
@@ -37,12 +38,14 @@ public class MotionEvent_Teeth : Motion_Event
 
     private float RecognitionMin = 1;
 
-
     int UI_ButtonCount = 2;
     bool UserActivate;
     bool isPlay;
-
+    int Window=0;
+    bool tempCheck;
     private delegate void TypeVoid();
+    public GameObject Hand;
+    public GameObject[] DoqIcon;
 
     /*#########################################################################################################################*/
     //윈도우 테스트용
@@ -66,6 +69,18 @@ public class MotionEvent_Teeth : Motion_Event
     public void ButtonOn()
     {
         Click = true;
+        Window = 7;
+    }
+    public void ButtonOns()
+    {
+        Click = true;
+        Window = 8;
+    }
+
+    public void ButtonOn2()
+    {
+        Click = true;
+        Window = 2;
     }
 
     public void ButtonOff()
@@ -73,13 +88,35 @@ public class MotionEvent_Teeth : Motion_Event
         Click = false;
     }
 
+    void WindowClick(int num)
+    {
+        FixedEvent_On(num);
+    }
+
 
     private void Update()
     {
+        if(State==1)
+        {
+            FixedEvent_On(9);
+        }
+        else if(State == 2)
+        {
+            if(Score.Test_ScoreCount >= 300)
+            {
+                StartCoroutine(MainStoryC2());
+                State = 3;
+            }
+        }
+        else
+        {
+
+        }
+
         if (Click)
         {
-            FixedEvent_On(0);
-            FixedEvent_On(2);
+            FixedEvent_On(Window);
+            //FixedEvent_On(2);
 
         }
 
@@ -174,44 +211,122 @@ public class MotionEvent_Teeth : Motion_Event
 
     private void Start()
     {
+        Teeth = ICon.GetComponent<Animator>();
+        GetTextAnimation();
         CanvsOn();
         SoundMgr = GetComponent<SoundManager>();
-        UserActivate = true;
+        UserActivate = false;
         CreatePointFindSet();
         isPlay = false;
         UI_Score.SetActive(false);
         GameStart();
     }
 
+    void GetTextAnimation()
+    {
+
+    }
+
+    void TextAnimPlay(DOTweenAnimation target)
+    {
+        target.CreateTween();
+        target.DORestart();
+    }
+
+
+    void TextOut(Text target, string _temp)
+    {
+
+        target.text = _temp;
+
+    }
+
+
+    IEnumerator TempEvent(string _Temp)
+    {
+
+        yield return new WaitForSeconds(0.5f);
+        Doq.text = _Temp;
+
+    }
+
     /// <summary>
     /// 게임 전 시나리오가 진행된다.
     /// </summary>
     /// <returns></returns>
-    IEnumerator GameStartEventS()
+    IEnumerator MainStory()
     {
-        Doq.text = "";
+        Score.ScoreCount = 0;
+        Score.Test_ScoreCount = 0;
         SoundMgr.StartBGM();
-        DQ.SetActive(true);
         yield return new WaitForSeconds(2f);
-        ICon.SetActive(true);
-        SoundMgr.AudioPlay(SoundManager.SoundName.Boomb);
-        IConViewEffect.SetActive(true);
-        yield return new WaitForSeconds(2.5f);
-        Doq.text = "세균들이 치아들을 괴롭히고 있어!";
-        yield return new WaitForSeconds(2.5f);
-        Doq.text = "우리들이 도와줘야 할것 같아";
-        yield return new WaitForSeconds(2.5f);
-        Doq.text = "양치질처럼 세균들을 모두 닦아내자!";
-        yield return new WaitForSeconds(2.5f);
-        Doq.text = "준비 됐지? 그럼 시작한다?";
-        yield return new WaitForSeconds(2.5f);
-        Doq.text = "치아들을 구해줘!";
+        DQ.SetActive(true);
+        
         yield return new WaitForSeconds(1f);
-        UI_Score.SetActive(true);
         ScoreEffect.SetActive(true);
+        for (int i=0; i<3; i++)
+        {
+            MotionTrackingMgr.fixed_Buttons[7+i].gameObject.SetActive(true);
+        }
+        yield return new WaitForSeconds(0.5f);
+        
+        //SoundMgr.AudioPlay(SoundManager.SoundName.Boomb);
+
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(TempEvent("세균들이 치아들을 괴롭히고 있어!"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent("우리들이 도와줘야 할것 같아"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent("세균을 쫓아낼 방법을 알려줄게!"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent("충치균이 있는 곳에 손을 올려 흔들면"));
+        Hand.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+        // 닦아서 없어지는 이벤트
+        StartCoroutine(TempEvent("충치균을 쫓아낼 수 있어!"));
+        State = 1;
+
+        yield return new WaitForSeconds(2.5f);
+        Hand.SetActive(false);
+        StartCoroutine(TempEvent("그럼? 충치균을 쫓아내 볼까?"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent("손으로 충치균을 쫓아내볼래?"));
+
+        TempTip.SetActive(true);
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
+        UserActivate = true;
+        State = 2;
+
+        //// 2마리의 균이 죽을 경우
+        //while (Score.Test_ScoreCount < 300)
+        //{
+        //    yield return new WaitForSeconds(1f);
+        //}
+
+    }
+
+    IEnumerator MainStoryC2()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            MotionTrackingMgr.fixed_Buttons[7 + 0].gameObject.SetActive(false);
+        }
         yield return new WaitForSeconds(1f);
-        //TempTipEvent(true);
-        StartCoroutine(DimTipEvent());
+        Teeth.SetInteger("State", 1);
+        StartCoroutine(TempEvent("잘하는데!"));
+        yield return new WaitForSeconds(2.5f);
+        StartCoroutine(TempEvent("이제 나머지 치아들도 구해주자."));
+        yield return new WaitForSeconds(2.5f);
+        Teeth.SetInteger("State", 0);
+        StartCoroutine(TempEvent("준비됐지? 그럼 시작한다?"));
+        yield return new WaitForSeconds(2.5f);
+        DoqIcon[0].SetActive(false);
+        DoqIcon[1].SetActive(true);
+        TempTipEvent(false);
+        UI_Score.SetActive(true);
+        Destroy(GameObject.Find("ScoreTest").gameObject);
+        StartCoroutine(WaitCreate());
+        StartCoroutine(TempEvent("친구야 구해줘!"));
     }
 
 
@@ -220,13 +335,18 @@ public class MotionEvent_Teeth : Motion_Event
         isPlay = true;
         //SetNewButtonPosition();
 
-        UserActivate = false;
+        //UserActivate = false;
         SoundMgr.SetSoundVolume(0.7f);
-        StartCoroutine(GameStartEventS());
+        StartCoroutine(MainStory());
     }
 
     public void GameStop()
     {
+        for (int i =0; i< objectDT.Length; i++)
+        {
+            objectDT[i].SetActive(false);
+        }
+        ICon.SetActive(false);
         Doq.text = "치아들을 지켜줘서 고마워!";
         isPlay = false;
         UserActivate = false;
@@ -237,7 +357,7 @@ public class MotionEvent_Teeth : Motion_Event
         }
         Debug.Log("GameStop()");
         SoundMgr.OutSound();
-        GameOut.SetActive(true);
+
     }
 
     public void GameInit()
@@ -247,7 +367,7 @@ public class MotionEvent_Teeth : Motion_Event
     IEnumerator GameOutEvent()
     {
         Debug.Log("Init실행");
-        
+        GameOut.SetActive(true);
         isPlay = false;
         UserActivate = false;
 
@@ -278,6 +398,7 @@ public class MotionEvent_Teeth : Motion_Event
     /// <returns></returns>
     public Vector3 RandomNewPoint(GameObject _temp)
     {
+        
         int temp = 0;
         while (true)
         {
@@ -286,6 +407,8 @@ public class MotionEvent_Teeth : Motion_Event
             {
                 _temp.name = System.Convert.ToString(temp);
                 Random_save.Add(temp);
+                objectDT[temp].SetActive(true);
+                _temp.GetComponent<Germ_Button>().number = temp;
                 break;
             }
         }
@@ -302,6 +425,15 @@ public class MotionEvent_Teeth : Motion_Event
             if (!MotionTrackingMgr.fixed_Buttons[i].gameObject.activeSelf)
             {
                 Vector3 NewPoint = RandomNewPoint(MotionTrackingMgr.fixed_Buttons[i].gameObject);
+                DOTweenAnimation Temp = MotionTrackingMgr.fixed_Buttons[i].GetComponent<DOTweenAnimation>();
+                if (Temp != null)
+                {
+                    Temp.DORewind();
+                    Temp.DORestart();
+                }
+
+
+   
                 MotionTrackingMgr.SetTrack_position_One(i, NewPoint);
                 MotionTrackingMgr.fixed_Buttons[i].gameObject.SetActive(true);
             }
@@ -323,32 +455,12 @@ public class MotionEvent_Teeth : Motion_Event
     /// <returns></returns>
     IEnumerator WaitCreate()
     {
+        SoundMgr.AudioPlay(SoundManager.SoundName.NextQuiz);
         while (isPlay)
         {
             SetNewButtonPosition();
             yield return new WaitForSeconds(2f);
         }
-    }
-
-    IEnumerator DimTipEvent()
-    {
-        TempTip.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        for (int i=0; i<3; i++)
-        {
-            yield return new WaitForSeconds(0.7f);
-            Dimobject[i].SetActive(true);
-        }
-
-        yield return new WaitForSeconds(1f);
-        for (int z=3; z<5; z++)
-        {
-            Dimobject[z].SetActive(true);
-        }
-        yield return new WaitForSeconds(2f);
-        Dimobject[5].SetActive(true);
-        MotionTrackingMgr.fixed_Buttons[0].gameObject.SetActive(true);
-
     }
 
     void TempTipEvent(bool State)
@@ -476,68 +588,95 @@ public class MotionEvent_Teeth : Motion_Event
     {
         if (_num >= 30 && _num < 100)
         {
-            Doq.text = "치아들이 위험해 서둘러야겠어";
+            Doq.text = "서둘러줘 입안이 너무 아파";
         }
         else if (_num >= 100 && _num < 150)
         {
-            Doq.text = "그래 그렇게 하는거야!";
+            Teeth.SetInteger("State", 1);
+            Doq.text = "통증이 줄어들기 시작했어";
         }
         else if (_num >= 150 && _num < 200)
         {
-            Doq.text = "잘하는데? 세균들이 힘을 못쓰고 있어";
+ 
+            Doq.text = "세균들이 없어지고 있자나!";
         }
         else if (_num >= 200)
         {
+            Teeth.SetInteger("State", 2);
             Doq.text = "얼마 안남았어 힘을 내!";
         }
     }
 
     override public void FixedEvent_On(int _num)
     {
-
-
         // 버튼 오브젝트가 활성화 되어 있을 경우만 이벤트가 발생한다.
-        if (MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
+        if (!MotionTrackingMgr.fixed_Buttons[_num].gameObject.activeSelf)
         {
-            // 씬의 게임에 사용되는 버튼일 경우
-            if (_num >= UI_ButtonCount)
+            return;
+        }
+        // 씬의 게임에 사용되는 버튼일 경우
+        if (_num >= UI_ButtonCount)
+        {
+
+            if (_num == 9)
+            {
+                if (Click_Amount(_num))
+                {
+                    MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);
+                    Score.Test_ScoreCount += 100;
+                }
+
+            }
+            else if (_num == 7|| _num ==8)
             {
                 if (!UserActivate)
                     return;
                 if (Click_Amount(_num))
                 {
+                    MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);
+                    Score.Test_ScoreCount += 100;
+                }
+            }
+            else
+            {
+                if (!UserActivate)
+                    return;
+                if (Click_Amount(_num))
+                {
+                    int num = MotionTrackingMgr.fixed_Buttons[_num].GetComponent<Germ_Button>().number;
+                    objectDT[num].SetActive(false);
+                    MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);
                     Score.ScoreCount += 20;
                     ChangeDoqInGame(Score.ScoreCount);
-                    MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);
                     int temp = System.Convert.ToInt32(MotionTrackingMgr.fixed_Buttons[_num].name);
                     Random_save.Remove(temp);
                 }
-
             }
-            else //  UI 버튼일 경우
+
+
+        }
+        else //  UI 버튼일 경우
+        {
+            if (UI_Click_Amount(_num))
             {
-                if (UI_Click_Amount(_num))
+                if (_num == 0)
                 {
-                    if (_num == 0)
-                    {
-                        TempTipEvent(false);
-                        StartCoroutine(WaitCreate());
-                        UserActivate = true;
-                    }
-                    else
-                    {
-                        isPlay = false;
-                        UserActivate = false;
-                        Loading.LoadScene("GameTeeth_MAIN");
-                    }
+
+                }
+                else
+                {
+                    isPlay = false;
+                    UserActivate = false;
+                    Loading.LoadScene("GameTeeth_MAIN");
                 }
             }
         }
+
     }
 
     override public void FixedEvent_Off(int _num)
     {
-        if (!UserActivate ||_num >= 7)
+        if (!UserActivate || _num >= 7)
             return;
 
         if (MotionTrackingMgr.fixed_Buttons[_num].tag == "NotUsing")

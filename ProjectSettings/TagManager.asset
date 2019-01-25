@@ -17,6 +17,7 @@ TagManager:
   - TCam
   - MotionTrackingMgr
   - NotUsing
+  - Snack
   layers:
   - Default
   - TransparentFX
@@ -59,6 +60,9 @@ TagManager:
     locked: 0
   - name: Effect
     uniqueID: 543688099
+    locked: 0
+  - name: Dim
+    uniqueID: 1176148531
     locked: 0
   - name: Default
     uniqueID: 0
