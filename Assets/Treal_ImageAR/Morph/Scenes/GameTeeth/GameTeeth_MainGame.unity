@@ -33544,15 +33544,15 @@ SpriteRenderer:
   m_SortingLayerID: 1797467769
   m_SortingLayer: 3
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 6ba8e49c445c7eb4bafbbda222b17838, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d6d2e112c960574bba93086037c1946, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.89, y: 0.56}
+  m_Size: {x: 1.87, y: 1.94}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!114 &711952318
 MonoBehaviour:

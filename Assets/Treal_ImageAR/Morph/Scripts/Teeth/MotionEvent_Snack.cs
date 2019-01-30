@@ -228,7 +228,7 @@ public class MotionEvent_Snack : Motion_Event
     {
         Wait.Add(num);
         GameObject buble_Effect = Instantiate(Effect, Background2);
-        buble_Effect.transform.position = MotionTrackingMgr.fixed_Buttons[num].localPosition;
+        buble_Effect.transform.position = MotionTrackingMgr.fixed_Buttons[num].position;
         yield return new WaitForSeconds(1f);
         Wait.Remove(num);
     }

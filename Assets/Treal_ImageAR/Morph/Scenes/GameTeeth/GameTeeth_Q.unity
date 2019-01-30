@@ -674,15 +674,15 @@ SpriteRenderer:
   m_SortingLayerID: 40676051
   m_SortingLayer: -3
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 6a25e9c1b6e31974c8a80f1e5a5a1377, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ec48a303a6839fb42b4f02454af87d10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7.2, y: 7.2}
+  m_Size: {x: 3.43, y: 4.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!1 &97755117
 GameObject:
@@ -2127,7 +2127,7 @@ SpriteRenderer:
   m_Size: {x: 0.89, y: 0.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!1 &426471285
 GameObject:
@@ -2985,15 +2985,15 @@ SpriteRenderer:
   m_SortingLayerID: 1797467769
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6ba8e49c445c7eb4bafbbda222b17838, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d6d2e112c960574bba93086037c1946, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.89, y: 0.56}
+  m_Size: {x: 1.87, y: 1.94}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!114 &544592447
 MonoBehaviour:
@@ -4161,7 +4161,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 34260cfd971f183499afa43cedadcad7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dea65beebd2f76542b30bb28da1c307a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4511,15 +4511,15 @@ SpriteRenderer:
   m_SortingLayerID: 40676051
   m_SortingLayer: -3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c5c3457e69cc9784cb0f82dba9dd646d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aac85eae4354a614ca77207cd70c33b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7.2, y: 7.2}
+  m_Size: {x: 2.18, y: 1.36}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!114 &825178536
 MonoBehaviour:
@@ -5411,7 +5411,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 2bab3dc7f5c7abc489f7ec1904a67cd6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 913756def8a09674a8e845d4921ec274, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6984,7 +6984,7 @@ SpriteRenderer:
   m_Size: {x: 0.89, y: 0.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &1379111412 stripped
 Transform:
@@ -7200,15 +7200,15 @@ SpriteRenderer:
   m_SortingLayerID: 543688099
   m_SortingLayer: -2
   m_SortingOrder: 20
-  m_Sprite: {fileID: 21300000, guid: 805f3323bf8fcb34589ae95759ee2233, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e3365a0e9301c7140bd9316988357695, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7.2, y: 7.2}
+  m_Size: {x: 2.67, y: 1.59}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!1 &1492844298
 GameObject:
@@ -8356,15 +8356,15 @@ SpriteRenderer:
   m_SortingLayerID: 40676051
   m_SortingLayer: -3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 20ca4126370bb9148b03772eb3d53fd1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7de63b97ca2f9ba4392769d8956c36af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7.2, y: 7.2}
+  m_Size: {x: 2.09, y: 1.41}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!1 &1786272304
 GameObject:
