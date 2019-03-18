@@ -27,7 +27,11 @@ public class MotionEvent_Teeth : Motion_Event
     public List<int> Wait;
     public List<int> Wait_Image;
     public List<int> Random_save;
+
+    [Header("[사용된 Effect]")]
+    [Tooltip("제스쳐시 발생되는 거품효과입니다.")]
     public GameObject Effect;
+    [Tooltip("균이 사라질때 발생되는 효과입니다.")]
     public GameObject Remove_Effect;
 
     public Transform Background;
@@ -46,6 +50,8 @@ public class MotionEvent_Teeth : Motion_Event
     private delegate void TypeVoid();
     public GameObject Hand;
     public GameObject[] DoqIcon;
+
+    bool Temp =false;
 
     /*#########################################################################################################################*/
     //윈도우 테스트용
@@ -285,7 +291,7 @@ public class MotionEvent_Teeth : Motion_Event
         // 닦아서 없어지는 이벤트
         StartCoroutine(TempEvent("충치균을 쫓아낼 수 있어!"));
         State = 1;
-
+        Temp = true;
         yield return new WaitForSeconds(2.5f);
         Hand.SetActive(false);
         StartCoroutine(TempEvent("그럼? 충치균을 쫓아내 볼까?"));
@@ -620,6 +626,8 @@ public class MotionEvent_Teeth : Motion_Event
 
             if (_num == 9)
             {
+                if (!Temp)
+                    return;
                 if (Click_Amount(_num))
                 {
                     MotionTrackingMgr.fixed_Buttons[_num].gameObject.SetActive(false);

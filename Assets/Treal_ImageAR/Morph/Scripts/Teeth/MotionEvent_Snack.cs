@@ -34,11 +34,16 @@ public class MotionEvent_Snack : Motion_Event
     public SpriteRenderer Snack;
     public List<int> Wait;
     public GameObject Window_Canvas;
-
-    public GameObject Effect;
     public Transform EffectPoint;
+
+    [Header("[사용된 Effect]")]
+    [Tooltip("제스쳐시 발생되는 효과입니다.")]
+    public GameObject Effect;
+    [Tooltip("공룡이의 입에서 발생되는 효과입니다.")]
     public GameObject EatEffect;
+    [Tooltip("과자가 생성될 때 발생되는 효과입니다.")]
     public GameObject SnackCreateEffect;
+    [Tooltip("선택된 과자가 사라질때 나타나는 효과입니다.")]
     public GameObject Remove_Effect;
 
     public GameObject[] Button_Snack = new GameObject[4];

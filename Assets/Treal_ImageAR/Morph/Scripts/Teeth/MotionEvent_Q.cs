@@ -24,11 +24,17 @@ public class MotionEvent_Q : Motion_Event
     public GameObject buttonBack1;
     public GameObject buttonBack2;
 
+    [Header("[사용된 Effect]")]
+    [Tooltip("정답 시 효과입니다.")]
     public GameObject DoneEffect;
+    [Tooltip("비정답 시 효과입니다.")]
     public GameObject NotEffect;
+
+    
     int cState;
     int QState;
     int MaxState = 5;
+    [Header("----------")]
     public Transform Background;
     public Transform Background2;
     public GameObject Window_Canvas;

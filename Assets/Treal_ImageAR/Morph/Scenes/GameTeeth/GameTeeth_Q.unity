@@ -4887,6 +4887,15 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 701a037b71edcc94b8bdb485e6d92a8d,
         type: 3}
+    - target: {fileID: 1887625006219204, guid: d99753d3eab8e88448d848e933bed4be, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114906370892083176, guid: d99753d3eab8e88448d848e933bed4be,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.627451
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d99753d3eab8e88448d848e933bed4be, type: 2}
   m_IsPrefabParent: 0
@@ -5644,6 +5653,11 @@ Prefab:
     - target: {fileID: 4999987951166716, guid: 56fe1e2ae40b7b54eb500ef03664761c, type: 2}
       propertyPath: m_LocalScale.y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096692768246336, guid: 56fe1e2ae40b7b54eb500ef03664761c,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.627451
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 56fe1e2ae40b7b54eb500ef03664761c, type: 2}
